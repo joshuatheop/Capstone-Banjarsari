@@ -1,0 +1,4145 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PALUGADA — Katalog UMKM & Jasa Banjarsari</title>
+  <template id="__bundler_thumbnail" data-bg-color="#FAF6EC">
+    <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+      <rect width="1200" height="800" fill="#FAF6EC"/>
+      <g transform="translate(420, 220)">
+        <rect x="0" y="0" width="360" height="360" rx="60" fill="#B0431F"/>
+        <rect x="60" y="60" width="240" height="240" rx="30" fill="none" stroke="#D9A957" stroke-width="12"/>
+        <circle cx="180" cy="180" r="36" fill="#D9A957"/>
+      </g>
+      <text x="600" y="660" text-anchor="middle" font-family="Georgia, serif" font-size="64" font-weight="500" fill="#241B0E" letter-spacing="2">PALUGADA</text>
+      <text x="600" y="710" text-anchor="middle" font-family="monospace" font-size="20" fill="#8B7553" letter-spacing="6">KATALOG · BANJARSARI</text>
+      <g transform="translate(0, 760)">
+        <rect x="0" y="0" width="200" height="40" fill="#B0431F"/>
+        <rect x="200" y="0" width="140" height="40" fill="#C28A2F"/>
+        <rect x="340" y="0" width="200" height="40" fill="#2E5034"/>
+        <rect x="540" y="0" width="100" height="40" fill="#E9DCBE"/>
+        <rect x="640" y="0" width="200" height="40" fill="#B0431F"/>
+        <rect x="840" y="0" width="140" height="40" fill="#C28A2F"/>
+        <rect x="980" y="0" width="220" height="40" fill="#2E5034"/>
+      </g>
+    </svg>
+  </template>
+  <style>
+/* ============== PALUGADA Design System ============== */
+
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..800;1,6..72,300..800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Warm cream + earth palette */
+  --cream-50:  #FAF6EC;
+  --cream-100: #F4ECD8;
+  --cream-200: #E9DCBE;
+  --cream-300: #D9C89A;
+
+  --clay-500: #C8593A;
+  --clay-600: #B0431F;
+  --clay-700: #8C3214;
+  --clay-100: #F6E0D4;
+
+  --palm-600: #3F6B47;
+  --palm-700: #2E5034;
+  --palm-800: #1E3622;
+  --palm-100: #DCE7DC;
+
+  --ochre-400: #D9A957;
+  --ochre-500: #C28A2F;
+  --ochre-600: #9D6C1E;
+
+  --ink-900: #241B0E;
+  --ink-700: #4F3F26;
+  --ink-500: #8B7553;
+  --ink-300: #BDAC8A;
+
+  --line: rgba(36,27,14,0.10);
+  --line-strong: rgba(36,27,14,0.18);
+
+  /* Tokens */
+  --bg: var(--cream-50);
+  --surface: #FFFCF4;
+  --surface-2: var(--cream-100);
+  --primary: var(--clay-600);
+  --primary-hover: var(--clay-700);
+  --secondary: var(--palm-700);
+  --accent: var(--ochre-500);
+
+  --radius-sm: 6px;
+  --radius: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --shadow-sm: 0 1px 2px rgba(36,27,14,0.05), 0 1px 1px rgba(36,27,14,0.04);
+  --shadow:    0 4px 14px rgba(36,27,14,0.08), 0 1px 2px rgba(36,27,14,0.04);
+  --shadow-lg: 0 24px 60px rgba(36,27,14,0.14), 0 8px 18px rgba(36,27,14,0.06);
+
+  --font-display: "Newsreader", Georgia, serif;
+  --font-ui: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink-900);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+img { display: block; max-width: 100%; }
+
+::selection { background: var(--ochre-400); color: var(--ink-900); }
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Type ---- */
+.display { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.01em; }
+.mono { font-family: var(--font-mono); font-feature-settings: "ss01"; }
+.label-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  font-weight: 500;
+}
+
+/* ---- Buttons ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.btn-primary {
+  background: var(--primary);
+  color: #FFFCF4;
+  box-shadow: 0 1px 0 rgba(140,50,20,0.4) inset, 0 2px 6px rgba(140,50,20,0.18);
+}
+.btn-primary:hover { background: var(--primary-hover); }
+.btn-secondary {
+  background: var(--cream-100);
+  color: var(--ink-900);
+  border: 1px solid var(--line);
+}
+.btn-secondary:hover { background: var(--cream-200); }
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-700);
+}
+.btn-ghost:hover { background: var(--cream-100); }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+.btn-lg { padding: 14px 24px; font-size: 15px; }
+
+.btn-wa {
+  background: #25D366;
+  color: white;
+}
+.btn-wa:hover { background: #1faa54; }
+
+/* ---- Inputs ---- */
+.input, .select {
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--ink-900);
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+.input:focus, .select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(176,67,31,0.12);
+}
+.textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+}
+.textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(176,67,31,0.12);
+}
+
+/* ---- Layout ---- */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.container-narrow {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---- Header ---- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(250,246,236,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 68px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--ink-900);
+}
+.brand-mark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--primary);
+  display: grid;
+  place-items: center;
+  color: var(--cream-50);
+  position: relative;
+  overflow: hidden;
+}
+.brand-mark::before, .brand-mark::after {
+  content: "";
+  position: absolute;
+  background: var(--ochre-400);
+}
+.brand-mark::before {
+  inset: 6px; border-radius: 6px; background: transparent;
+  border: 1.5px solid var(--ochre-400);
+}
+.brand-mark::after {
+  width: 8px; height: 8px; border-radius: 50%;
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+}
+.brand small {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  font-weight: 500;
+  display: block;
+  margin-top: -2px;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+  margin-left: 8px;
+}
+.header-nav a {
+  padding: 8px 14px;
+  border-radius: 8px;
+  color: var(--ink-700);
+  font-weight: 500;
+  font-size: 14px;
+}
+.header-nav a:hover, .header-nav a.active {
+  background: var(--cream-100);
+  color: var(--ink-900);
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  max-width: 520px;
+}
+.search-box .input {
+  padding-left: 42px;
+  background: var(--cream-100);
+  border-color: transparent;
+}
+.search-box .input:focus { background: var(--surface); }
+.search-box svg {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--ink-500);
+}
+
+/* ---- Cards ---- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+  border-color: var(--line-strong);
+}
+
+.product-card {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+.product-card .thumb {
+  aspect-ratio: 4/3;
+  background: var(--cream-200);
+  position: relative;
+  overflow: hidden;
+}
+.product-card .badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255,252,244,0.92);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-700);
+  font-weight: 600;
+}
+.product-card .fav {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255,252,244,0.92);
+  display: grid;
+  place-items: center;
+  color: var(--clay-600);
+}
+.product-card .body {
+  padding: 14px 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.product-card .cat-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--palm-700);
+  font-weight: 600;
+}
+.product-card h3 {
+  margin: 2px 0 0;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--ink-900);
+}
+.product-card .owner {
+  color: var(--ink-500);
+  font-size: 13px;
+  margin-top: 6px;
+}
+.product-card .price-row {
+  margin-top: 10px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.product-card .price {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--clay-700);
+}
+.product-card .clicks {
+  font-size: 11px;
+  font-family: var(--font-mono);
+  color: var(--ink-500);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Placeholder thumb */
+.thumb-placeholder {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(135deg,
+      var(--cream-200) 0px, var(--cream-200) 10px,
+      var(--cream-100) 10px, var(--cream-100) 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.thumb-placeholder span {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  background: rgba(255,252,244,0.88);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* ---- Hero / Section heads ---- */
+.section {
+  padding: 56px 0;
+}
+.section-tight { padding: 36px 0; }
+.section-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.section-head h2 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin: 0;
+  color: var(--ink-900);
+}
+.section-head p {
+  margin: 6px 0 0;
+  color: var(--ink-500);
+  max-width: 540px;
+}
+.section-head .more {
+  color: var(--clay-700);
+  font-weight: 600;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ---- Grid ---- */
+.grid {
+  display: grid;
+  gap: 18px;
+}
+.grid-products {
+  grid-template-columns: repeat(4, 1fr);
+}
+@media (max-width: 980px) {
+  .grid-products { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 520px) {
+  .grid-products { grid-template-columns: 1fr; }
+}
+
+/* ---- Chips ---- */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink-700);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.chip:hover { border-color: var(--line-strong); }
+.chip.active {
+  background: var(--ink-900);
+  color: var(--cream-50);
+  border-color: var(--ink-900);
+}
+.chip.tonal {
+  background: var(--clay-100);
+  color: var(--clay-700);
+  border-color: transparent;
+}
+.chip.palm {
+  background: var(--palm-100);
+  color: var(--palm-700);
+  border-color: transparent;
+}
+
+/* ---- Pills (filter chips with x) ---- */
+.pill-x {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 4px 4px 12px;
+  background: var(--ink-900);
+  color: var(--cream-50);
+  border-radius: 999px;
+  font-size: 13px;
+}
+.pill-x button {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  color: var(--cream-50);
+  display: grid; place-items: center;
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  padding: 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+}
+.sidebar h4 {
+  margin: 0 0 12px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--ink-900);
+}
+.filter-group {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line);
+}
+.filter-group:last-child { border-bottom: none; }
+.filter-group:first-child { padding-top: 4px; }
+
+.check-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--ink-700);
+}
+.check-row input[type="checkbox"], .check-row input[type="radio"] {
+  width: 16px; height: 16px;
+  accent-color: var(--primary);
+}
+.check-row .count {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-500);
+}
+
+/* ---- Breadcrumb ---- */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--ink-500);
+  margin-bottom: 16px;
+}
+.breadcrumb a:hover { color: var(--ink-900); }
+.breadcrumb .sep { color: var(--ink-300); }
+
+/* ---- Map placeholder ---- */
+.map-frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 30% 40%, rgba(63,107,71,0.12), transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(217,169,87,0.12), transparent 50%),
+    var(--palm-100);
+}
+.map-frame::before {
+  content: "";
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(46,80,52,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(46,80,52,0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.map-frame::after {
+  content: "";
+  position: absolute;
+  top: 12%; left: 8%; right: 8%; bottom: 18%;
+  background:
+    radial-gradient(circle, rgba(255,252,244,0.7) 0%, transparent 60%);
+  border-radius: 30% 60% 50% 40%;
+}
+.map-frame .road {
+  position: absolute;
+  background: rgba(255,252,244,0.8);
+  border: 1px solid rgba(46,80,52,0.15);
+}
+.map-pin {
+  position: absolute;
+  z-index: 2;
+  width: 30px; height: 30px;
+  transform: translate(-50%, -100%);
+}
+.map-pin .dot {
+  position: absolute;
+  inset: 0;
+  background: var(--clay-600);
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 4px 10px rgba(176,67,31,0.4);
+}
+.map-pin .ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 8px; height: 8px;
+  background: var(--cream-50);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ---- Tag ---- */
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.tag-palm { background: var(--palm-100); color: var(--palm-700); }
+.tag-clay { background: var(--clay-100); color: var(--clay-700); }
+.tag-ochre { background: rgba(217,169,87,0.2); color: var(--ochre-600); }
+.tag-ink { background: var(--cream-200); color: var(--ink-700); }
+
+/* ---- Tabs ---- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.tabs button {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink-500);
+  position: relative;
+  margin-bottom: -1px;
+}
+.tabs button.active {
+  color: var(--ink-900);
+  font-weight: 600;
+}
+.tabs button.active::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -1px;
+  height: 2px;
+  background: var(--primary);
+}
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink-900);
+  color: var(--cream-50);
+  padding: 12px 20px;
+  border-radius: 999px;
+  font-size: 14px;
+  z-index: 200;
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---- Modal ---- */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(36,27,14,0.4);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  max-width: 480px;
+  width: 100%;
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
+}
+.modal h3 {
+  margin: 0 0 8px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 500;
+}
+
+/* ---- Footer ---- */
+.footer {
+  margin-top: auto;
+  background: var(--palm-800);
+  color: var(--cream-100);
+  padding: 56px 0 32px;
+}
+.footer a { color: var(--cream-200); }
+.footer a:hover { color: var(--cream-50); }
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 32px;
+  margin-bottom: 40px;
+}
+@media (max-width: 768px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+.footer h5 {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  color: var(--cream-300);
+  margin: 0 0 14px;
+  font-weight: 600;
+}
+.footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.footer-bottom {
+  border-top: 1px solid rgba(255,252,244,0.1);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--cream-300);
+}
+
+/* ---- Decorative batik motif ---- */
+.batik-strip {
+  height: 8px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--clay-600) 0 18px,
+      var(--ochre-500) 18px 30px,
+      var(--palm-700) 30px 48px,
+      var(--cream-200) 48px 56px);
+}
+
+/* ---- Admin layout ---- */
+.admin-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+  background: var(--cream-50);
+}
+.admin-sidebar {
+  background: var(--ink-900);
+  color: var(--cream-100);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.admin-sidebar .brand { color: var(--cream-50); margin-bottom: 24px; padding: 0 8px; }
+.admin-sidebar .brand small { color: var(--cream-300); }
+.admin-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: var(--cream-200);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.admin-nav-item:hover { background: rgba(255,252,244,0.06); }
+.admin-nav-item.active {
+  background: var(--clay-600);
+  color: var(--cream-50);
+}
+.admin-nav-section {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream-300);
+  padding: 16px 12px 6px;
+  font-weight: 500;
+}
+.admin-main {
+  padding: 32px 40px;
+  overflow-x: auto;
+}
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+.admin-header h1 {
+  font-family: var(--font-display);
+  font-size: 30px;
+  margin: 0;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+.stat-card .label {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+.stat-card .value {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 1.1;
+  font-weight: 500;
+  margin-top: 8px;
+  color: var(--ink-900);
+}
+.stat-card .delta {
+  margin-top: 8px;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.stat-card .delta.up { color: var(--palm-700); }
+.stat-card .delta.down { color: var(--clay-600); }
+
+/* ---- Data table ---- */
+.table-wrap {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+}
+table.data th {
+  text-align: left;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+  padding: 14px 18px;
+  background: var(--cream-100);
+  font-weight: 600;
+  border-bottom: 1px solid var(--line);
+}
+table.data td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+  vertical-align: middle;
+}
+table.data tr:last-child td { border-bottom: none; }
+table.data tr:hover td { background: rgba(244,236,216,0.4); }
+
+.avatar {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: var(--clay-100);
+  color: var(--clay-700);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  font-family: var(--font-display);
+  flex-shrink: 0;
+}
+.avatar.palm { background: var(--palm-100); color: var(--palm-700); }
+.avatar.ochre { background: rgba(217,169,87,0.2); color: var(--ochre-600); }
+
+.kebab {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: grid; place-items: center;
+  color: var(--ink-500);
+}
+.kebab:hover { background: var(--cream-100); color: var(--ink-900); }
+
+/* ---- Bar chart (admin) ---- */
+.bar-row {
+  display: grid;
+  grid-template-columns: 160px 1fr 60px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  font-size: 13px;
+}
+.bar-row .name { color: var(--ink-900); font-weight: 500; }
+.bar-row .bar-track {
+  height: 8px;
+  background: var(--cream-100);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.bar-row .bar-fill {
+  height: 100%;
+  background: var(--clay-500);
+  border-radius: 999px;
+}
+.bar-row .bar-fill.palm { background: var(--palm-600); }
+.bar-row .bar-fill.ochre { background: var(--ochre-400); }
+.bar-row .val {
+  font-family: var(--font-mono);
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink-700);
+}
+
+/* ---- Mobile menu drawer ---- */
+.mobile-toggle {
+  display: none;
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 880px) {
+  .header-nav { display: none; }
+  .mobile-toggle { display: inline-flex; }
+  .header-inner { gap: 12px; }
+  .search-box { max-width: none; }
+  .brand small { display: none; }
+}
+
+@media (max-width: 880px) {
+  .section { padding: 36px 0; }
+  .section-head h2 { font-size: 24px; }
+}
+
+/* ---- Hide scrollbar but allow scroll ---- */
+.scroll-row {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+}
+.scroll-row::-webkit-scrollbar { height: 6px; }
+.scroll-row::-webkit-scrollbar-thumb { background: var(--cream-300); border-radius: 999px; }
+
+/* ---- Misc ---- */
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 24px 0;
+}
+.hidden-on-mobile { }
+@media (max-width: 768px) {
+  .hidden-on-mobile { display: none !important; }
+}
+.only-mobile { display: none; }
+@media (max-width: 768px) {
+  .only-mobile { display: block; }
+}
+
+/* Hide tweaks panel chrome from screenshots */
+.no-print { }
+
+</style>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script>
+// ============ Sample data for PALUGADA - Banjarsari ============
+
+window.PALUGADA_DATA = (function () {
+  const businesses = [
+    {
+      id: 'b1', name: 'Warung Bu Endang', owner: 'Endang Susanti',
+      description: 'Warung makan rumahan menyajikan masakan Jawa khas Banjarsari sejak 2008. Andalan kami adalah rawon, soto, dan pecel lele.',
+      address: 'Jl. Mawar No. 14, Dusun Krajan RT 03 / RW 02', area: 'Dusun Krajan',
+      phone: '6281234567801', wa: '6281234567801', logo: 'WE',
+      lat: 0.42, lng: 0.51, joined: '2024-03-12',
+      categories: ['Kuliner'], totalProducts: 12, totalServices: 0,
+    },
+    {
+      id: 'b2', name: 'Batik Sari Asih', owner: 'Sri Wahyuni',
+      description: 'Studio batik tulis & cap dengan motif khas Banjarsari. Menerima pesanan custom untuk acara, seragam komunitas, dan oleh-oleh.',
+      address: 'Jl. Melati No. 7, Dusun Sawahan RT 01 / RW 04', area: 'Dusun Sawahan',
+      phone: '6281234567802', wa: '6281234567802', logo: 'SA',
+      lat: 0.62, lng: 0.31, joined: '2023-11-05',
+      categories: ['Kerajinan'], totalProducts: 8, totalServices: 1,
+    },
+    {
+      id: 'b3', name: 'Kerupuk Mbak Yati', owner: 'Suryati',
+      description: 'Produsen kerupuk udang dan rambak khas Banjarsari, dikirim ke seluruh kabupaten.',
+      address: 'Jl. Anggrek No. 22, Dusun Krajan RT 05 / RW 02', area: 'Dusun Krajan',
+      phone: '6281234567803', wa: '6281234567803', logo: 'KY',
+      lat: 0.38, lng: 0.58, joined: '2024-01-22',
+      categories: ['Kuliner'], totalProducts: 6, totalServices: 0,
+    },
+    {
+      id: 'b4', name: 'Tempe Pak Joko', owner: 'Joko Prasetyo',
+      description: 'Pembuat tempe higienis sejak 1992. Tempe segar setiap pagi, bisa diantar ke rumah area Banjarsari.',
+      address: 'Jl. Kenanga No. 9, Dusun Sukorejo RT 02 / RW 01', area: 'Dusun Sukorejo',
+      phone: '6281234567804', wa: '6281234567804', logo: 'TJ',
+      lat: 0.55, lng: 0.72, joined: '2024-06-08',
+      categories: ['Kuliner'], totalProducts: 4, totalServices: 0,
+    },
+    {
+      id: 'b5', name: 'Anyaman Mawar', owner: 'Mawar Indayani',
+      description: 'Pengrajin tas anyaman pandan & rotan. Setiap produk dikerjakan tangan oleh ibu-ibu PKK Banjarsari.',
+      address: 'Jl. Dahlia No. 3, Dusun Sukorejo RT 04 / RW 01', area: 'Dusun Sukorejo',
+      phone: '6281234567805', wa: '6281234567805', logo: 'AM',
+      lat: 0.71, lng: 0.66, joined: '2024-02-18',
+      categories: ['Kerajinan'], totalProducts: 9, totalServices: 0,
+    },
+    {
+      id: 'b6', name: 'Servis AC Pak Bambang', owner: 'Bambang Riyanto',
+      description: 'Teknisi AC bersertifikat dengan pengalaman 15 tahun. Melayani panggilan ke rumah seluruh area Banjarsari dan sekitarnya.',
+      address: 'Jl. Flamboyan No. 11, Dusun Krajan RT 04 / RW 03', area: 'Dusun Krajan',
+      phone: '6281234567806', wa: '6281234567806', logo: 'BR',
+      lat: 0.48, lng: 0.42, joined: '2024-04-30',
+      categories: ['Jasa Reparasi'], totalProducts: 0, totalServices: 4,
+    },
+    {
+      id: 'b7', name: 'Salon Cantika', owner: 'Maria Kartika',
+      description: 'Salon kecantikan & perawatan rambut di tengah Banjarsari. Buka setiap hari kecuali Senin.',
+      address: 'Jl. Cempaka No. 5, Dusun Sawahan RT 03 / RW 04', area: 'Dusun Sawahan',
+      phone: '6281234567807', wa: '6281234567807', logo: 'SC',
+      lat: 0.60, lng: 0.28, joined: '2023-09-14',
+      categories: ['Jasa Kecantikan'], totalProducts: 0, totalServices: 6,
+    },
+    {
+      id: 'b8', name: 'Pijat Bu Sumi', owner: 'Sumiati',
+      description: 'Terapis pijat tradisional Jawa & refleksi kaki. Sudah melayani warga Banjarsari sejak 2015.',
+      address: 'Jl. Teratai No. 18, Dusun Sukorejo RT 06 / RW 02', area: 'Dusun Sukorejo',
+      phone: '6281234567808', wa: '6281234567808', logo: 'BS',
+      lat: 0.68, lng: 0.78, joined: '2024-05-12',
+      categories: ['Jasa Kesehatan'], totalProducts: 0, totalServices: 3,
+    },
+    {
+      id: 'b9', name: 'Laundry Kilat 24 Jam', owner: 'Hendra Wijaya',
+      description: 'Layanan laundry kiloan & express. Antar-jemput gratis untuk warga Dusun Krajan & Sawahan.',
+      address: 'Jl. Mawar No. 30, Dusun Krajan RT 02 / RW 02', area: 'Dusun Krajan',
+      phone: '6281234567809', wa: '6281234567809', logo: 'LK',
+      lat: 0.40, lng: 0.50, joined: '2024-07-01',
+      categories: ['Jasa Rumah Tangga'], totalProducts: 0, totalServices: 3,
+    },
+    {
+      id: 'b10', name: 'Kopi Sari Banjarsari', owner: 'Adi Saputra',
+      description: 'Kopi robusta lokal Banjarsari yang dipanggang sendiri. Tersedia bubuk dan biji.',
+      address: 'Jl. Kenanga No. 25, Dusun Sukorejo RT 03 / RW 01', area: 'Dusun Sukorejo',
+      phone: '6281234567810', wa: '6281234567810', logo: 'KS',
+      lat: 0.58, lng: 0.69, joined: '2024-08-15',
+      categories: ['Kuliner'], totalProducts: 5, totalServices: 0,
+    },
+    {
+      id: 'b11', name: 'Bumbu Mbok Tum', owner: 'Tumijah',
+      description: 'Bumbu masak kering tradisional. Praktis untuk membuat rawon, soto, gulai dalam hitungan menit.',
+      address: 'Jl. Anggrek No. 6, Dusun Sawahan RT 02 / RW 04', area: 'Dusun Sawahan',
+      phone: '6281234567811', wa: '6281234567811', logo: 'BT',
+      lat: 0.64, lng: 0.34, joined: '2024-09-02',
+      categories: ['Kuliner'], totalProducts: 7, totalServices: 0,
+    },
+    {
+      id: 'b12', name: 'Tukang Las Mas Eko', owner: 'Eko Setiawan',
+      description: 'Spesialis pagar besi, kanopi, tralis & pintu las. Survei lokasi gratis di area Banjarsari.',
+      address: 'Jl. Flamboyan No. 22, Dusun Krajan RT 05 / RW 03', area: 'Dusun Krajan',
+      phone: '6281234567812', wa: '6281234567812', logo: 'EM',
+      lat: 0.46, lng: 0.46, joined: '2024-10-20',
+      categories: ['Jasa Konstruksi'], totalProducts: 0, totalServices: 4,
+    },
+  ];
+
+  const products = [
+    { id: 'p1', businessId: 'b1', name: 'Rawon Daging Komplit', category: 'Makanan', price: 22000, priceRange: '<50rb',
+      description: 'Rawon khas Jawa Timur dengan daging sapi empuk, kuah hitam kluwek pekat, lengkap dengan tauge pendek, telur asin, sambal, dan kerupuk.',
+      thumbColor: '#8C3214', clickCount: 312, hasMarketplace: true, hasWa: true },
+    { id: 'p2', businessId: 'b1', name: 'Pecel Lele Sambal Terasi', category: 'Makanan', price: 18000, priceRange: '<50rb',
+      description: 'Lele goreng kering renyah dengan sambal terasi pedas, lalapan timun, kemangi, dan kol segar.',
+      thumbColor: '#9D6C1E', clickCount: 198, hasMarketplace: false, hasWa: true },
+    { id: 'p3', businessId: 'b1', name: 'Soto Ayam Lamongan', category: 'Makanan', price: 15000, priceRange: '<50rb',
+      description: 'Soto ayam bening kaya rempah dengan koya bubuk khas Lamongan, perkedel, dan telur rebus.',
+      thumbColor: '#C28A2F', clickCount: 156, hasMarketplace: false, hasWa: true },
+    { id: 'p4', businessId: 'b2', name: 'Batik Tulis Motif Mahkota', category: 'Kerajinan', price: 285000, priceRange: '50-100rb_plus',
+      description: 'Kain batik tulis dikerjakan selama 21 hari oleh pembatik senior. Motif eksklusif khas Banjarsari, ukuran 2m × 1.15m.',
+      thumbColor: '#B0431F', clickCount: 487, hasMarketplace: true, hasWa: true },
+    { id: 'p5', businessId: 'b2', name: 'Batik Cap Warna Alam', category: 'Kerajinan', price: 145000, priceRange: '50-100rb_plus',
+      description: 'Batik cap dengan pewarna alami dari kayu mahoni, indigo, dan kunyit. Ramah lingkungan.',
+      thumbColor: '#3F6B47', clickCount: 263, hasMarketplace: true, hasWa: true },
+    { id: 'p6', businessId: 'b3', name: 'Kerupuk Udang 250gr', category: 'Camilan', price: 25000, priceRange: '<50rb',
+      description: 'Kerupuk udang asli dengan kandungan udang 30%. Renyah dan gurih, cocok untuk oleh-oleh.',
+      thumbColor: '#D9A957', clickCount: 178, hasMarketplace: true, hasWa: true },
+    { id: 'p7', businessId: 'b3', name: 'Rambak Kulit Sapi 200gr', category: 'Camilan', price: 35000, priceRange: '<50rb',
+      description: 'Rambak kulit sapi premium, digoreng dua kali untuk kerenyahan maksimal.',
+      thumbColor: '#C8593A', clickCount: 142, hasMarketplace: true, hasWa: true },
+    { id: 'p8', businessId: 'b4', name: 'Tempe Mendoan Daun Pisang', category: 'Makanan', price: 5000, priceRange: '<50rb',
+      description: 'Tempe segar dibungkus daun pisang, tebal sempurna untuk digoreng mendoan atau kering.',
+      thumbColor: '#2E5034', clickCount: 89, hasMarketplace: false, hasWa: true },
+    { id: 'p9', businessId: 'b5', name: 'Tas Anyaman Pandan Bunga', category: 'Kerajinan', price: 175000, priceRange: '50-100rb_plus',
+      description: 'Tas wanita berbahan pandan dengan motif bunga, tali kulit asli, lining katun.',
+      thumbColor: '#9D6C1E', clickCount: 354, hasMarketplace: true, hasWa: true },
+    { id: 'p10', businessId: 'b5', name: 'Topi Anyaman Pantai', category: 'Kerajinan', price: 85000, priceRange: '50-100rb',
+      description: 'Topi anyaman rotan dengan pita kain batik, ringan dan adem untuk aktivitas outdoor.',
+      thumbColor: '#C28A2F', clickCount: 122, hasMarketplace: true, hasWa: true },
+    { id: 'p11', businessId: 'b10', name: 'Kopi Bubuk Robusta 250gr', category: 'Kuliner', price: 45000, priceRange: '<50rb',
+      description: 'Robusta lokal Banjarsari, dipanggang medium-dark. Aroma cokelat dengan body tebal.',
+      thumbColor: '#241B0E', clickCount: 201, hasMarketplace: true, hasWa: true },
+    { id: 'p12', businessId: 'b11', name: 'Bumbu Rawon Instan', category: 'Bumbu', price: 18000, priceRange: '<50rb',
+      description: 'Bumbu kering rawon, tinggal rebus dengan daging. Tahan 6 bulan tanpa pengawet.',
+      thumbColor: '#4F3F26', clickCount: 167, hasMarketplace: true, hasWa: true },
+  ];
+
+  const services = [
+    { id: 's1', businessId: 'b6', name: 'Servis AC Panggilan Rumah', category: 'Reparasi Elektronik',
+      description: 'Cuci AC split 1/2 PK - 2 PK, freon top-up, pengecekan kebocoran. Bergaransi 30 hari setelah servis.',
+      priceEstimation: 'Rp 80.000 - Rp 150.000', isNegotiable: false, availability: 'Setiap Hari',
+      serviceType: 'Panggilan', hasPortfolio: true, clickCount: 423, thumbColor: '#2E5034',
+      hasMarketplace: false, hasWa: true },
+    { id: 's2', businessId: 'b6', name: 'Bongkar Pasang AC', category: 'Reparasi Elektronik',
+      description: 'Layanan bongkar-pasang AC karena pindah rumah. Sudah termasuk pipa baru sampai 5 meter.',
+      priceEstimation: 'Rp 250.000 - Rp 400.000', isNegotiable: true, availability: 'Janjian',
+      serviceType: 'Panggilan', hasPortfolio: true, clickCount: 187, thumbColor: '#3F6B47',
+      hasMarketplace: false, hasWa: true },
+    { id: 's3', businessId: 'b7', name: 'Potong Rambut & Cuci', category: 'Kecantikan',
+      description: 'Potong rambut sesuai model, cuci dengan shampoo premium, blow dry styling.',
+      priceEstimation: 'Rp 35.000 - Rp 50.000', isNegotiable: false, availability: 'Setiap Hari',
+      serviceType: 'On-Site', hasPortfolio: true, clickCount: 298, thumbColor: '#C8593A',
+      hasMarketplace: false, hasWa: true },
+    { id: 's4', businessId: 'b7', name: 'Smoothing Rambut', category: 'Kecantikan',
+      description: 'Smoothing rambut dengan produk Matrix atau Loreal, tahan 4-6 bulan.',
+      priceEstimation: 'Rp 350.000 - Rp 750.000', isNegotiable: true, availability: 'Janjian',
+      serviceType: 'On-Site', hasPortfolio: true, clickCount: 245, thumbColor: '#9D6C1E',
+      hasMarketplace: false, hasWa: true },
+    { id: 's5', businessId: 'b8', name: 'Pijat Tradisional Jawa', category: 'Kesehatan',
+      description: 'Pijat full body 60 menit dengan minyak kelapa hangat. Bisa panggilan ke rumah.',
+      priceEstimation: 'Rp 70.000 - Rp 120.000', isNegotiable: false, availability: 'Setiap Hari',
+      serviceType: 'Panggilan', hasPortfolio: false, clickCount: 167, thumbColor: '#C28A2F',
+      hasMarketplace: false, hasWa: true },
+    { id: 's6', businessId: 'b9', name: 'Laundry Kiloan Reguler', category: 'Rumah Tangga',
+      description: 'Cuci + setrika, selesai dalam 2 hari. Antar-jemput gratis area Krajan & Sawahan.',
+      priceEstimation: 'Rp 6.000 / kg', isNegotiable: false, availability: 'Setiap Hari',
+      serviceType: 'Panggilan', hasPortfolio: false, clickCount: 312, thumbColor: '#3F6B47',
+      hasMarketplace: false, hasWa: true },
+    { id: 's7', businessId: 'b9', name: 'Laundry Express 6 Jam', category: 'Rumah Tangga',
+      description: 'Cucian selesai dalam 6 jam, untuk kebutuhan mendadak. Maksimal 5 kg per order.',
+      priceEstimation: 'Rp 12.000 / kg', isNegotiable: false, availability: 'Setiap Hari',
+      serviceType: 'Panggilan', hasPortfolio: false, clickCount: 198, thumbColor: '#B0431F',
+      hasMarketplace: false, hasWa: true },
+    { id: 's8', businessId: 'b12', name: 'Pembuatan Pagar Besi', category: 'Konstruksi',
+      description: 'Pagar besi minimalis atau klasik sesuai desain. Bisa custom motif dan warna.',
+      priceEstimation: 'Rp 600.000 - Rp 1.200.000 / m²', isNegotiable: true, availability: 'Janjian',
+      serviceType: 'On-Site', hasPortfolio: true, clickCount: 156, thumbColor: '#241B0E',
+      hasMarketplace: false, hasWa: true },
+    { id: 's9', businessId: 'b12', name: 'Kanopi Galvalum', category: 'Konstruksi',
+      description: 'Kanopi atap galvalum tahan karat, garansi rangka 5 tahun.',
+      priceEstimation: 'Rp 280.000 / m²', isNegotiable: true, availability: 'Janjian',
+      serviceType: 'On-Site', hasPortfolio: true, clickCount: 134, thumbColor: '#4F3F26',
+      hasMarketplace: false, hasWa: true },
+    { id: 's10', businessId: 'b2', name: 'Pemesanan Batik Custom', category: 'Kerajinan',
+      description: 'Pemesanan batik custom untuk seragam komunitas, kantor, atau acara keluarga. Minimal 20 helai.',
+      priceEstimation: 'Mulai Rp 175.000 / helai', isNegotiable: true, availability: 'Janjian',
+      serviceType: 'Panggilan', hasPortfolio: true, clickCount: 89, thumbColor: '#B0431F',
+      hasMarketplace: false, hasWa: true },
+  ];
+
+  const productCategories = ['Makanan', 'Camilan', 'Minuman', 'Bumbu', 'Kerajinan', 'Fashion', 'Sembako'];
+  const serviceCategories = ['Reparasi Elektronik', 'Kecantikan', 'Kesehatan', 'Rumah Tangga', 'Konstruksi', 'Kerajinan', 'Transportasi'];
+  const areas = ['Dusun Krajan', 'Dusun Sawahan', 'Dusun Sukorejo', 'Dusun Tegalrejo'];
+
+  const formatRupiah = (n) =>
+    'Rp ' + n.toLocaleString('id-ID');
+
+  const findBusiness = (id) => businesses.find(b => b.id === id);
+
+  return {
+    businesses, products, services,
+    productCategories, serviceCategories, areas,
+    formatRupiah, findBusiness,
+  };
+})();
+
+</script>
+
+<style id="__print-styles">
+@media print {
+  @page { size: A4; margin: 1cm; }
+  html, body { background: #FAF6EC !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .tweaks-panel, [class*="tweaks"], .toast { display: none !important; }
+  * { animation: none !important; transition: none !important; }
+  .header { position: static !important; }
+  body { overflow: visible !important; }
+}
+</style>
+
+<script>
+  window.addEventListener('load', () => {
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(() => setTimeout(() => window.print(), 800));
+    } else {
+      setTimeout(() => window.print(), 1200);
+    }
+  });
+</script>
+</head>
+<body>
+  <div id="root"></div>
+
+
+<script type="text/babel" data-presets="env,react">
+
+
+
+// ===== components.jsx =====
+(function(){
+/* global React */
+const { useState, useEffect, useMemo, useRef, createContext, useContext } = React;
+
+// ============ Icons ============
+const Icon = {
+  Search: (p) => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>),
+  ArrowRight: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>),
+  ArrowLeft: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M19 12H5"/><path d="m11 5-7 7 7 7"/></svg>),
+  Eye: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>),
+  Heart: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>),
+  MapPin: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>),
+  Phone: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92"/></svg>),
+  Wa: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" {...p}><path d="M19.077 4.928C17.191 3.041 14.683 2 12.012 2c-5.506 0-9.99 4.483-9.99 9.99 0 1.76.46 3.476 1.332 4.985L2 22l5.166-1.355a9.96 9.96 0 0 0 4.84 1.232h.005c5.504 0 9.99-4.484 9.99-9.99 0-2.67-1.04-5.178-2.924-7.066m-7.063 15.36h-.004a8.3 8.3 0 0 1-4.227-1.158l-.302-.18-3.066.804.818-2.99-.196-.31a8.26 8.26 0 0 1-1.272-4.422c0-4.575 3.725-8.3 8.302-8.3 2.215 0 4.298.863 5.864 2.43a8.24 8.24 0 0 1 2.428 5.872c0 4.576-3.725 8.254-8.345 8.254m4.554-6.18c-.249-.124-1.476-.728-1.704-.811-.228-.083-.395-.124-.561.124-.166.249-.643.811-.788.977-.145.166-.29.187-.539.062-1.476-.738-2.444-1.317-3.417-2.987-.258-.443.258-.412.738-1.371.083-.166.041-.31-.021-.435-.062-.124-.561-1.352-.769-1.851-.202-.486-.408-.42-.561-.428a10 10 0 0 0-.478-.009.92.92 0 0 0-.665.31c-.228.249-.872.852-.872 2.08s.892 2.413 1.016 2.58c.124.166 1.756 2.682 4.255 3.762.6.26 1.067.413 1.432.529.602.191 1.149.164 1.582.1.483-.072 1.486-.607 1.694-1.194.21-.587.21-1.09.146-1.194-.062-.104-.228-.166-.476-.29"/></svg>),
+  ShoppingBag: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>),
+  Share: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>),
+  Link: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>),
+  X: (p) => (<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>),
+  Plus: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M5 12h14"/><path d="M12 5v14"/></svg>),
+  Edit: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>),
+  Trash: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>),
+  Filter: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>),
+  Menu: (p) => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>),
+  Check: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" {...p}><polyline points="20 6 9 17 4 12"/></svg>),
+  TrendingUp: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>),
+  Flame: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>),
+  Upload: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>),
+  Home: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>),
+  Store: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/><path d="M22 7v3a2 2 0 0 1-2 2 2.7 2.7 0 0 1-2.5-2 2.7 2.7 0 0 1-5 0 2.7 2.7 0 0 1-5 0A2.7 2.7 0 0 1 4 12a2 2 0 0 1-2-2V7"/></svg>),
+  Tag: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg>),
+  Chart: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 14l4-4 4 4 5-5"/></svg>),
+  Settings: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>),
+  Calendar: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>),
+  Image: (p) => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>),
+  Chevron: (p) => (<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...p}><path d="m9 18 6-6-6-6"/></svg>),
+};
+
+// ============ Brand ============
+const Brand = ({ tagline = true }) => (
+  <a className="brand" onClick={(e) => { e.preventDefault(); window.navigate('home'); }} href="#">
+    <span className="brand-mark"></span>
+    <span>
+      PALUGADA
+      {tagline && <small>DESA BANJARSARI.             </small>}
+    </span>
+  </a>
+);
+
+// ============ Placeholder thumb ============
+const Thumb = ({ color, label, aspect = '4/3' }) => (
+  <div className="thumb" style={{ aspectRatio: aspect, background: color, position: 'relative', overflow: 'hidden' }}>
+    <div style={{
+      position: 'absolute', inset: 0,
+      background: `repeating-linear-gradient(135deg, transparent 0 14px, rgba(255,252,244,0.08) 14px 28px)`,
+    }}></div>
+    <div style={{
+      position: 'absolute', bottom: 10, left: 10,
+      fontFamily: 'var(--font-mono)', fontSize: 10,
+      color: 'rgba(255,252,244,0.7)', letterSpacing: '0.12em',
+      textTransform: 'uppercase',
+    }}>{label}</div>
+  </div>
+);
+
+// ============ Product/Service Card ============
+const Catalogcard = ({ item, type = 'product', onClick, onBusinessClick }) => {
+  const D = window.PALUGADA_DATA;
+  const business = D.findBusiness(item.businessId);
+  return (
+    <div className="card product-card" onClick={onClick}>
+      <Thumb color={item.thumbColor} label={item.name} />
+      <span className="badge">{type === 'product' ? 'Produk' : 'Jasa'}</span>
+      <div className="body">
+        <div className="cat-label">{item.category}</div>
+        <h3>{item.name}</h3>
+        <div className="owner" onClick={(e) => { e.stopPropagation(); onBusinessClick && onBusinessClick(business.id); }}>
+          oleh <span style={{ color: 'var(--ink-900)', fontWeight: 500 }}>{business.name}</span>
+        </div>
+        <div className="price-row">
+          <span className="price">
+            {type === 'product'
+              ? window.PALUGADA_DATA.formatRupiah(item.price)
+              : item.priceEstimation}
+          </span>
+          <span className="clicks">
+            <Icon.Eye />
+            {item.clickCount}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+window.PalComponents = { Icon, Brand, Thumb, Catalogcard };
+
+})();
+
+// ===== chrome.jsx =====
+(function(){
+/* global React, PalComponents */
+const { useState: useState_h, useEffect: useEffect_h, useMemo: useMemo_h } = React;
+
+function Header({ route, search, setSearch }) {
+  const { Brand, Icon } = window.PalComponents;
+  return (
+    <header className="header">
+      <div className="container header-inner">
+        <Brand />
+        <nav className="header-nav">
+          <a className={route === 'home' ? 'active' : ''} onClick={(e) => { e.preventDefault(); window.navigate('home'); }} href="#">Beranda</a>
+          <a className={route === 'catalog' ? 'active' : ''} onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'product' }); }} href="#">Produk UMKM</a>
+          <a className={route === 'catalog' ? 'active' : ''} onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'service' }); }} href="#">Layanan Jasa</a>
+          <a onClick={(e) => { e.preventDefault(); window.navigate('admin-dashboard'); }} href="#" style={{ color: 'var(--ink-500)' }}>Admin</a>
+        </nav>
+        <div className="search-box">
+          <Icon.Search />
+          <input
+            className="input"
+            placeholder="Cari produk atau jasa di Banjarsari…"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && search.trim()) {
+                window.navigate('catalog', { q: search });
+              }
+            }}
+          />
+        </div>
+        <button className="mobile-toggle"><Icon.Menu /></button>
+      </div>
+      <div className="batik-strip" aria-hidden="true"></div>
+    </header>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="container">
+        <div className="footer-grid">
+          <div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 600, marginBottom: 8 }}>PALUGADA</div>
+            <p style={{ fontSize: 14, lineHeight: 1.6, color: 'var(--cream-200)', maxWidth: 320 }}>
+              Katalog digital untuk UMKM dan penyedia jasa warga Desa Banjarsari. Dipersembahkan oleh Tim Pengabdian Masyarakat 2026.
+            </p>
+          </div>
+          <div>
+            <h5>Jelajahi</h5>
+            <ul>
+              <li><a href="#">Produk UMKM</a></li>
+              <li><a href="#">Layanan Jasa</a></li>
+              <li><a href="#">UMKM Terdaftar</a></li>
+              <li><a href="#">Paling Favorit</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Bantuan</h5>
+            <ul>
+              <li><a href="#">Cara Berbelanja</a></li>
+              <li><a href="#">Daftarkan Usaha</a></li>
+              <li><a href="#">Kebijakan Privasi</a></li>
+              <li><a href="#">Hubungi Admin</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5>Kantor Desa</h5>
+            <ul>
+              <li>Jl. Raya Banjarsari No. 1</li>
+              <li>Kec. Banjarsari, Jember</li>
+              <li>(0331) 123-456</li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <span>© 2026 PALUGADA · Telkom University — All rights reserved</span>
+          <span style={{ fontFamily: 'var(--font-mono)' }}>v1.0.0-prototype</span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+window.PalChrome = { Header, Footer };
+
+})();
+
+// ===== screens/home.jsx =====
+(function(){
+/* global React, PalComponents */
+const { useState: useS_home, useMemo: useM_home } = React;
+
+function Home({ variant = 'A' }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon, Catalogcard, Thumb } = window.PalComponents;
+
+  const topProducts = useM_home(() =>
+    [...D.products].sort((a, b) => b.clickCount - a.clickCount).slice(0, 4)
+  , []);
+  const topServices = useM_home(() =>
+    [...D.services].sort((a, b) => b.clickCount - a.clickCount).slice(0, 4)
+  , []);
+  const featuredProducts = useM_home(() => D.products.slice(0, 8), []);
+  const featuredServices = useM_home(() => D.services.slice(0, 4), []);
+
+  return variant === 'B' ? <HomeB
+    topProducts={topProducts} topServices={topServices}
+    featuredProducts={featuredProducts} featuredServices={featuredServices}
+  /> : <HomeA
+    topProducts={topProducts} topServices={topServices}
+    featuredProducts={featuredProducts} featuredServices={featuredServices}
+  />;
+}
+
+// ============ VARIATION A — Editorial / Magazine hero with overlapping batik strip ============
+function HomeA({ topProducts, topServices, featuredProducts, featuredServices }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon, Catalogcard } = window.PalComponents;
+
+  return (
+    <main>
+      {/* HERO */}
+      <section style={{ paddingTop: 48, paddingBottom: 56, position: 'relative', overflow: 'hidden' }}>
+        <div className="container" style={{ position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 48, alignItems: 'center' }} className="hero-grid">
+            <div>
+              <div className="label-eyebrow" style={{ marginBottom: 16 }}>
+                Marketplace Warga · Desa Banjarsari
+              </div>
+              <h1 className="display" style={{
+                fontSize: 'clamp(40px, 6vw, 64px)', margin: '0 0 20px', lineHeight: 1.05, letterSpacing: '-0.02em',
+                fontWeight: 500,
+              }}>
+                yang lu mau,  <em style={{ fontStyle: 'italic', color: 'var(--clay-600)' }}>disini ada.</em>
+              </h1>
+              <p style={{ fontSize: 18, color: 'var(--ink-700)', maxWidth: 520, lineHeight: 1.55, margin: '0 0 28px' }}>
+                {D.products.length + D.services.length} produk &amp; jasa dari {D.businesses.length} UMKM warga,
+                semuanya berada di Desa Banjarsari. Belanja dari tetangga, hemat ongkir, kenal yang bikin.
+              </p>
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <button className="btn btn-primary btn-lg" onClick={() => window.navigate('catalog', { type: 'product' })}>
+                  Jelajahi Produk UMKM <Icon.ArrowRight />
+                </button>
+                <button className="btn btn-secondary btn-lg" onClick={() => window.navigate('catalog', { type: 'service' })}>
+                  Cari Layanan Jasa
+                </button>
+              </div>
+              <div style={{ display: 'flex', gap: 32, marginTop: 40, flexWrap: 'wrap' }}>
+                <Stat n={D.businesses.length} l="UMKM aktif" />
+                <Stat n={D.products.length} l="Produk" />
+                <Stat n={D.services.length} l="Jasa" />
+                <Stat n="4" l="Dusun" />
+              </div>
+            </div>
+
+            <div style={{ position: 'relative' }}>
+              {/* Decorative collage */}
+              <div style={{
+                aspectRatio: '4/5', borderRadius: 'var(--radius-xl)', overflow: 'hidden',
+                background: 'var(--clay-600)', position: 'relative',
+              }}>
+                <div style={{
+                  position: 'absolute', inset: 0,
+                  background: `repeating-linear-gradient(135deg, transparent 0 28px, rgba(255,252,244,0.08) 28px 56px)`,
+                }}></div>
+                <div style={{
+                  position: 'absolute', top: 24, left: 24, right: 24,
+                  fontFamily: 'var(--font-mono)', fontSize: 11, color: 'rgba(255,252,244,0.8)',
+                  letterSpacing: '0.12em', textTransform: 'uppercase', display: 'flex', justifyContent: 'space-between',
+                }}>
+                  <span>★ Hero Image</span>
+                  <span>Banjarsari ’26</span>
+                </div>
+                <div style={{
+                  position: 'absolute', bottom: 24, left: 24,
+                  fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 500, color: 'var(--cream-50)',
+                  fontStyle: 'italic', lineHeight: 1.15, maxWidth: 280,
+                }}>
+                  Bu Endang &amp; Pak Bambang — tetangga, sekarang juga rekan dagang.
+                </div>
+              </div>
+              {/* floating card */}
+              <div style={{
+                position: 'absolute', right: -16, bottom: 60, width: 240,
+                background: 'var(--surface)', borderRadius: 14, padding: 16,
+                boxShadow: 'var(--shadow-lg)', border: '1px solid var(--line)',
+              }}>
+                <div className="label-eyebrow" style={{ marginBottom: 4 }}>Trending Hari Ini</div>
+                <div style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 500, marginBottom: 6 }}>Rawon Bu Endang</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span className="price" style={{ color: 'var(--clay-700)', fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 600 }}>
+                    Rp 22.000
+                  </span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 12, fontFamily: 'var(--font-mono)', color: 'var(--palm-700)' }}>
+                    <Icon.Flame /> 312 klik
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <style>{`
+          @media (max-width: 880px) {
+            .hero-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+          }
+        `}</style>
+      </section>
+
+      {/* CATEGORY QUICK NAV */}
+      <section className="section-tight" style={{ paddingTop: 0 }}>
+        <div className="container">
+          <div className="label-eyebrow" style={{ marginBottom: 16 }}>Kategori Pilihan</div>
+          <div className="scroll-row">
+            {[
+              { name: 'Makanan & Minuman', icon: '🍚', count: 22, color: 'var(--clay-100)', tag: 'clay' },
+              { name: 'Kerajinan Tangan', icon: '🧺', count: 14, color: 'var(--palm-100)', tag: 'palm' },
+              { name: 'Camilan', icon: '🥨', count: 8, color: 'rgba(217,169,87,0.2)', tag: 'ochre' },
+              { name: 'Jasa Reparasi', icon: '🔧', count: 6, color: 'var(--cream-200)', tag: 'ink' },
+              { name: 'Kecantikan', icon: '💇', count: 5, color: 'var(--clay-100)', tag: 'clay' },
+              { name: 'Konstruksi', icon: '🛠️', count: 3, color: 'var(--palm-100)', tag: 'palm' },
+              { name: 'Rumah Tangga', icon: '🧺', count: 7, color: 'rgba(217,169,87,0.2)', tag: 'ochre' },
+            ].map((c) => (
+              <button key={c.name}
+                onClick={() => window.navigate('catalog')}
+                style={{
+                  background: 'var(--surface)', border: '1px solid var(--line)',
+                  borderRadius: 14, padding: '16px 20px',
+                  display: 'flex', alignItems: 'center', gap: 14,
+                  minWidth: 240, cursor: 'pointer', textAlign: 'left',
+                }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 12, background: c.color,
+                  display: 'grid', placeItems: 'center', fontSize: 22,
+                }}>{c.icon}</div>
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{c.name}</div>
+                  <div className="mono" style={{ fontSize: 11, color: 'var(--ink-500)', marginTop: 2 }}>{c.count} item</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* PRODUK UMKM (PBI-01) */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="label-eyebrow">PBI-01 · Section Khusus</div>
+              <h2>Produk UMKM Banjarsari</h2>
+              <p>Karya tangan tetangga sendiri — dari rawon, batik tulis, sampai kopi panggang lokal.</p>
+            </div>
+            <a className="more" onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'product' }); }} href="#">
+              Lihat semua produk <Icon.ArrowRight />
+            </a>
+          </div>
+          <div className="grid grid-products">
+            {featuredProducts.map(p => (
+              <Catalogcard key={p.id} item={p} type="product"
+                onClick={() => window.navigate('product-detail', { id: p.id })}
+                onBusinessClick={(id) => window.navigate('business', { id })}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TOP FAVORITES (PBI-05 & PBI-06) */}
+      <section className="section" style={{ background: 'var(--cream-100)' }}>
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="label-eyebrow">PBI-05 & PBI-06 · Yang lagi naik</div>
+              <h2>Paling Sering Dilihat Warga</h2>
+              <p>Diurutkan berdasarkan jumlah klik dalam 30 hari terakhir.</p>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }} className="fav-grid">
+            <div>
+              <div className="label-eyebrow" style={{ marginBottom: 14, color: 'var(--clay-700)' }}>★ Favorit · Produk</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {topProducts.map((p, i) => (
+                  <RankRow key={p.id} rank={i + 1} item={p} type="product"
+                    onClick={() => window.navigate('product-detail', { id: p.id })}
+                  />
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="label-eyebrow" style={{ marginBottom: 14, color: 'var(--palm-700)' }}>★ Favorit · Jasa</div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                {topServices.map((s, i) => (
+                  <RankRow key={s.id} rank={i + 1} item={s} type="service"
+                    onClick={() => window.navigate('service-detail', { id: s.id })}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+          <style>{`
+            @media (max-width: 880px) { .fav-grid { grid-template-columns: 1fr !important; } }
+          `}</style>
+        </div>
+      </section>
+
+      {/* LAYANAN JASA (PBI-02) */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="label-eyebrow">PBI-02 · Section Khusus</div>
+              <h2>Layanan Jasa</h2>
+              <p>Tukang, terapis, salon — bisa panggilan ke rumah atau datang ke tempat.</p>
+            </div>
+            <a className="more" onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'service' }); }} href="#">
+              Lihat semua jasa <Icon.ArrowRight />
+            </a>
+          </div>
+          <div className="grid grid-products">
+            {featuredServices.map(s => (
+              <Catalogcard key={s.id} item={s} type="service"
+                onClick={() => window.navigate('service-detail', { id: s.id })}
+                onBusinessClick={(id) => window.navigate('business', { id })}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="section-tight">
+        <div className="container">
+          <div style={{
+            background: 'var(--palm-700)', color: 'var(--cream-50)',
+            borderRadius: 'var(--radius-xl)', padding: '40px 48px',
+            display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: 32,
+            alignItems: 'center', position: 'relative', overflow: 'hidden',
+          }} className="cta-band">
+            <div style={{ position: 'absolute', right: -40, top: -40, width: 240, height: 240, borderRadius: '50%', background: 'rgba(217,169,87,0.18)' }}></div>
+            <div style={{ position: 'relative' }}>
+              <div className="label-eyebrow" style={{ color: 'var(--ochre-400)', marginBottom: 10 }}>Untuk Pemilik Usaha</div>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 30, fontWeight: 500, margin: 0, marginBottom: 10 }}>
+                Punya usaha di Banjarsari? Daftarkan gratis.
+              </h3>
+              <p style={{ margin: 0, color: 'var(--cream-200)', maxWidth: 500 }}>
+                Tim Karang Taruna akan membantu fotokan produk, mengisi deskripsi, dan menandai lokasi di peta.
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+              <button className="btn btn-lg" style={{ background: 'var(--cream-50)', color: 'var(--ink-900)' }}>
+                Daftar via WhatsApp
+              </button>
+            </div>
+          </div>
+          <style>{`@media (max-width: 880px) { .cta-band { grid-template-columns: 1fr !important; padding: 28px !important; } }`}</style>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+// ============ VARIATION B — Bold, full-width category mosaic ============
+function HomeB({ topProducts, topServices, featuredProducts, featuredServices }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon, Catalogcard } = window.PalComponents;
+
+  return (
+    <main>
+      {/* HERO — Searchbar-led, with rotating tags */}
+      <section style={{
+        background: 'var(--ink-900)', color: 'var(--cream-50)',
+        padding: '80px 0 120px', position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{
+          position: 'absolute', inset: 0, opacity: 0.4,
+          background: 'radial-gradient(ellipse at top right, var(--clay-600), transparent 60%), radial-gradient(ellipse at bottom left, var(--palm-700), transparent 60%)',
+        }}></div>
+        <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
+          <div className="label-eyebrow" style={{ color: 'var(--ochre-400)', marginBottom: 20 }}>
+            • Live · {D.businesses.length} UMKM Aktif di Desa Banjarsari
+          </div>
+          <h1 className="display" style={{
+            fontSize: 'clamp(44px, 7vw, 88px)', lineHeight: 1.0, letterSpacing: '-0.025em',
+            margin: '0 0 28px', fontWeight: 500, maxWidth: 900, marginLeft: 'auto', marginRight: 'auto',
+          }}>
+            Belanja dari <em style={{ fontStyle: 'italic', color: 'var(--ochre-400)' }}>tetangga.</em><br/>
+            Bayar yang <em style={{ fontStyle: 'italic', color: 'var(--ochre-400)' }}>kenal.</em>
+          </h1>
+          <p style={{ fontSize: 18, color: 'var(--cream-200)', maxWidth: 580, margin: '0 auto 36px' }}>
+            Satu katalog untuk semua produk &amp; jasa warga Desa Banjarsari. Dikurasi langsung oleh tim Karang Taruna.
+          </p>
+          <div style={{
+            maxWidth: 640, margin: '0 auto', background: 'var(--surface)',
+            borderRadius: 999, padding: 6, display: 'flex', alignItems: 'center', gap: 4,
+            boxShadow: 'var(--shadow-lg)',
+          }}>
+            <div style={{ padding: '0 12px 0 18px', color: 'var(--ink-500)', display: 'flex', alignItems: 'center' }}><Icon.Search /></div>
+            <input
+              className="input"
+              placeholder="Coba: rawon, batik tulis, servis AC, pijat panggilan…"
+              style={{ border: 'none', background: 'transparent', boxShadow: 'none', flex: 1 }}
+              onKeyDown={(e) => { if (e.key === 'Enter' && e.target.value) window.navigate('catalog', { q: e.target.value }); }}
+            />
+            <button className="btn btn-primary" style={{ borderRadius: 999, padding: '10px 22px' }}>
+              Cari
+            </button>
+          </div>
+          <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap', marginTop: 20 }}>
+            {['rawon', 'batik tulis', 'servis AC', 'tempe segar', 'tas anyaman', 'pijat'].map(t => (
+              <button key={t} className="chip"
+                style={{ background: 'rgba(255,252,244,0.08)', color: 'var(--cream-100)', border: '1px solid rgba(255,252,244,0.12)' }}
+                onClick={() => window.navigate('catalog', { q: t })}
+              >{t}</button>
+            ))}
+          </div>
+        </div>
+        <div className="batik-strip" style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}></div>
+      </section>
+
+      {/* MOSAIC CATEGORY CARDS */}
+      <section className="section" style={{ marginTop: -60, paddingTop: 0, position: 'relative', zIndex: 5 }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 18 }} className="mosaic-grid">
+            {[
+              { title: 'Produk UMKM', sub: `${D.products.length} produk`, bg: 'var(--clay-600)', fg: 'var(--cream-50)', tag: 'PBI-01', big: true, action: () => window.navigate('catalog', { type: 'product' }) },
+              { title: 'Layanan Jasa', sub: `${D.services.length} layanan`, bg: 'var(--palm-700)', fg: 'var(--cream-50)', tag: 'PBI-02', big: true, action: () => window.navigate('catalog', { type: 'service' }) },
+              { title: 'UMKM Terdaftar', sub: `${D.businesses.length} pelaku usaha`, bg: 'var(--ochre-500)', fg: 'var(--ink-900)', tag: '4 Dusun', big: false, action: () => window.navigate('catalog') },
+              { title: 'Bumi Banjarsari', sub: 'Peta interaktif', bg: 'var(--cream-200)', fg: 'var(--ink-900)', tag: 'Map View', big: false, action: () => window.navigate('catalog') },
+            ].map((c, i) => (
+              <button key={i}
+                onClick={c.action}
+                style={{
+                  gridColumn: c.big ? 'span 2' : 'span 1',
+                  background: c.bg, color: c.fg,
+                  borderRadius: 'var(--radius-lg)', padding: '24px 24px',
+                  minHeight: c.big ? 180 : 160,
+                  textAlign: 'left', cursor: 'pointer',
+                  display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+                  position: 'relative', overflow: 'hidden',
+                }}>
+                <div className="label-eyebrow" style={{ color: c.fg, opacity: 0.7 }}>{c.tag}</div>
+                <div>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: c.big ? 32 : 24, fontWeight: 500, lineHeight: 1.1, marginBottom: 6 }}>
+                    {c.title}
+                  </div>
+                  <div style={{ fontSize: 14, opacity: 0.75 }}>{c.sub}</div>
+                </div>
+                <div style={{ position: 'absolute', top: 24, right: 24, opacity: 0.7 }}><Icon.ArrowRight /></div>
+              </button>
+            ))}
+          </div>
+          <style>{`@media (max-width: 880px) { .mosaic-grid { grid-template-columns: 1fr 1fr !important; } .mosaic-grid > button { grid-column: span 1 !important; } }`}</style>
+        </div>
+      </section>
+
+      {/* FAVORITES — bar chart-styled list */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="label-eyebrow">PBI-05 · Sedang Naik Daun</div>
+              <h2>Paling Favorit Bulan Ini</h2>
+            </div>
+          </div>
+          <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 'var(--radius-lg)', padding: 24 }}>
+            <div className="tabs" style={{ marginBottom: 12 }}>
+              <button className="active">Produk · Top 4</button>
+              <button>Jasa · Top 4</button>
+            </div>
+            {topProducts.map((p, i) => {
+              const max = topProducts[0].clickCount;
+              const pct = (p.clickCount / max) * 100;
+              return (
+                <div key={p.id} onClick={() => window.navigate('product-detail', { id: p.id })}
+                  style={{
+                    display: 'grid', gridTemplateColumns: '24px 60px 1fr auto', gap: 16, alignItems: 'center',
+                    padding: '14px 0', borderTop: i === 0 ? 'none' : '1px solid var(--line)', cursor: 'pointer',
+                  }}>
+                  <div className="display" style={{ fontSize: 22, color: 'var(--ink-300)', fontWeight: 500 }}>{i + 1}</div>
+                  <div style={{ width: 60, height: 48, borderRadius: 8, background: p.thumbColor }}></div>
+                  <div>
+                    <div style={{ fontWeight: 600, fontSize: 15, marginBottom: 4 }}>{p.name}</div>
+                    <div style={{ height: 4, background: 'var(--cream-100)', borderRadius: 999, overflow: 'hidden', maxWidth: 320 }}>
+                      <div style={{ height: '100%', width: `${pct}%`, background: 'var(--clay-500)' }}></div>
+                    </div>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <div className="mono" style={{ fontSize: 14, fontWeight: 600 }}>{p.clickCount}</div>
+                    <div className="mono" style={{ fontSize: 10, color: 'var(--ink-500)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>klik</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* PRODUCT GRID */}
+      <section className="section" style={{ background: 'var(--cream-100)' }}>
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="label-eyebrow">PBI-01 · Produk UMKM</div>
+              <h2>Yang Baru di Banjarsari</h2>
+            </div>
+            <a className="more" onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'product' }); }} href="#">
+              Lihat semua <Icon.ArrowRight />
+            </a>
+          </div>
+          <div className="grid grid-products">
+            {featuredProducts.map(p => (
+              <Catalogcard key={p.id} item={p} type="product"
+                onClick={() => window.navigate('product-detail', { id: p.id })}
+                onBusinessClick={(id) => window.navigate('business', { id })}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section className="section">
+        <div className="container">
+          <div className="section-head">
+            <div>
+              <div className="label-eyebrow">PBI-02 · Layanan Jasa</div>
+              <h2>Jasa Warga, Bisa Panggilan</h2>
+            </div>
+            <a className="more" onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'service' }); }} href="#">
+              Lihat semua <Icon.ArrowRight />
+            </a>
+          </div>
+          <div className="grid grid-products">
+            {featuredServices.map(s => (
+              <Catalogcard key={s.id} item={s} type="service"
+                onClick={() => window.navigate('service-detail', { id: s.id })}
+                onBusinessClick={(id) => window.navigate('business', { id })}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+// ============ Helpers ============
+const Stat = ({ n, l }) => (
+  <div>
+    <div style={{ fontFamily: 'var(--font-display)', fontSize: 32, lineHeight: 1, fontWeight: 500 }}>{n}</div>
+    <div className="mono" style={{ fontSize: 11, color: 'var(--ink-500)', marginTop: 4, letterSpacing: '0.1em', textTransform: 'uppercase' }}>{l}</div>
+  </div>
+);
+
+const RankRow = ({ rank, item, type, onClick }) => {
+  const D = window.PALUGADA_DATA;
+  const business = D.findBusiness(item.businessId);
+  return (
+    <div onClick={onClick} style={{
+      background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12,
+      padding: 12, display: 'flex', alignItems: 'center', gap: 14, cursor: 'pointer',
+    }}>
+      <div className="display" style={{ fontSize: 24, color: rank <= 3 ? 'var(--clay-600)' : 'var(--ink-300)', fontWeight: 500, width: 28, textAlign: 'center' }}>
+        {rank}
+      </div>
+      <div style={{ width: 56, height: 56, borderRadius: 10, background: item.thumbColor, flexShrink: 0 }}></div>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontWeight: 600, fontSize: 14, marginBottom: 2, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          {item.name}
+        </div>
+        <div style={{ fontSize: 12, color: 'var(--ink-500)' }}>{business.name}</div>
+      </div>
+      <div style={{ textAlign: 'right' }}>
+        <div className="mono" style={{ fontSize: 13, fontWeight: 600 }}>{item.clickCount}</div>
+        <div className="mono" style={{ fontSize: 9, color: 'var(--ink-500)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>klik</div>
+      </div>
+    </div>
+  );
+};
+
+window.PalScreens = window.PalScreens || {};
+window.PalScreens.Home = Home;
+
+})();
+
+// ===== screens/catalog.jsx =====
+(function(){
+/* global React, PalComponents, PALUGADA_DATA */
+const { useState: useS_cat, useMemo: useM_cat } = React;
+
+function Catalog({ params }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon, Catalogcard } = window.PalComponents;
+
+  const [type, setType] = useS_cat(params.type || 'product');
+  const [q, setQ] = useS_cat(params.q || '');
+  const [categories, setCategories] = useS_cat([]);
+  const [areas, setAreas] = useS_cat([]);
+  const [priceRange, setPriceRange] = useS_cat('all');
+  const [sortBy, setSortBy] = useS_cat('newest');
+  const [hasMarketplace, setHasMarketplace] = useS_cat(false);
+  const [availability, setAvailability] = useS_cat('all');
+  const [isNegotiable, setIsNegotiable] = useS_cat(false);
+  const [hasPortfolio, setHasPortfolio] = useS_cat(false);
+
+  const items = useM_cat(() => {
+    let pool = type === 'product' ? D.products : D.services;
+    pool = pool.map(it => ({ ...it, _biz: D.findBusiness(it.businessId) }));
+    if (q.trim()) {
+      const qq = q.toLowerCase();
+      pool = pool.filter(it =>
+        it.name.toLowerCase().includes(qq) ||
+        it._biz.name.toLowerCase().includes(qq) ||
+        it.category.toLowerCase().includes(qq)
+      );
+    }
+    if (categories.length) pool = pool.filter(it => categories.includes(it.category));
+    if (areas.length) pool = pool.filter(it => areas.includes(it._biz.area));
+    if (type === 'product') {
+      if (priceRange === 'lt50') pool = pool.filter(it => it.price < 50000);
+      if (priceRange === '50-100') pool = pool.filter(it => it.price >= 50000 && it.price < 100000);
+      if (priceRange === 'gt100') pool = pool.filter(it => it.price >= 100000);
+      if (hasMarketplace) pool = pool.filter(it => it.hasMarketplace);
+    } else {
+      if (availability !== 'all') pool = pool.filter(it => it.availability === availability);
+      if (isNegotiable) pool = pool.filter(it => it.isNegotiable);
+      if (hasPortfolio) pool = pool.filter(it => it.hasPortfolio);
+    }
+    if (sortBy === 'most_viewed') pool.sort((a, b) => b.clickCount - a.clickCount);
+    return pool;
+  }, [type, q, categories, areas, priceRange, sortBy, hasMarketplace, availability, isNegotiable, hasPortfolio]);
+
+  const catList = type === 'product' ? D.productCategories : D.serviceCategories;
+
+  const activeFilters = [];
+  if (q) activeFilters.push({ k: 'q', l: `"${q}"`, clear: () => setQ('') });
+  categories.forEach(c => activeFilters.push({ k: 'c-' + c, l: c, clear: () => setCategories(cs => cs.filter(x => x !== c)) }));
+  areas.forEach(a => activeFilters.push({ k: 'a-' + a, l: a, clear: () => setAreas(as => as.filter(x => x !== a)) }));
+  if (priceRange !== 'all') activeFilters.push({ k: 'pr', l: `Harga: ${priceRange}`, clear: () => setPriceRange('all') });
+  if (hasMarketplace) activeFilters.push({ k: 'mp', l: 'Ada marketplace', clear: () => setHasMarketplace(false) });
+  if (availability !== 'all') activeFilters.push({ k: 'av', l: availability, clear: () => setAvailability('all') });
+  if (isNegotiable) activeFilters.push({ k: 'ng', l: 'Bisa nego', clear: () => setIsNegotiable(false) });
+  if (hasPortfolio) activeFilters.push({ k: 'pf', l: 'Ada portfolio', clear: () => setHasPortfolio(false) });
+
+  return (
+    <main className="container" style={{ padding: '32px 24px 80px' }}>
+      <div className="breadcrumb">
+        <a onClick={(e) => { e.preventDefault(); window.navigate('home'); }} href="#">Beranda</a>
+        <span className="sep">›</span>
+        <span>{type === 'product' ? 'Produk UMKM' : 'Layanan Jasa'}</span>
+        {categories.length === 1 && <><span className="sep">›</span><span>{categories[0]}</span></>}
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap', marginBottom: 24 }}>
+        <div>
+          <h1 className="display" style={{ fontSize: 40, margin: 0, lineHeight: 1.1, letterSpacing: '-0.015em', fontWeight: 500 }}>
+            {type === 'product' ? 'Produk UMKM Banjarsari' : 'Layanan Jasa Banjarsari'}
+          </h1>
+          <p style={{ color: 'var(--ink-500)', margin: '6px 0 0', fontSize: 15 }}>
+            Menampilkan <strong style={{ color: 'var(--ink-900)' }}>{items.length} {type === 'product' ? 'produk' : 'jasa'}</strong>
+            {q && <> untuk pencarian "{q}"</>}
+          </p>
+        </div>
+        <div style={{ display: 'flex', gap: 4, background: 'var(--cream-100)', padding: 4, borderRadius: 999 }}>
+          <button
+            onClick={() => setType('product')}
+            className="btn btn-sm"
+            style={{
+              borderRadius: 999,
+              background: type === 'product' ? 'var(--surface)' : 'transparent',
+              boxShadow: type === 'product' ? 'var(--shadow-sm)' : 'none',
+              fontWeight: type === 'product' ? 600 : 500,
+            }}>
+            Produk · {D.products.length}
+          </button>
+          <button
+            onClick={() => setType('service')}
+            className="btn btn-sm"
+            style={{
+              borderRadius: 999,
+              background: type === 'service' ? 'var(--surface)' : 'transparent',
+              boxShadow: type === 'service' ? 'var(--shadow-sm)' : 'none',
+              fontWeight: type === 'service' ? 600 : 500,
+            }}>
+            Jasa · {D.services.length}
+          </button>
+        </div>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: 28 }} className="cat-grid">
+        {/* Sidebar filters */}
+        <aside className="sidebar" style={{ height: 'fit-content', position: 'sticky', top: 84 }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+            <h4 style={{ margin: 0, fontSize: 14 }}><Icon.Filter style={{ display: 'inline', verticalAlign: '-3px', marginRight: 4 }} /> Filter</h4>
+            {activeFilters.length > 0 && (
+              <button className="mono" style={{ fontSize: 11, color: 'var(--clay-600)' }}
+                onClick={() => { setCategories([]); setAreas([]); setPriceRange('all'); setHasMarketplace(false); setAvailability('all'); setIsNegotiable(false); setHasPortfolio(false); setQ(''); }}>
+                Hapus semua
+              </button>
+            )}
+          </div>
+
+          <div className="filter-group">
+            <h4>Kategori</h4>
+            {catList.map(c => (
+              <label key={c} className="check-row">
+                <input type="checkbox" checked={categories.includes(c)}
+                  onChange={() => setCategories(cs => cs.includes(c) ? cs.filter(x => x !== c) : [...cs, c])}
+                />
+                {c}
+                <span className="count">{(type === 'product' ? D.products : D.services).filter(x => x.category === c).length}</span>
+              </label>
+            ))}
+          </div>
+
+          <div className="filter-group">
+            <h4>Area Dusun</h4>
+            {D.areas.map(a => (
+              <label key={a} className="check-row">
+                <input type="checkbox" checked={areas.includes(a)}
+                  onChange={() => setAreas(as => as.includes(a) ? as.filter(x => x !== a) : [...as, a])}
+                />
+                {a}
+              </label>
+            ))}
+          </div>
+
+          {type === 'product' ? (
+            <>
+              <div className="filter-group">
+                <h4>Rentang Harga</h4>
+                {[['all','Semua harga'],['lt50','Kurang dari Rp 50.000'],['50-100','Rp 50.000 - Rp 100.000'],['gt100','Di atas Rp 100.000']].map(([v,l]) => (
+                  <label key={v} className="check-row">
+                    <input type="radio" name="pr" checked={priceRange === v} onChange={() => setPriceRange(v)} />
+                    {l}
+                  </label>
+                ))}
+              </div>
+              <div className="filter-group">
+                <label className="check-row">
+                  <input type="checkbox" checked={hasMarketplace} onChange={(e) => setHasMarketplace(e.target.checked)} />
+                  Tersedia di marketplace
+                </label>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="filter-group">
+                <h4>Ketersediaan</h4>
+                {[['all','Semua'],['Setiap Hari','Setiap Hari'],['Janjian','Perlu Janjian']].map(([v,l]) => (
+                  <label key={v} className="check-row">
+                    <input type="radio" name="av" checked={availability === v} onChange={() => setAvailability(v)} />
+                    {l}
+                  </label>
+                ))}
+              </div>
+              <div className="filter-group">
+                <label className="check-row">
+                  <input type="checkbox" checked={isNegotiable} onChange={(e) => setIsNegotiable(e.target.checked)} />
+                  Harga bisa dinego
+                </label>
+                <label className="check-row">
+                  <input type="checkbox" checked={hasPortfolio} onChange={(e) => setHasPortfolio(e.target.checked)} />
+                  Punya portofolio
+                </label>
+              </div>
+            </>
+          )}
+        </aside>
+
+        {/* Main */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, marginBottom: 16, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {activeFilters.length === 0 ? (
+                <span style={{ fontSize: 13, color: 'var(--ink-500)' }}>Tidak ada filter aktif</span>
+              ) : (
+                activeFilters.map(f => (
+                  <span key={f.k} className="pill-x">
+                    {f.l}
+                    <button onClick={f.clear}>×</button>
+                  </span>
+                ))
+              )}
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="mono" style={{ fontSize: 11, color: 'var(--ink-500)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Urutkan</span>
+              <select className="select" style={{ width: 'auto', height: 36, paddingRight: 28 }} value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                <option value="newest">Terbaru</option>
+                <option value="most_viewed">Paling sering dilihat</option>
+              </select>
+            </div>
+          </div>
+
+          {items.length === 0 ? (
+            <div style={{ padding: '60px 0', textAlign: 'center', color: 'var(--ink-500)' }}>
+              <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, color: 'var(--ink-700)', marginBottom: 6 }}>
+                Tidak ada hasil yang cocok
+              </div>
+              <p>Coba ubah kombinasi filter atau hapus salah satunya.</p>
+            </div>
+          ) : (
+            <div className="grid grid-products" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+              {items.map(it => (
+                <Catalogcard key={it.id} item={it} type={type}
+                  onClick={() => window.navigate(type === 'product' ? 'product-detail' : 'service-detail', { id: it.id })}
+                  onBusinessClick={(id) => window.navigate('business', { id })}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+      <style>{`
+        @media (max-width: 880px) {
+          .cat-grid { grid-template-columns: 1fr !important; }
+          .cat-grid > aside { position: relative !important; top: auto !important; }
+          .cat-grid .grid-products { grid-template-columns: repeat(2, 1fr) !important; }
+        }
+        @media (max-width: 520px) {
+          .cat-grid .grid-products { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </main>
+  );
+}
+
+window.PalScreens = window.PalScreens || {};
+window.PalScreens.Catalog = Catalog;
+
+})();
+
+// ===== screens/details.jsx =====
+(function(){
+/* global React, PalComponents, PALUGADA_DATA */
+const { useState: useS_det, useMemo: useM_det } = React;
+
+function ProductDetail({ params, showToast }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon } = window.PalComponents;
+  const product = D.products.find(p => p.id === params.id) || D.products[0];
+  const business = D.findBusiness(product.businessId);
+  const related = D.products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 4);
+  const [activeImg, setActiveImg] = useS_det(0);
+  const [showShare, setShowShare] = useS_det(false);
+
+  const gallery = [product.thumbColor, '#3F6B47', '#9D6C1E', '#241B0E'];
+  const shareUrl = `https://palugada.banjarsari.id/p/${product.id}`;
+  const caption = `Cek produk ${product.name} dari ${business.name} di PALUGADA! Harganya cuma ${D.formatRupiah(product.price)}. Klik di sini: ${shareUrl}`;
+
+  return (
+    <main className="container" style={{ padding: '24px 24px 80px' }}>
+      <div className="breadcrumb">
+        <a onClick={(e) => { e.preventDefault(); window.navigate('home'); }} href="#">Beranda</a>
+        <span className="sep">›</span>
+        <a onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'product' }); }} href="#">Produk UMKM</a>
+        <span className="sep">›</span>
+        <a onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'product' }); }} href="#">{product.category}</a>
+        <span className="sep">›</span>
+        <span style={{ color: 'var(--ink-900)' }}>{product.name}</span>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: 40 }} className="det-grid">
+        {/* Gallery */}
+        <div>
+          <div style={{
+            aspectRatio: '4/3', borderRadius: 'var(--radius-lg)', overflow: 'hidden',
+            background: gallery[activeImg], position: 'relative',
+          }}>
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: `repeating-linear-gradient(135deg, transparent 0 22px, rgba(255,252,244,0.07) 22px 44px)`,
+            }}></div>
+            <div style={{
+              position: 'absolute', top: 16, left: 16,
+              fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(255,252,244,0.85)',
+              letterSpacing: '0.12em', textTransform: 'uppercase',
+              background: 'rgba(36,27,14,0.4)', padding: '6px 10px', borderRadius: 4,
+            }}>Galeri foto · {activeImg + 1}/{gallery.length}</div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
+            {gallery.map((c, i) => (
+              <button key={i} onClick={() => setActiveImg(i)}
+                style={{
+                  aspectRatio: '4/3', background: c, borderRadius: 10,
+                  outline: i === activeImg ? '2px solid var(--clay-600)' : 'none',
+                  outlineOffset: 2,
+                }}></button>
+            ))}
+          </div>
+        </div>
+
+        {/* Info */}
+        <div>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+            <span className="tag tag-clay">{product.category}</span>
+            <span className="tag tag-palm">Produk UMKM</span>
+            {product.hasMarketplace && <span className="tag tag-ochre">Ada Marketplace</span>}
+          </div>
+          <h1 className="display" style={{ fontSize: 38, margin: '0 0 8px', lineHeight: 1.1, letterSpacing: '-0.015em', fontWeight: 500 }}>
+            {product.name}
+          </h1>
+          <a onClick={(e) => { e.preventDefault(); window.navigate('business', { id: business.id }); }} href="#"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'var(--clay-700)', fontWeight: 600, fontSize: 15 }}>
+            <span className="avatar" style={{ width: 28, height: 28, fontSize: 11 }}>{business.logo}</span>
+            {business.name}
+            <Icon.ArrowRight />
+          </a>
+
+          <div style={{
+            margin: '24px 0', padding: '20px 24px',
+            background: 'var(--cream-100)', borderRadius: 'var(--radius-lg)',
+            display: 'flex', alignItems: 'baseline', gap: 14,
+          }}>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 36, fontWeight: 600, color: 'var(--clay-700)', lineHeight: 1 }}>
+              {D.formatRupiah(product.price)}
+            </div>
+            <span className="mono" style={{ fontSize: 12, color: 'var(--ink-500)' }}>· per item</span>
+          </div>
+
+          <div className="label-eyebrow" style={{ marginBottom: 8 }}>Deskripsi</div>
+          <p style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--ink-700)', margin: '0 0 28px' }}>
+            {product.description}
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginBottom: 16 }}>
+            <button className="btn btn-wa btn-lg" onClick={() => { showToast('Membuka WhatsApp...'); window.open(`https://wa.me/${business.wa}?text=Halo,%20saya%20tertarik%20dengan%20${encodeURIComponent(product.name)}`, '_blank'); }}>
+              <Icon.Wa /> Tanya via WhatsApp
+            </button>
+            {product.hasMarketplace && (
+              <button className="btn btn-primary btn-lg" onClick={() => showToast('Membuka marketplace...')}>
+                <Icon.ShoppingBag /> Beli di Marketplace
+              </button>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="btn btn-secondary btn-sm" onClick={() => setShowShare(true)}>
+              <Icon.Share /> Bagikan
+            </button>
+            <button className="btn btn-secondary btn-sm"
+              onClick={() => { navigator.clipboard && navigator.clipboard.writeText(shareUrl); showToast('Link disalin!'); }}>
+              <Icon.Link /> Salin Link
+            </button>
+          </div>
+
+          <div style={{ display: 'flex', gap: 24, marginTop: 28, padding: '16px 0', borderTop: '1px solid var(--line)', borderBottom: '1px solid var(--line)' }}>
+            <Meta icon={<Icon.MapPin />} label="Lokasi" value={business.area} />
+            <Meta icon={<Icon.Eye />} label="Dilihat" value={`${product.clickCount}×`} />
+            <Meta icon={<Icon.Calendar />} label="Sejak" value={new Date(business.joined).toLocaleDateString('id-ID', { month: 'short', year: 'numeric' })} />
+          </div>
+        </div>
+      </div>
+
+      {/* Related */}
+      <section style={{ marginTop: 64 }}>
+        <div className="section-head">
+          <div>
+            <div className="label-eyebrow">Produk Serupa · Kategori {product.category}</div>
+            <h2>Bisa Sekalian Lirik Ini</h2>
+          </div>
+        </div>
+        <div className="grid grid-products">
+          {related.map(p => (
+            <window.PalComponents.Catalogcard key={p.id} item={p} type="product"
+              onClick={() => window.navigate('product-detail', { id: p.id })}
+              onBusinessClick={(id) => window.navigate('business', { id })}
+            />
+          ))}
+        </div>
+      </section>
+
+      {showShare && (
+        <div className="modal-backdrop" onClick={() => setShowShare(false)}>
+          <div className="modal" onClick={(e) => e.stopPropagation()}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
+              <h3>Bagikan Produk</h3>
+              <button onClick={() => setShowShare(false)}><Icon.X /></button>
+            </div>
+            <p style={{ color: 'var(--ink-500)', fontSize: 14, margin: '0 0 18px' }}>
+              Caption otomatis sudah disiapkan — tinggal pilih platform.
+            </p>
+            <div style={{ background: 'var(--cream-100)', padding: 16, borderRadius: 10, fontSize: 13, lineHeight: 1.5, fontFamily: 'var(--font-mono)', marginBottom: 18, color: 'var(--ink-700)' }}>
+              {caption}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+              {['WhatsApp','Facebook','X / Twitter','Salin Link'].map((p, i) => (
+                <button key={p} className="btn btn-secondary" style={{ flexDirection: 'column', height: 72, gap: 4 }}
+                  onClick={() => { showToast(`Membagikan ke ${p}`); setShowShare(false); }}>
+                  <span style={{ fontSize: 20 }}>{['💬','📘','✕','🔗'][i]}</span>
+                  <span style={{ fontSize: 11 }}>{p}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </main>
+  );
+}
+
+function ServiceDetail({ params, showToast }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon } = window.PalComponents;
+  const service = D.services.find(s => s.id === params.id) || D.services[0];
+  const business = D.findBusiness(service.businessId);
+  const related = D.services.filter(s => s.category === service.category && s.id !== service.id).slice(0, 4);
+
+  return (
+    <main className="container" style={{ padding: '24px 24px 80px' }}>
+      <div className="breadcrumb">
+        <a onClick={(e) => { e.preventDefault(); window.navigate('home'); }} href="#">Beranda</a>
+        <span className="sep">›</span>
+        <a onClick={(e) => { e.preventDefault(); window.navigate('catalog', { type: 'service' }); }} href="#">Layanan Jasa</a>
+        <span className="sep">›</span>
+        <span>{service.category}</span>
+        <span className="sep">›</span>
+        <span style={{ color: 'var(--ink-900)' }}>{service.name}</span>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1.05fr 1fr', gap: 40 }} className="det-grid">
+        <div>
+          <div style={{
+            aspectRatio: '4/3', borderRadius: 'var(--radius-lg)', overflow: 'hidden',
+            background: service.thumbColor, position: 'relative',
+          }}>
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: `repeating-linear-gradient(135deg, transparent 0 22px, rgba(255,252,244,0.07) 22px 44px)`,
+            }}></div>
+            <div style={{ position: 'absolute', top: 16, left: 16, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'rgba(255,252,244,0.85)', letterSpacing: '0.12em', textTransform: 'uppercase', background: 'rgba(36,27,14,0.4)', padding: '6px 10px', borderRadius: 4 }}>Portofolio · 1/4</div>
+          </div>
+          {service.hasPortfolio && (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 12 }}>
+              {['#3F6B47', '#9D6C1E', '#B0431F', '#241B0E'].map((c, i) => (
+                <div key={i} style={{ aspectRatio: '4/3', background: c, borderRadius: 10 }}></div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <div style={{ display: 'flex', gap: 8, marginBottom: 14 }}>
+            <span className="tag tag-palm">{service.category}</span>
+            <span className="tag tag-clay">Layanan Jasa</span>
+            <span className="tag tag-ochre">{service.serviceType}</span>
+          </div>
+          <h1 className="display" style={{ fontSize: 38, margin: '0 0 8px', lineHeight: 1.1, letterSpacing: '-0.015em', fontWeight: 500 }}>
+            {service.name}
+          </h1>
+          <a onClick={(e) => { e.preventDefault(); window.navigate('business', { id: business.id }); }} href="#"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: 8, color: 'var(--palm-700)', fontWeight: 600, fontSize: 15 }}>
+            <span className="avatar palm" style={{ width: 28, height: 28, fontSize: 11 }}>{business.logo}</span>
+            {business.name}
+            <Icon.ArrowRight />
+          </a>
+
+          <div style={{
+            margin: '24px 0', padding: '20px 24px',
+            background: 'var(--palm-100)', borderRadius: 'var(--radius-lg)',
+          }}>
+            <div className="label-eyebrow" style={{ marginBottom: 4, color: 'var(--palm-700)' }}>Estimasi Tarif</div>
+            <div style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 600, color: 'var(--palm-800)', lineHeight: 1.1 }}>
+              {service.priceEstimation}
+            </div>
+            {service.isNegotiable && (
+              <div style={{ marginTop: 8, display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--palm-700)' }}>
+                <Icon.Check /> Harga bisa dinegosiasi
+              </div>
+            )}
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 20 }}>
+            <InfoTile label="Ketersediaan" value={service.availability} icon={<Icon.Calendar />} />
+            <InfoTile label="Tipe Layanan" value={service.serviceType} icon={<Icon.MapPin />} />
+          </div>
+
+          <div className="label-eyebrow" style={{ marginBottom: 8 }}>Deskripsi</div>
+          <p style={{ fontSize: 15, lineHeight: 1.65, color: 'var(--ink-700)', margin: '0 0 28px' }}>
+            {service.description}
+          </p>
+
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10 }}>
+            <button className="btn btn-wa btn-lg" onClick={() => { showToast('Membuka WhatsApp...'); window.open(`https://wa.me/${business.wa}?text=Halo,%20saya%20butuh%20${encodeURIComponent(service.name)}`, '_blank'); }}>
+              <Icon.Wa /> Hubungi via WhatsApp
+            </button>
+            <button className="btn btn-secondary btn-lg"
+              onClick={() => { navigator.clipboard && navigator.clipboard.writeText(`https://palugada.banjarsari.id/s/${service.id}`); showToast('Link disalin!'); }}>
+              <Icon.Link /> Salin Link
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <section style={{ marginTop: 64 }}>
+        <div className="section-head">
+          <div>
+            <div className="label-eyebrow">Jasa Serupa</div>
+            <h2>Mungkin Juga Kamu Butuh</h2>
+          </div>
+        </div>
+        <div className="grid grid-products">
+          {related.map(s => (
+            <window.PalComponents.Catalogcard key={s.id} item={s} type="service"
+              onClick={() => window.navigate('service-detail', { id: s.id })}
+              onBusinessClick={(id) => window.navigate('business', { id })}
+            />
+          ))}
+        </div>
+      </section>
+
+      <style>{`
+        @media (max-width: 880px) { .det-grid { grid-template-columns: 1fr !important; gap: 24px !important; } }
+      `}</style>
+    </main>
+  );
+}
+
+const Meta = ({ icon, label, value }) => (
+  <div>
+    <div className="mono" style={{ fontSize: 10, color: 'var(--ink-500)', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+      {icon} {label}
+    </div>
+    <div style={{ fontWeight: 600, fontSize: 14 }}>{value}</div>
+  </div>
+);
+
+const InfoTile = ({ label, value, icon }) => (
+  <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', padding: '12px 14px', borderRadius: 10 }}>
+    <div className="mono" style={{ fontSize: 10, color: 'var(--ink-500)', letterSpacing: '0.1em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', gap: 4, marginBottom: 4 }}>
+      {icon} {label}
+    </div>
+    <div style={{ fontWeight: 600, fontSize: 14 }}>{value}</div>
+  </div>
+);
+
+window.PalScreens = window.PalScreens || {};
+window.PalScreens.ProductDetail = ProductDetail;
+window.PalScreens.ServiceDetail = ServiceDetail;
+
+})();
+
+// ===== screens/business.jsx =====
+(function(){
+/* global React, PalComponents, PALUGADA_DATA */
+const { useState: useS_biz, useMemo: useM_biz } = React;
+
+function BusinessProfile({ params, showToast }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon, Catalogcard } = window.PalComponents;
+  const business = D.findBusiness(params.id) || D.businesses[0];
+  const products = D.products.filter(p => p.businessId === business.id);
+  const services = D.services.filter(s => s.businessId === business.id);
+  const [tab, setTab] = useS_biz(products.length ? 'products' : 'services');
+
+  return (
+    <main style={{ paddingBottom: 80 }}>
+      {/* Cover band */}
+      <div style={{
+        height: 220, background: 'var(--palm-700)', position: 'relative', overflow: 'hidden',
+      }}>
+        <div style={{ position: 'absolute', inset: 0, background: `repeating-linear-gradient(135deg, transparent 0 32px, rgba(255,252,244,0.07) 32px 64px)` }}></div>
+        <div style={{ position: 'absolute', top: 0, right: 0, bottom: 0, width: '40%', background: 'linear-gradient(90deg, transparent, var(--ochre-500))', opacity: 0.45 }}></div>
+        <div className="container" style={{ height: '100%', position: 'relative', display: 'flex', alignItems: 'flex-end', paddingBottom: 24 }}>
+          <div className="breadcrumb" style={{ color: 'rgba(255,252,244,0.65)', position: 'absolute', top: 20 }}>
+            <a onClick={(e) => { e.preventDefault(); window.navigate('home'); }} href="#" style={{ color: 'inherit' }}>Beranda</a>
+            <span className="sep" style={{ color: 'inherit' }}>›</span>
+            <span style={{ color: 'var(--cream-50)' }}>{business.name}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="container" style={{ marginTop: -56 }}>
+        {/* Profile header */}
+        <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 'var(--radius-xl)', padding: 28, boxShadow: 'var(--shadow)', display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: 24, alignItems: 'center' }} className="biz-head">
+          <div style={{
+            width: 96, height: 96, borderRadius: 20,
+            background: 'var(--clay-600)', color: 'var(--cream-50)',
+            display: 'grid', placeItems: 'center',
+            fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 36,
+            border: '4px solid var(--surface)', boxShadow: 'var(--shadow)',
+            flexShrink: 0,
+          }}>{business.logo}</div>
+          <div>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+              {business.categories.map(c => <span key={c} className="tag tag-clay">{c}</span>)}
+              <span className="tag tag-palm">📍 {business.area}</span>
+            </div>
+            <h1 className="display" style={{ fontSize: 32, margin: 0, letterSpacing: '-0.015em', fontWeight: 500 }}>
+              {business.name}
+            </h1>
+            <div style={{ color: 'var(--ink-500)', marginTop: 4, fontSize: 14 }}>
+              oleh <strong style={{ color: 'var(--ink-900)' }}>{business.owner}</strong> · bergabung {new Date(business.joined).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button className="btn btn-wa" onClick={() => window.open(`https://wa.me/${business.wa}`, '_blank')}>
+              <Icon.Wa /> Hubungi
+            </button>
+            <button className="btn btn-secondary"><Icon.Share /></button>
+          </div>
+        </div>
+
+        {/* Stats strip */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, margin: '24px 0' }} className="biz-stats">
+          <MiniStat label="Total Produk" value={business.totalProducts} />
+          <MiniStat label="Total Jasa" value={business.totalServices} />
+          <MiniStat label="Total Dilihat" value={[...products, ...services].reduce((s, x) => s + x.clickCount, 0)} />
+          <MiniStat label="Rating Komunitas" value="★ 4.8" />
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 28 }} className="biz-grid">
+          <div>
+            <div className="label-eyebrow" style={{ marginBottom: 10 }}>Tentang Usaha</div>
+            <p style={{ fontSize: 16, lineHeight: 1.65, color: 'var(--ink-700)', margin: '0 0 24px' }}>
+              {business.description}
+            </p>
+
+            {(products.length > 0 && services.length > 0) ? (
+              <div className="tabs">
+                <button className={tab === 'products' ? 'active' : ''} onClick={() => setTab('products')}>
+                  Produk · {products.length}
+                </button>
+                <button className={tab === 'services' ? 'active' : ''} onClick={() => setTab('services')}>
+                  Jasa · {services.length}
+                </button>
+              </div>
+            ) : null}
+
+            <div className="grid grid-products" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
+              {(tab === 'products' ? products : services).map(it => (
+                <Catalogcard key={it.id} item={it} type={tab === 'products' ? 'product' : 'service'}
+                  onClick={() => window.navigate(tab === 'products' ? 'product-detail' : 'service-detail', { id: it.id })}
+                  onBusinessClick={() => {}}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Map + contact */}
+          <aside>
+            <div className="sidebar" style={{ padding: 0, overflow: 'hidden' }}>
+              <div className="map-frame" style={{ height: 280, borderRadius: 0, border: 'none', position: 'relative' }}>
+                <div className="road" style={{ top: '40%', left: 0, right: 0, height: 12 }}></div>
+                <div className="road" style={{ top: 0, bottom: 0, left: '52%', width: 8 }}></div>
+                <div className="map-pin" style={{ top: '46%', left: '54%' }}>
+                  <div className="dot"></div>
+                  <div className="ring"></div>
+                </div>
+                <div style={{ position: 'absolute', top: 14, left: 14, background: 'var(--surface)', padding: '6px 12px', borderRadius: 6, fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--ink-700)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                  📍 Peta Banjarsari · Embed
+                </div>
+                <div style={{ position: 'absolute', bottom: 14, right: 14, background: 'var(--surface)', padding: '4px 10px', borderRadius: 4, fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-500)' }}>
+                  -8.1734°, 113.7012°
+                </div>
+              </div>
+              <div style={{ padding: 22 }}>
+                <h4 style={{ margin: '0 0 14px' }}>Informasi Kontak</h4>
+                <ContactRow icon={<Icon.MapPin />} label="Alamat" value={business.address} />
+                <ContactRow icon={<Icon.Phone />} label="Telepon" value={'+' + business.phone.replace(/(\d{2})(\d{3})(\d{4})(\d{4})/, '$1 $2-$3-$4')} />
+                <ContactRow icon={<Icon.Wa />} label="WhatsApp" value={`wa.me/${business.wa}`} />
+                <button className="btn btn-primary" style={{ width: '100%', marginTop: 14 }}
+                  onClick={() => window.open(`https://www.google.com/maps/dir/?api=1&destination=${business.lat},${business.lng}`, '_blank')}>
+                  Petunjuk Arah
+                </button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <style>{`
+        @media (max-width: 880px) {
+          .biz-head { grid-template-columns: 1fr !important; text-align: center; }
+          .biz-stats { grid-template-columns: repeat(2, 1fr) !important; }
+          .biz-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </main>
+  );
+}
+
+const MiniStat = ({ label, value }) => (
+  <div style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: 12, padding: '14px 16px' }}>
+    <div className="mono" style={{ fontSize: 10, color: 'var(--ink-500)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 4 }}>{label}</div>
+    <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 500 }}>{value}</div>
+  </div>
+);
+const ContactRow = ({ icon, label, value }) => (
+  <div style={{ display: 'flex', gap: 12, marginBottom: 12, alignItems: 'flex-start' }}>
+    <div style={{ width: 32, height: 32, borderRadius: 8, background: 'var(--cream-100)', display: 'grid', placeItems: 'center', color: 'var(--ink-700)', flexShrink: 0 }}>{icon}</div>
+    <div style={{ flex: 1, minWidth: 0 }}>
+      <div className="mono" style={{ fontSize: 10, color: 'var(--ink-500)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</div>
+      <div style={{ fontSize: 13, marginTop: 2 }}>{value}</div>
+    </div>
+  </div>
+);
+
+window.PalScreens = window.PalScreens || {};
+window.PalScreens.BusinessProfile = BusinessProfile;
+
+})();
+
+// ===== screens/admin-dashboard.jsx =====
+(function(){
+/* global React, PalComponents, PALUGADA_DATA */
+const { useState: useS_adm, useMemo: useM_adm } = React;
+
+function AdminSidebar({ active }) {
+  const { Icon, Brand } = window.PalComponents;
+  const items = [
+    { id: 'admin-dashboard', label: 'Dashboard', icon: <Icon.Chart />, section: 'Monitoring' },
+    { id: 'admin-channel', label: 'Channel Analytics', icon: <Icon.TrendingUp />, section: 'Monitoring', mock: true },
+    { id: 'admin-master-business', label: 'UMKM / Penyedia Jasa', icon: <Icon.Store />, section: 'Master Data' },
+    { id: 'admin-master-product', label: 'Katalog Produk', icon: <Icon.Tag />, section: 'Master Data' },
+    { id: 'admin-master-service', label: 'Katalog Jasa', icon: <Icon.Tag />, section: 'Master Data' },
+    { id: 'admin-master-category', label: 'Kategori', icon: <Icon.Tag />, section: 'Master Data', mock: true },
+    { id: 'admin-seo', label: 'SEO & Meta Tag', icon: <Icon.Settings />, section: 'Sistem', mock: true },
+  ];
+  const sections = ['Monitoring', 'Master Data', 'Sistem'];
+
+  return (
+    <aside className="admin-sidebar">
+      <a className="brand" onClick={(e) => { e.preventDefault(); window.navigate('home'); }} href="#" style={{ color: 'var(--cream-50)' }}>
+        <span className="brand-mark"></span>
+        <span>PALUGADA<small>Admin Panel</small></span>
+      </a>
+      {sections.map(sec => (
+        <React.Fragment key={sec}>
+          <div className="admin-nav-section">{sec}</div>
+          {items.filter(i => i.section === sec).map(it => (
+            <a key={it.id} className={`admin-nav-item ${active === it.id ? 'active' : ''}`}
+              onClick={(e) => { e.preventDefault(); if (!it.mock) window.navigate(it.id); }} href="#"
+              style={it.mock ? { opacity: 0.55 } : null}>
+              {it.icon} <span>{it.label}</span>
+              {it.mock && <span style={{ marginLeft: 'auto', fontSize: 9, fontFamily: 'var(--font-mono)', opacity: 0.6 }}>soon</span>}
+            </a>
+          ))}
+        </React.Fragment>
+      ))}
+      <div style={{ marginTop: 'auto', paddingTop: 16, borderTop: '1px solid rgba(255,252,244,0.1)', display: 'flex', alignItems: 'center', gap: 10, padding: '12px' }}>
+        <div className="avatar" style={{ width: 32, height: 32, background: 'var(--ochre-500)', color: 'var(--ink-900)' }}>AB</div>
+        <div style={{ fontSize: 13 }}>
+          <div style={{ fontWeight: 600 }}>Admin Banjarsari</div>
+          <div style={{ fontSize: 11, color: 'var(--cream-300)' }}>Kades · Online</div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function AdminDashboard() {
+  const D = window.PALUGADA_DATA;
+  const { Icon } = window.PalComponents;
+  const topClicked = [...D.products, ...D.services].sort((a,b) => b.clickCount - a.clickCount).slice(0, 6);
+  const topBusinesses = D.businesses.slice().sort((a,b) => (b.totalProducts + b.totalServices) - (a.totalProducts + a.totalServices)).slice(0, 5);
+
+  return (
+    <div className="admin-shell">
+      <AdminSidebar active="admin-dashboard" />
+      <main className="admin-main">
+        <div className="admin-header">
+          <div>
+            <div className="label-eyebrow">PBI-18 · Awareness Tracking</div>
+            <h1>Monitoring Dashboard</h1>
+          </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <select className="select" style={{ width: 180, height: 38 }} defaultValue="30">
+              <option value="7">7 hari terakhir</option>
+              <option value="30">30 hari terakhir</option>
+              <option value="90">90 hari terakhir</option>
+            </select>
+            <button className="btn btn-secondary"><Icon.Upload /> Export CSV</button>
+          </div>
+        </div>
+
+        {/* Stat row */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+          <StatCard label="Total Pengunjung" value="12.847" delta="+18,3%" dir="up" />
+          <StatCard label="UMKM Aktif" value={D.businesses.length} delta="+2 minggu ini" dir="up" />
+          <StatCard label="Total Klik Item" value="3.214" delta="+34,1%" dir="up" />
+          <StatCard label="Klik WA / Marketplace" value="892" delta="−4,2%" dir="down" />
+        </div>
+
+        {/* Chart row */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr', gap: 24, marginBottom: 24 }}>
+          <div className="sidebar">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 18 }}>
+              <div>
+                <div className="label-eyebrow">PBI-18 · Tren Pengunjung</div>
+                <h4 style={{ fontSize: 18, margin: '4px 0 0', fontFamily: 'var(--font-display)', fontWeight: 500 }}>30 hari terakhir</h4>
+              </div>
+              <div style={{ display: 'flex', gap: 16, fontSize: 12 }}>
+                <LegendDot color="var(--clay-500)" label="Pengunjung" />
+                <LegendDot color="var(--palm-600)" label="Klik Item" />
+              </div>
+            </div>
+            <FakeChart />
+          </div>
+
+          <div className="sidebar">
+            <div className="label-eyebrow">PBI-20 · Channel Analytics</div>
+            <h4 style={{ fontSize: 18, margin: '4px 0 18px', fontFamily: 'var(--font-display)', fontWeight: 500 }}>Tombol paling sering diklik</h4>
+            {[
+              { name: 'Tombol WhatsApp', val: 542, max: 542, color: 'palm' },
+              { name: 'Tombol Marketplace', val: 348, max: 542, color: '' },
+              { name: 'Share ke Sosmed', val: 187, max: 542, color: 'ochre' },
+              { name: 'Salin Link', val: 89, max: 542, color: 'ochre' },
+            ].map(c => (
+              <div key={c.name} className="bar-row">
+                <span className="name">{c.name}</span>
+                <div className="bar-track">
+                  <div className={`bar-fill ${c.color}`} style={{ width: `${(c.val/c.max)*100}%` }}></div>
+                </div>
+                <span className="val">{c.val}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Top items */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+          <div className="sidebar">
+            <div className="label-eyebrow">PBI-19 · Top Access</div>
+            <h4 style={{ fontSize: 18, margin: '4px 0 14px', fontFamily: 'var(--font-display)', fontWeight: 500 }}>Item Paling Populer</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+              {topClicked.map((it, i) => (
+                <div key={it.id} style={{
+                  display: 'grid', gridTemplateColumns: '20px 40px 1fr auto', gap: 12,
+                  alignItems: 'center', padding: '10px 0',
+                  borderTop: i === 0 ? 'none' : '1px solid var(--line)',
+                }}>
+                  <span className="mono" style={{ color: 'var(--ink-500)', fontSize: 12 }}>#{i+1}</span>
+                  <div style={{ width: 40, height: 40, borderRadius: 8, background: it.thumbColor }}></div>
+                  <div style={{ minWidth: 0 }}>
+                    <div style={{ fontWeight: 600, fontSize: 14, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{it.name}</div>
+                    <div style={{ fontSize: 12, color: 'var(--ink-500)' }}>{D.findBusiness(it.businessId).name}</div>
+                  </div>
+                  <div className="mono" style={{ fontWeight: 600 }}>{it.clickCount}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="sidebar">
+            <div className="label-eyebrow">PBI-19 · Top Business</div>
+            <h4 style={{ fontSize: 18, margin: '4px 0 14px', fontFamily: 'var(--font-display)', fontWeight: 500 }}>UMKM Terpopuler</h4>
+            {topBusinesses.map((b, i) => (
+              <div key={b.id} style={{
+                display: 'grid', gridTemplateColumns: '20px auto 1fr auto', gap: 12,
+                alignItems: 'center', padding: '10px 0',
+                borderTop: i === 0 ? 'none' : '1px solid var(--line)',
+              }}>
+                <span className="mono" style={{ color: 'var(--ink-500)', fontSize: 12 }}>#{i+1}</span>
+                <div className="avatar">{b.logo}</div>
+                <div>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{b.name}</div>
+                  <div style={{ fontSize: 12, color: 'var(--ink-500)' }}>{b.area} · {b.totalProducts + b.totalServices} listing</div>
+                </div>
+                <button className="btn btn-ghost btn-sm" onClick={() => window.navigate('business', { id: b.id })}>Lihat →</button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Logging table */}
+        <div className="table-wrap">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '18px 22px', borderBottom: '1px solid var(--line)' }}>
+            <div>
+              <div className="label-eyebrow">PBI-14, PBI-15 · Event Log</div>
+              <h4 style={{ margin: '4px 0 0', fontSize: 16, fontFamily: 'var(--font-display)', fontWeight: 500 }}>Aktivitas Pengunjung Terkini</h4>
+            </div>
+            <button className="btn btn-ghost btn-sm">Lihat semua →</button>
+          </div>
+          <table className="data">
+            <thead>
+              <tr><th>Waktu</th><th>Event</th><th>Item</th><th>Channel</th><th>Asal</th></tr>
+            </thead>
+            <tbody>
+              {[
+                { t: '2 menit lalu', e: 'click_wa', it: 'Rawon Bu Endang', ch: 'WhatsApp', src: 'Detail Produk' },
+                { t: '5 menit lalu', e: 'view_item', it: 'Batik Tulis Motif Mahkota', ch: '—', src: 'Pencarian' },
+                { t: '8 menit lalu', e: 'click_marketplace', it: 'Tas Anyaman Pandan', ch: 'Tokopedia', src: 'Detail Produk' },
+                { t: '12 menit lalu', e: 'share_sosmed', it: 'Kopi Sari Banjarsari', ch: 'WhatsApp', src: 'Detail Produk' },
+                { t: '15 menit lalu', e: 'click_wa', it: 'Servis AC Pak Bambang', ch: 'WhatsApp', src: 'Detail Jasa' },
+                { t: '23 menit lalu', e: 'view_business', it: 'Salon Cantika', ch: '—', src: 'Beranda' },
+              ].map((r, i) => (
+                <tr key={i}>
+                  <td style={{ color: 'var(--ink-500)', fontFamily: 'var(--font-mono)', fontSize: 12 }}>{r.t}</td>
+                  <td><span className="tag tag-ink">{r.e}</span></td>
+                  <td style={{ fontWeight: 500 }}>{r.it}</td>
+                  <td>{r.ch}</td>
+                  <td style={{ color: 'var(--ink-500)' }}>{r.src}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+const StatCard = ({ label, value, delta, dir }) => (
+  <div className="stat-card">
+    <div className="label">{label}</div>
+    <div className="value">{value}</div>
+    <div className={`delta ${dir}`}>
+      {dir === 'up' ? '▲' : '▼'} {delta}
+    </div>
+  </div>
+);
+
+const LegendDot = ({ color, label }) => (
+  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, color: 'var(--ink-500)' }}>
+    <span style={{ width: 10, height: 10, borderRadius: '50%', background: color }}></span>
+    {label}
+  </div>
+);
+
+const FakeChart = () => {
+  const w = 100, h = 40;
+  const dataA = [12, 18, 16, 24, 21, 28, 26, 32, 30, 35, 38, 42, 40, 48, 52, 50, 55, 58, 62, 60, 66, 70, 74, 72, 78, 82, 85, 88, 92, 94];
+  const dataB = [8, 11, 9, 14, 13, 18, 17, 21, 20, 24, 26, 28, 27, 33, 36, 35, 38, 41, 44, 43, 47, 50, 53, 51, 56, 58, 61, 63, 66, 68];
+  const max = Math.max(...dataA);
+  const toPath = (arr) => arr.map((v, i) => `${i === 0 ? 'M' : 'L'} ${(i/(arr.length-1))*w} ${h - (v/max)*h*0.92}`).join(' ');
+  const toArea = (arr) => `${toPath(arr)} L ${w} ${h} L 0 ${h} Z`;
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" style={{ width: '100%', height: 200 }}>
+      <defs>
+        <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="#C8593A" stopOpacity="0.3"/>
+          <stop offset="100%" stopColor="#C8593A" stopOpacity="0"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0%" stopColor="#3F6B47" stopOpacity="0.25"/>
+          <stop offset="100%" stopColor="#3F6B47" stopOpacity="0"/>
+        </linearGradient>
+      </defs>
+      <path d={toArea(dataA)} fill="url(#g1)" />
+      <path d={toPath(dataA)} fill="none" stroke="#C8593A" strokeWidth="0.6" />
+      <path d={toArea(dataB)} fill="url(#g2)" />
+      <path d={toPath(dataB)} fill="none" stroke="#3F6B47" strokeWidth="0.6" />
+    </svg>
+  );
+};
+
+window.PalScreens = window.PalScreens || {};
+window.PalScreens.AdminDashboard = AdminDashboard;
+window.PalScreens.AdminSidebar = AdminSidebar;
+
+})();
+
+// ===== screens/admin-master.jsx =====
+(function(){
+/* global React, PalComponents, PALUGADA_DATA */
+const { useState: useS_md, useMemo: useM_md } = React;
+
+function AdminMasterData({ entity = 'business', openEdit }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon } = window.PalComponents;
+  const { AdminSidebar } = window.PalScreens;
+  const [search, setSearch] = useS_md('');
+  const [selected, setSelected] = useS_md([]);
+  const [showImport, setShowImport] = useS_md(false);
+
+  const cfg = {
+    business: {
+      title: 'UMKM & Penyedia Jasa', pbi: 'PBI-20', sidebarId: 'admin-master-business',
+      list: D.businesses, importLabel: 'Bulk Import UMKM',
+      cols: [
+        { h: 'Nama Usaha', render: (b) => (
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div className="avatar">{b.logo}</div>
+            <div>
+              <div style={{ fontWeight: 600 }}>{b.name}</div>
+              <div style={{ fontSize: 12, color: 'var(--ink-500)' }}>oleh {b.owner}</div>
+            </div>
+          </div>
+        )},
+        { h: 'Kategori', render: (b) => <span className="tag tag-clay">{b.categories[0]}</span> },
+        { h: 'Dusun', render: (b) => b.area },
+        { h: 'Listing', render: (b) => <span className="mono">{b.totalProducts + b.totalServices}</span> },
+        { h: 'Bergabung', render: (b) => <span style={{ color: 'var(--ink-500)' }}>{new Date(b.joined).toLocaleDateString('id-ID', { day:'2-digit', month:'short', year:'numeric' })}</span> },
+        { h: 'Status', render: () => <span className="tag tag-palm">● Aktif</span> },
+      ],
+    },
+    product: {
+      title: 'Katalog Produk', pbi: 'PBI-24', sidebarId: 'admin-master-product',
+      list: D.products, importLabel: 'Bulk Import Produk',
+      cols: [
+        { h: 'Produk', render: (p) => (
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 8, background: p.thumbColor }}></div>
+            <div>
+              <div style={{ fontWeight: 600 }}>{p.name}</div>
+              <div style={{ fontSize: 12, color: 'var(--ink-500)' }}>{D.findBusiness(p.businessId).name}</div>
+            </div>
+          </div>
+        )},
+        { h: 'Kategori', render: (p) => <span className="tag tag-clay">{p.category}</span> },
+        { h: 'Harga', render: (p) => <span className="mono" style={{ fontWeight: 600 }}>{D.formatRupiah(p.price)}</span> },
+        { h: 'Marketplace', render: (p) => p.hasMarketplace ? <Icon.Check style={{ color: 'var(--palm-700)' }} /> : <span style={{ color: 'var(--ink-300)' }}>—</span> },
+        { h: 'Klik', render: (p) => <span className="mono">{p.clickCount}</span> },
+      ],
+    },
+    service: {
+      title: 'Katalog Jasa', pbi: 'PBI-26', sidebarId: 'admin-master-service',
+      list: D.services, importLabel: 'Bulk Import Jasa',
+      cols: [
+        { h: 'Jasa', render: (s) => (
+          <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+            <div style={{ width: 40, height: 40, borderRadius: 8, background: s.thumbColor }}></div>
+            <div>
+              <div style={{ fontWeight: 600 }}>{s.name}</div>
+              <div style={{ fontSize: 12, color: 'var(--ink-500)' }}>{D.findBusiness(s.businessId).name}</div>
+            </div>
+          </div>
+        )},
+        { h: 'Kategori', render: (s) => <span className="tag tag-palm">{s.category}</span> },
+        { h: 'Estimasi', render: (s) => <span className="mono" style={{ fontSize: 12 }}>{s.priceEstimation}</span> },
+        { h: 'Tipe', render: (s) => <span className="tag tag-ink">{s.serviceType}</span> },
+        { h: 'Tersedia', render: (s) => s.availability },
+        { h: 'Klik', render: (s) => <span className="mono">{s.clickCount}</span> },
+      ],
+    },
+  }[entity];
+
+  const filtered = cfg.list.filter(it =>
+    !search.trim() || JSON.stringify(it).toLowerCase().includes(search.toLowerCase())
+  );
+
+  return (
+    <div className="admin-shell">
+      <AdminSidebar active={cfg.sidebarId} />
+      <main className="admin-main">
+        <div className="admin-header">
+          <div>
+            <div className="label-eyebrow">{cfg.pbi} · CRUD</div>
+            <h1>{cfg.title}</h1>
+          </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button className="btn btn-secondary" onClick={() => setShowImport(true)}><Icon.Upload /> {cfg.importLabel}</button>
+            <button className="btn btn-primary" onClick={() => openEdit(entity)}>
+              <Icon.Plus /> Tambah {entity === 'business' ? 'Usaha' : entity === 'product' ? 'Produk' : 'Jasa'}
+            </button>
+          </div>
+        </div>
+
+        {/* Quick entity switcher */}
+        <div style={{ display: 'flex', gap: 4, marginBottom: 20, background: 'var(--cream-100)', padding: 4, borderRadius: 12, width: 'fit-content' }}>
+          {[['business','UMKM',D.businesses.length],['product','Produk',D.products.length],['service','Jasa',D.services.length]].map(([e, label, n]) => (
+            <button key={e} className="btn btn-sm"
+              onClick={() => window.navigate('admin-master-' + e)}
+              style={{
+                borderRadius: 8,
+                background: entity === e ? 'var(--surface)' : 'transparent',
+                boxShadow: entity === e ? 'var(--shadow-sm)' : 'none',
+                fontWeight: entity === e ? 600 : 500,
+              }}>
+              {label} <span className="mono" style={{ marginLeft: 6, fontSize: 11, color: 'var(--ink-500)' }}>{n}</span>
+            </button>
+          ))}
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18, flexWrap: 'wrap' }}>
+          <div className="search-box" style={{ flex: 1, maxWidth: 360 }}>
+            <Icon.Search />
+            <input className="input" placeholder={`Cari di ${cfg.title.toLowerCase()}...`} value={search} onChange={(e) => setSearch(e.target.value)} />
+          </div>
+          <select className="select" style={{ width: 'auto' }}>
+            <option>Semua Kategori</option>
+          </select>
+          <select className="select" style={{ width: 'auto' }}>
+            <option>Semua Dusun</option>
+          </select>
+          {selected.length > 0 && (
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span style={{ fontSize: 13, color: 'var(--ink-500)' }}>{selected.length} dipilih</span>
+              <button className="btn btn-secondary btn-sm">Ekspor</button>
+              <button className="btn btn-secondary btn-sm" style={{ color: 'var(--clay-700)' }}><Icon.Trash /> Hapus</button>
+            </div>
+          )}
+        </div>
+
+        <div className="table-wrap">
+          <table className="data">
+            <thead>
+              <tr>
+                <th style={{ width: 40 }}>
+                  <input type="checkbox"
+                    checked={selected.length === filtered.length && filtered.length > 0}
+                    onChange={(e) => setSelected(e.target.checked ? filtered.map(it => it.id) : [])}
+                  />
+                </th>
+                {cfg.cols.map(c => <th key={c.h}>{c.h}</th>)}
+                <th style={{ width: 80, textAlign: 'right' }}>Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(it => (
+                <tr key={it.id}>
+                  <td>
+                    <input type="checkbox" checked={selected.includes(it.id)}
+                      onChange={(e) => setSelected(s => e.target.checked ? [...s, it.id] : s.filter(x => x !== it.id))}
+                    />
+                  </td>
+                  {cfg.cols.map((c, i) => <td key={i}>{c.render(it)}</td>)}
+                  <td style={{ textAlign: 'right' }}>
+                    <div style={{ display: 'inline-flex', gap: 4 }}>
+                      <button className="kebab" onClick={() => openEdit(entity, it)}><Icon.Edit /></button>
+                      <button className="kebab" style={{ color: 'var(--clay-600)' }}><Icon.Trash /></button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <div style={{ padding: '14px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderTop: '1px solid var(--line)' }}>
+            <span style={{ fontSize: 13, color: 'var(--ink-500)' }}>Menampilkan {filtered.length} dari {cfg.list.length} item</span>
+            <div style={{ display: 'flex', gap: 4 }}>
+              <button className="btn btn-ghost btn-sm">‹ Prev</button>
+              <button className="btn btn-secondary btn-sm">1</button>
+              <button className="btn btn-ghost btn-sm">2</button>
+              <button className="btn btn-ghost btn-sm">Next ›</button>
+            </div>
+          </div>
+        </div>
+
+        {showImport && (
+          <div className="modal-backdrop" onClick={() => setShowImport(false)}>
+            <div className="modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 540 }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                <div>
+                  <div className="label-eyebrow">{entity === 'business' ? 'PBI-22' : entity === 'product' ? 'PBI-25' : 'PBI-27'} · Bulk Import</div>
+                  <h3>{cfg.importLabel}</h3>
+                </div>
+                <button onClick={() => setShowImport(false)}><Icon.X /></button>
+              </div>
+              <p style={{ color: 'var(--ink-500)', fontSize: 14 }}>
+                Unggah file Excel (.xlsx) berisi data {entity === 'business' ? 'UMKM' : entity}. Sistem akan memvalidasi setiap baris.
+              </p>
+              <div style={{
+                marginTop: 16, padding: '32px 24px',
+                border: '2px dashed var(--line-strong)', borderRadius: 12,
+                textAlign: 'center', background: 'var(--cream-100)',
+              }}>
+                <Icon.Upload style={{ width: 28, height: 28, color: 'var(--ink-500)', marginBottom: 8 }} />
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>Tarik file Excel ke sini</div>
+                <div style={{ fontSize: 13, color: 'var(--ink-500)' }}>atau <a style={{ color: 'var(--clay-600)', fontWeight: 600 }}>klik untuk pilih</a></div>
+                <div className="mono" style={{ fontSize: 11, color: 'var(--ink-500)', marginTop: 14 }}>format: .xlsx · maks 5 MB</div>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 18, paddingTop: 18, borderTop: '1px solid var(--line)' }}>
+                <a style={{ fontSize: 13, color: 'var(--clay-700)', fontWeight: 600 }}>↓ Unduh template Excel</a>
+                <button className="btn btn-primary" onClick={() => setShowImport(false)}>Mulai Validasi</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+
+window.PalScreens = window.PalScreens || {};
+window.PalScreens.AdminMasterData = AdminMasterData;
+
+})();
+
+// ===== screens/admin-edit.jsx =====
+(function(){
+/* global React, PalComponents, PALUGADA_DATA */
+const { useState: useS_ed, useMemo: useM_ed } = React;
+
+function AdminEdit({ params, showToast }) {
+  const D = window.PALUGADA_DATA;
+  const { Icon } = window.PalComponents;
+  const { AdminSidebar } = window.PalScreens;
+  const entity = params.entity || 'business';
+  const editing = params.item || null;
+
+  // Map picker state
+  const [pin, setPin] = useS_ed({ x: editing ? editing.lng * 100 : 50, y: editing ? editing.lat * 100 : 50 });
+  const mapRef = React.useRef(null);
+
+  const onMapClick = (e) => {
+    const r = mapRef.current.getBoundingClientRect();
+    const x = ((e.clientX - r.left) / r.width) * 100;
+    const y = ((e.clientY - r.top) / r.height) * 100;
+    setPin({ x, y });
+  };
+
+  const titles = {
+    business: editing ? `Edit ${editing.name}` : 'Tambah UMKM / Penyedia Jasa Baru',
+    product: editing ? `Edit ${editing.name}` : 'Tambah Produk Baru',
+    service: editing ? `Edit ${editing.name}` : 'Tambah Jasa Baru',
+  };
+  const sidebarMap = { business: 'admin-master-business', product: 'admin-master-product', service: 'admin-master-service' };
+  const pbiMap = { business: 'PBI-20', product: 'PBI-24', service: 'PBI-26' };
+
+  return (
+    <div className="admin-shell">
+      <AdminSidebar active={sidebarMap[entity]} />
+      <main className="admin-main">
+        <div className="admin-header">
+          <div>
+            <div className="breadcrumb" style={{ marginBottom: 6 }}>
+              <a onClick={(e) => { e.preventDefault(); window.navigate('admin-master-' + entity); }} href="#">{entity === 'business' ? 'UMKM' : entity === 'product' ? 'Produk' : 'Jasa'}</a>
+              <span className="sep">›</span>
+              <span>{editing ? 'Edit' : 'Tambah Baru'}</span>
+            </div>
+            <h1>{titles[entity]}</h1>
+            <div className="mono" style={{ fontSize: 11, color: 'var(--ink-500)', marginTop: 4 }}>
+              {pbiMap[entity]} {entity === 'business' ? '· PBI-21 Geo-tagging' : ''}
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: 10 }}>
+            <button className="btn btn-secondary" onClick={() => window.navigate('admin-master-' + entity)}>Batal</button>
+            <button className="btn btn-primary"
+              onClick={() => { showToast('Berhasil disimpan!'); window.navigate('admin-master-' + entity); }}>
+              <Icon.Check /> Simpan
+            </button>
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 28 }} className="edit-grid">
+          {/* Form col */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            {entity === 'business' && <BusinessForm editing={editing} />}
+            {entity === 'product' && <ProductForm editing={editing} />}
+            {entity === 'service' && <ServiceForm editing={editing} />}
+          </div>
+
+          {/* Aside col */}
+          <aside style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            {entity === 'business' && (
+              <div className="sidebar" style={{ padding: 0, overflow: 'hidden' }}>
+                <div style={{ padding: '18px 20px', borderBottom: '1px solid var(--line)' }}>
+                  <div className="label-eyebrow">PBI-21 · Geo-tagging</div>
+                  <h4 style={{ margin: '4px 0 0', fontSize: 16, fontFamily: 'var(--font-display)', fontWeight: 500 }}>Lokasi di Peta</h4>
+                  <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--ink-500)' }}>
+                    Klik di mana saja pada peta untuk menempatkan pin lokasi usaha.
+                  </p>
+                </div>
+                <div ref={mapRef} className="map-frame" onClick={onMapClick}
+                  style={{ height: 320, borderRadius: 0, border: 'none', cursor: 'crosshair', position: 'relative' }}>
+                  <div className="road" style={{ top: '30%', left: 0, right: 0, height: 10 }}></div>
+                  <div className="road" style={{ top: '65%', left: 0, right: 0, height: 8 }}></div>
+                  <div className="road" style={{ top: 0, bottom: 0, left: '40%', width: 8 }}></div>
+                  <div className="road" style={{ top: 0, bottom: 0, left: '70%', width: 6 }}></div>
+                  <div className="map-pin" style={{ top: `${pin.y}%`, left: `${pin.x}%` }}>
+                    <div className="dot"></div>
+                    <div className="ring"></div>
+                  </div>
+                  <div style={{ position: 'absolute', top: 12, left: 12, background: 'var(--surface)', padding: '6px 12px', borderRadius: 6, fontSize: 11, fontFamily: 'var(--font-mono)' }}>
+                    📍 Banjarsari · OpenStreetMap
+                  </div>
+                </div>
+                <div style={{ padding: 18, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                  <Field label="Latitude" mono value={(-8.17 + pin.y * 0.0008).toFixed(6)} />
+                  <Field label="Longitude" mono value={(113.70 + pin.x * 0.0008).toFixed(6)} />
+                </div>
+              </div>
+            )}
+
+            <div className="sidebar">
+              <div className="label-eyebrow">{entity === 'business' ? 'Logo' : 'Galeri'}</div>
+              <h4 style={{ margin: '4px 0 14px', fontSize: 16, fontFamily: 'var(--font-display)', fontWeight: 500 }}>
+                {entity === 'business' ? 'Logo Usaha' : 'Foto Galeri'}
+              </h4>
+              {entity !== 'business' ? (
+                <div>
+                  <div style={{ aspectRatio: '4/3', background: 'var(--cream-100)', border: '2px dashed var(--line-strong)', borderRadius: 12, display: 'grid', placeItems: 'center', cursor: 'pointer', marginBottom: 10 }}>
+                    <div style={{ textAlign: 'center', color: 'var(--ink-500)' }}>
+                      <Icon.Image style={{ width: 24, height: 24, marginBottom: 6 }} />
+                      <div style={{ fontSize: 13 }}>Tarik foto utama</div>
+                    </div>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+                    {[0,1,2].map(i => (
+                      <div key={i} style={{ aspectRatio: '1', background: 'var(--cream-100)', border: '1px dashed var(--line-strong)', borderRadius: 8, display: 'grid', placeItems: 'center', color: 'var(--ink-300)' }}>
+                        <Icon.Plus />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', gap: 14, alignItems: 'center' }}>
+                  <div style={{ width: 72, height: 72, borderRadius: 16, background: 'var(--clay-600)', color: 'var(--cream-50)', display: 'grid', placeItems: 'center', fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: 26 }}>
+                    {editing ? editing.logo : '?'}
+                  </div>
+                  <div>
+                    <button className="btn btn-secondary btn-sm"><Icon.Upload /> Unggah Logo</button>
+                    <div className="mono" style={{ fontSize: 10, color: 'var(--ink-500)', marginTop: 8 }}>PNG/JPG, maks 1 MB</div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {entity !== 'business' && (
+              <div className="sidebar">
+                <div className="label-eyebrow">PBI-29 · SEO</div>
+                <h4 style={{ margin: '4px 0 14px', fontSize: 16, fontFamily: 'var(--font-display)', fontWeight: 500 }}>Meta Tag (auto)</h4>
+                <Field label="Meta Title" auto value={editing ? `${editing.name} - ${D.findBusiness(editing.businessId).name} | PALUGADA` : 'Otomatis dari nama produk'} />
+                <div style={{ height: 12 }}></div>
+                <Field label="Meta Description" auto multiline value={editing ? (editing.description.slice(0, 145) + '...') : 'Otomatis dari deskripsi'} />
+              </div>
+            )}
+          </aside>
+        </div>
+      </main>
+      <style>{`
+        @media (max-width: 1024px) { .edit-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
+    </div>
+  );
+}
+
+function BusinessForm({ editing }) {
+  const D = window.PALUGADA_DATA;
+  return (
+    <>
+      <FormCard title="Informasi Usaha" eyebrow="Identitas">
+        <FormGrid>
+          <Field label="Nama Usaha" required value={editing?.name} placeholder="Misal: Warung Bu Endang" />
+          <Field label="Nama Pemilik" required value={editing?.owner} placeholder="Nama lengkap" />
+        </FormGrid>
+        <FormGrid>
+          <Field label="Kategori" required select options={['Kuliner','Kerajinan','Jasa Reparasi','Jasa Kecantikan','Jasa Kesehatan','Jasa Rumah Tangga','Jasa Konstruksi']} value={editing?.categories?.[0]} />
+          <Field label="Dusun" required select options={D.areas} value={editing?.area} />
+        </FormGrid>
+        <Field label="Deskripsi Usaha" required multiline value={editing?.description} placeholder="Ceritakan secara singkat tentang usaha ini..." />
+      </FormCard>
+
+      <FormCard title="Kontak & Lokasi" eyebrow="Hubungi">
+        <Field label="Alamat Lengkap" required value={editing?.address} placeholder="Jl. ... No. ... RT/RW" />
+        <FormGrid>
+          <Field label="Nomor Telepon" required value={editing?.phone} placeholder="62812..." mono />
+          <Field label="Marketplace URL" optional value={editing?.marketplaceLink || ''} placeholder="tokopedia.com/..." />
+        </FormGrid>
+      </FormCard>
+    </>
+  );
+}
+
+function ProductForm({ editing }) {
+  const D = window.PALUGADA_DATA;
+  return (
+    <>
+      <FormCard title="Informasi Produk" eyebrow="Detail">
+        <Field label="Nama Produk" required value={editing?.name} />
+        <FormGrid>
+          <Field label="UMKM Pemilik" required select options={D.businesses.map(b => b.name)} value={editing ? D.findBusiness(editing.businessId).name : ''} />
+          <Field label="Kategori" required select options={D.productCategories} value={editing?.category} />
+        </FormGrid>
+        <FormGrid>
+          <Field label="Harga (Rp)" required value={editing?.price} mono />
+          <Field label="Grup Rentang Harga" select options={['< Rp 50.000','Rp 50.000 - Rp 100.000','> Rp 100.000']} value={editing ? '< Rp 50.000' : ''} />
+        </FormGrid>
+        <Field label="Deskripsi Lengkap" required multiline rows={5} value={editing?.description} />
+      </FormCard>
+
+      <FormCard title="Tautan & Pelacakan" eyebrow="Channel">
+        <FormGrid>
+          <Field label="Link Marketplace" value={editing?.marketplaceLink || ''} placeholder="tokopedia / shopee URL" />
+          <Field label="Nomor WhatsApp" mono value={editing ? D.findBusiness(editing.businessId).wa : ''} />
+        </FormGrid>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 16px', background: 'var(--cream-100)', borderRadius: 10 }}>
+          <div>
+            <div style={{ fontWeight: 600, fontSize: 14 }}>Aktifkan tracking klik (PBI-28)</div>
+            <div style={{ fontSize: 12, color: 'var(--ink-500)' }}>Catat setiap klik untuk analytics dashboard</div>
+          </div>
+          <input type="checkbox" defaultChecked style={{ width: 18, height: 18, accentColor: 'var(--primary)' }} />
+        </div>
+      </FormCard>
+    </>
+  );
+}
+
+function ServiceForm({ editing }) {
+  const D = window.PALUGADA_DATA;
+  return (
+    <>
+      <FormCard title="Informasi Jasa" eyebrow="Detail">
+        <Field label="Nama Jasa" required value={editing?.name} />
+        <FormGrid>
+          <Field label="Penyedia Jasa" required select options={D.businesses.map(b => b.name)} value={editing ? D.findBusiness(editing.businessId).name : ''} />
+          <Field label="Kategori" required select options={D.serviceCategories} value={editing?.category} />
+        </FormGrid>
+        <FormGrid>
+          <Field label="Estimasi Harga" required value={editing?.priceEstimation} placeholder="Rp 80.000 - 150.000" />
+          <Field label="Tipe Layanan" select options={['Panggilan','On-Site']} value={editing?.serviceType} />
+        </FormGrid>
+        <FormGrid>
+          <Field label="Ketersediaan" select options={['Setiap Hari','Janjian']} value={editing?.availability} />
+          <Field label="Punya Portfolio?" select options={['Ya','Tidak']} value={editing?.hasPortfolio ? 'Ya' : 'Tidak'} />
+        </FormGrid>
+        <div style={{ display: 'flex', gap: 24 }}>
+          <CheckRow label="Harga bisa dinegosiasi" checked={editing?.isNegotiable} />
+          <CheckRow label="Bisa panggilan ke rumah" checked={editing?.serviceType === 'Panggilan'} />
+        </div>
+        <Field label="Deskripsi Lengkap" required multiline rows={5} value={editing?.description} />
+      </FormCard>
+    </>
+  );
+}
+
+// Form primitives
+const FormCard = ({ title, eyebrow, children }) => (
+  <div className="sidebar" style={{ padding: 24 }}>
+    <div style={{ marginBottom: 18 }}>
+      <div className="label-eyebrow">{eyebrow}</div>
+      <h3 style={{ margin: '4px 0 0', fontSize: 18, fontFamily: 'var(--font-display)', fontWeight: 500 }}>{title}</h3>
+    </div>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>{children}</div>
+  </div>
+);
+const FormGrid = ({ children }) => (
+  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>{children}</div>
+);
+const Field = ({ label, required, optional, auto, value, placeholder, multiline, rows = 3, mono, select, options = [] }) => (
+  <label style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--ink-700)' }}>
+        {label} {required && <span style={{ color: 'var(--clay-600)' }}>*</span>}
+      </span>
+      {optional && <span style={{ fontSize: 11, color: 'var(--ink-500)' }}>opsional</span>}
+      {auto && <span className="mono" style={{ fontSize: 9, color: 'var(--palm-700)', letterSpacing: '0.1em' }}>AUTO</span>}
+    </div>
+    {select ? (
+      <select className="select" defaultValue={value || ''}>
+        <option value="">Pilih…</option>
+        {options.map(o => <option key={o} value={o}>{o}</option>)}
+      </select>
+    ) : multiline ? (
+      <textarea className="textarea" rows={rows} defaultValue={value || ''} placeholder={placeholder}
+        style={mono ? { fontFamily: 'var(--font-mono)', fontSize: 13 } : null} />
+    ) : (
+      <input className="input" defaultValue={value || ''} placeholder={placeholder}
+        style={mono ? { fontFamily: 'var(--font-mono)', fontSize: 13 } : null} />
+    )}
+  </label>
+);
+const CheckRow = ({ label, checked }) => (
+  <label style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 14, cursor: 'pointer' }}>
+    <input type="checkbox" defaultChecked={!!checked} style={{ width: 16, height: 16, accentColor: 'var(--primary)' }} />
+    {label}
+  </label>
+);
+
+window.PalScreens = window.PalScreens || {};
+window.PalScreens.AdminEdit = AdminEdit;
+
+})();
+
+// ===== tweaks-panel.jsx =====
+(function(){
+
+// tweaks-panel.jsx
+// Reusable Tweaks shell + form-control helpers.
+//
+// Owns the host protocol (listens for __activate_edit_mode / __deactivate_edit_mode,
+// posts __edit_mode_available / __edit_mode_set_keys / __edit_mode_dismissed) so
+// individual prototypes don't re-roll it. Ships a consistent set of controls so you
+// don't hand-draw <input type="range">, segmented radios, steppers, etc.
+//
+// Usage (in an HTML file that loads React + Babel):
+//
+//   const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+//     "primaryColor": "#D97757",
+//     "palette": ["#D97757", "#29261b", "#f6f4ef"],
+//     "fontSize": 16,
+//     "density": "regular",
+//     "dark": false
+//   }/*EDITMODE-END*/;
+//
+//   function App() {
+//     const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+//     return (
+//       <div style={{ fontSize: t.fontSize, color: t.primaryColor }}>
+//         Hello
+//         <TweaksPanel>
+//           <TweakSection label="Typography" />
+//           <TweakSlider label="Font size" value={t.fontSize} min={10} max={32} unit="px"
+//                        onChange={(v) => setTweak('fontSize', v)} />
+//           <TweakRadio  label="Density" value={t.density}
+//                        options={['compact', 'regular', 'comfy']}
+//                        onChange={(v) => setTweak('density', v)} />
+//           <TweakSection label="Theme" />
+//           <TweakColor  label="Primary" value={t.primaryColor}
+//                        options={['#D97757', '#2A6FDB', '#1F8A5B', '#7A5AE0']}
+//                        onChange={(v) => setTweak('primaryColor', v)} />
+//           <TweakColor  label="Palette" value={t.palette}
+//                        options={[['#D97757', '#29261b', '#f6f4ef'],
+//                                  ['#475569', '#0f172a', '#f1f5f9']]}
+//                        onChange={(v) => setTweak('palette', v)} />
+//           <TweakToggle label="Dark mode" value={t.dark}
+//                        onChange={(v) => setTweak('dark', v)} />
+//         </TweaksPanel>
+//       </div>
+//     );
+//   }
+//
+// ─────────────────────────────────────────────────────────────────────────────
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+
+  .twk-field{appearance:none;box-sizing:border-box;width:100%;min-width:0;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;
+    overflow-wrap:anywhere}
+
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+
+  .twk-num{display:flex;align-items:center;box-sizing:border-box;min-width:0;height:26px;padding:0 0 0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;background:rgba(255,255,255,.6)}
+  .twk-num-lbl{font-weight:500;color:rgba(41,38,27,.6);cursor:ew-resize;
+    user-select:none;padding-right:8px}
+  .twk-num input{flex:1;min-width:0;height:100%;border:0;background:transparent;
+    font:inherit;font-variant-numeric:tabular-nums;text-align:right;padding:0 8px 0 0;
+    outline:none;color:inherit;-moz-appearance:textfield}
+  .twk-num input::-webkit-inner-spin-button,.twk-num input::-webkit-outer-spin-button{
+    -webkit-appearance:none;margin:0}
+  .twk-num-unit{padding-right:8px;color:rgba(41,38,27,.45)}
+
+  .twk-btn{appearance:none;height:26px;padding:0 12px;border:0;border-radius:7px;
+    background:rgba(0,0,0,.78);color:#fff;font:inherit;font-weight:500;cursor:default}
+  .twk-btn:hover{background:rgba(0,0,0,.88)}
+  .twk-btn.secondary{background:rgba(0,0,0,.06);color:inherit}
+  .twk-btn.secondary:hover{background:rgba(0,0,0,.1)}
+
+  .twk-swatch{appearance:none;-webkit-appearance:none;width:56px;height:22px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:6px;padding:0;cursor:default;
+    background:transparent;flex-shrink:0}
+  .twk-swatch::-webkit-color-swatch-wrapper{padding:0}
+  .twk-swatch::-webkit-color-swatch{border:0;border-radius:5.5px}
+  .twk-swatch::-moz-color-swatch{border:0;border-radius:5.5px}
+
+  .twk-chips{display:flex;gap:6px}
+  .twk-chip{position:relative;appearance:none;flex:1;min-width:0;height:46px;
+    padding:0;border:0;border-radius:6px;overflow:hidden;cursor:default;
+    box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.06);
+    transition:transform .12s cubic-bezier(.3,.7,.4,1),box-shadow .12s}
+  .twk-chip:hover{transform:translateY(-1px);
+    box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 4px 10px rgba(0,0,0,.12)}
+  .twk-chip[data-on="1"]{box-shadow:0 0 0 1.5px rgba(0,0,0,.85),
+    0 2px 6px rgba(0,0,0,.15)}
+  .twk-chip>span{position:absolute;top:0;bottom:0;right:0;width:34%;
+    display:flex;flex-direction:column;box-shadow:-1px 0 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i{flex:1;box-shadow:0 -1px 0 rgba(0,0,0,.1)}
+  .twk-chip>span>i:first-child{box-shadow:none}
+  .twk-chip svg{position:absolute;top:6px;left:6px;width:13px;height:13px;
+    filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+`;
+
+// ── useTweaks ───────────────────────────────────────────────────────────────
+// Single source of truth for tweak values. setTweak persists via the host
+// (__edit_mode_set_keys → host rewrites the EDITMODE block on disk).
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  // Accepts either setTweak('key', value) or setTweak({ key: value, ... }) so a
+  // useState-style call doesn't write a "[object Object]" key into the persisted
+  // JSON block.
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    // Same-window signal so in-page listeners (deck-stage rail thumbnails)
+    // can react — the parent message only reaches the host, not peers.
+    window.dispatchEvent(new CustomEvent('tweakchange', { detail: edits }));
+  }, []);
+  return [values, setTweak];
+}
+
+// ── TweaksPanel ─────────────────────────────────────────────────────────────
+// Floating shell. Registers the protocol listener BEFORE announcing
+// availability — if the announce ran first, the host's activate could land
+// before our handler exists and the toolbar toggle would silently no-op.
+// The close button posts __edit_mode_dismissed so the host's toolbar toggle
+// flips off in lockstep; the host echoes __deactivate_edit_mode back which
+// is what actually hides the panel.
+function TweaksPanel({ title = 'Tweaks', noDeckControls = false, children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  // Auto-inject a rail toggle when a <deck-stage> is on the page. The
+  // toggle drives the deck's per-viewer _railVisible via window message;
+  // state is mirrored from the same localStorage key the deck reads so
+  // the control reflects reality across reloads. The mechanism is the
+  // message — authors who want custom placement can post it directly
+  // and pass noDeckControls to suppress this one.
+  const hasDeckStage = React.useMemo(
+    () => typeof document !== 'undefined' && !!document.querySelector('deck-stage'),
+    [],
+  );
+  // Hide the toggle until the host has actually enabled the rail (the
+  // __omelette_rail_enabled window message, posted only when the
+  // omelette_deck_rail_enabled flag is on for this user). The initial read
+  // covers TweaksPanel mounting after the message already arrived; the
+  // listener covers the common case of mounting first.
+  const [railEnabled, setRailEnabled] = React.useState(
+    () => hasDeckStage && !!document.querySelector('deck-stage')?._railEnabled,
+  );
+  React.useEffect(() => {
+    if (!hasDeckStage || railEnabled) return undefined;
+    const onMsg = (e) => {
+      if (e.data && e.data.type === '__omelette_rail_enabled') setRailEnabled(true);
+    };
+    window.addEventListener('message', onMsg);
+    return () => window.removeEventListener('message', onMsg);
+  }, [hasDeckStage, railEnabled]);
+  const [railVisible, setRailVisible] = React.useState(() => {
+    try { return localStorage.getItem('deck-stage.railVisible') !== '0'; } catch (e) { return true; }
+  });
+  const toggleRail = (on) => {
+    setRailVisible(on);
+    window.postMessage({ type: '__deck_rail_visible', on }, '*');
+  };
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', clampToViewport);
+      return () => window.removeEventListener('resize', clampToViewport);
+    }
+    const ro = new ResizeObserver(clampToViewport);
+    ro.observe(document.documentElement);
+    return () => ro.disconnect();
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*');
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = {
+        x: startRight - (ev.clientX - sx),
+        y: startBottom - (ev.clientY - sy),
+      };
+      clampToViewport();
+    };
+    const up = () => {
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', up);
+    };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" data-noncommentable=""
+           style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" aria-label="Close tweaks"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">
+          {children}
+          {hasDeckStage && railEnabled && !noDeckControls && (
+            <TweakSection label="Deck">
+              <TweakToggle label="Thumbnail rail" value={railVisible} onChange={toggleRail} />
+            </TweakSection>
+          )}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ── Layout helpers ──────────────────────────────────────────────────────────
+
+function TweakSection({ label, children }) {
+  return (
+    <>
+      <div className="twk-sect">{label}</div>
+      {children}
+    </>
+  );
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+// ── Controls ────────────────────────────────────────────────────────────────
+
+function TweakSlider({ label, value, min = 0, max = 100, step = 1, unit = '', onChange }) {
+  return (
+    <TweakRow label={label} value={`${value}${unit}`}>
+      <input type="range" className="twk-slider" min={min} max={max} step={step}
+             value={value} onChange={(e) => onChange(Number(e.target.value))} />
+    </TweakRow>
+  );
+}
+
+function TweakToggle({ label, value, onChange }) {
+  return (
+    <div className="twk-row twk-row-h">
+      <div className="twk-lbl"><span>{label}</span></div>
+      <button type="button" className="twk-toggle" data-on={value ? '1' : '0'}
+              role="switch" aria-checked={!!value}
+              onClick={() => onChange(!value)}><i /></button>
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  // The active value is read by pointer-move handlers attached for the lifetime
+  // of a drag — ref it so a stale closure doesn't fire onChange for every move.
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  // Segments wrap mid-word once per-segment width runs out. The track is
+  // ~248px (280 panel − 28 body pad − 4 seg pad), each button loses 12px
+  // to its own padding, and 11.5px system-ui averages ~6.3px/char — so 2
+  // options fit ~16 chars each, 3 fit ~10. Past that (or >3 options), fall
+  // back to a dropdown rather than wrap.
+  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
+  if (!fitsAsSegments) {
+    // <select> emits strings — map back to the original option value so the
+    // fallback stays type-preserving (numbers, booleans) like the segment path.
+    const resolve = (s) => {
+      const m = options.find((o) => String(typeof o === 'object' ? o.value : o) === s);
+      return m === undefined ? s : typeof m === 'object' ? m.value : m;
+    };
+    return <TweakSelect label={label} value={value} options={options}
+                        onChange={(s) => onChange(resolve(s))} />;
+  }
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => {
+      if (!trackRef.current) return;
+      const v = segAt(ev.clientX);
+      if (v !== valueRef.current) onChange(v);
+    };
+    const up = () => {
+      setDragging(false);
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`,
+                      width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>
+            {o.label}
+          </button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakSelect({ label, value, options, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <select className="twk-field" value={value} onChange={(e) => onChange(e.target.value)}>
+        {options.map((o) => {
+          const v = typeof o === 'object' ? o.value : o;
+          const l = typeof o === 'object' ? o.label : o;
+          return <option key={v} value={v}>{l}</option>;
+        })}
+      </select>
+    </TweakRow>
+  );
+}
+
+function TweakText({ label, value, placeholder, onChange }) {
+  return (
+    <TweakRow label={label}>
+      <input className="twk-field" type="text" value={value} placeholder={placeholder}
+             onChange={(e) => onChange(e.target.value)} />
+    </TweakRow>
+  );
+}
+
+function TweakNumber({ label, value, min, max, step = 1, unit = '', onChange }) {
+  const clamp = (n) => {
+    if (min != null && n < min) return min;
+    if (max != null && n > max) return max;
+    return n;
+  };
+  const startRef = React.useRef({ x: 0, val: 0 });
+  const onScrubStart = (e) => {
+    e.preventDefault();
+    startRef.current = { x: e.clientX, val: value };
+    const decimals = (String(step).split('.')[1] || '').length;
+    const move = (ev) => {
+      const dx = ev.clientX - startRef.current.x;
+      const raw = startRef.current.val + dx * step;
+      const snapped = Math.round(raw / step) * step;
+      onChange(clamp(Number(snapped.toFixed(decimals))));
+    };
+    const up = () => {
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('pointerup', up);
+    };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+  return (
+    <div className="twk-num">
+      <span className="twk-num-lbl" onPointerDown={onScrubStart}>{label}</span>
+      <input type="number" value={value} min={min} max={max} step={step}
+             onChange={(e) => onChange(clamp(Number(e.target.value)))} />
+      {unit && <span className="twk-num-unit">{unit}</span>}
+    </div>
+  );
+}
+
+// Relative-luminance contrast pick — checkmarks drawn over a swatch need to
+// read on both #111 and #fafafa without per-option configuration. Hex input
+// only (#rgb / #rrggbb); named or rgb()/hsl() colors fall through to "light".
+function __twkIsLight(hex) {
+  const h = String(hex).replace('#', '');
+  const x = h.length === 3 ? h.replace(/./g, (c) => c + c) : h.padEnd(6, '0');
+  const n = parseInt(x.slice(0, 6), 16);
+  if (Number.isNaN(n)) return true;
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return r * 299 + g * 587 + b * 114 > 148000;
+}
+
+const __TwkCheck = ({ light }) => (
+  <svg viewBox="0 0 14 14" aria-hidden="true">
+    <path d="M3 7.2 5.8 10 11 4.2" fill="none" strokeWidth="2.2"
+          strokeLinecap="round" strokeLinejoin="round"
+          stroke={light ? 'rgba(0,0,0,.78)' : '#fff'} />
+  </svg>
+);
+
+// TweakColor — curated color/palette picker. Each option is either a single
+// hex string or an array of 1-5 hex strings; the card adapts — a lone color
+// renders solid, a palette renders colors[0] as the hero (left ~2/3) with the
+// rest stacked in a sharp column on the right. onChange emits the
+// option in the shape it was passed (string stays string, array stays array).
+// Without options it falls back to the native color input for back-compat.
+function TweakColor({ label, value, options, onChange }) {
+  if (!options || !options.length) {
+    return (
+      <div className="twk-row twk-row-h">
+        <div className="twk-lbl"><span>{label}</span></div>
+        <input type="color" className="twk-swatch" value={value}
+               onChange={(e) => onChange(e.target.value)} />
+      </div>
+    );
+  }
+  // Native <input type=color> emits lowercase hex per the HTML spec, so
+  // compare case-insensitively. String() guards JSON.stringify(undefined),
+  // which returns the primitive undefined (no .toLowerCase).
+  const key = (o) => String(JSON.stringify(o)).toLowerCase();
+  const cur = key(value);
+  return (
+    <TweakRow label={label}>
+      <div className="twk-chips" role="radiogroup">
+        {options.map((o, i) => {
+          const colors = Array.isArray(o) ? o : [o];
+          const [hero, ...rest] = colors;
+          const sup = rest.slice(0, 4);
+          const on = key(o) === cur;
+          return (
+            <button key={i} type="button" className="twk-chip" role="radio"
+                    aria-checked={on} data-on={on ? '1' : '0'}
+                    aria-label={colors.join(', ')} title={colors.join(' · ')}
+                    style={{ background: hero }}
+                    onClick={() => onChange(o)}>
+              {sup.length > 0 && (
+                <span>
+                  {sup.map((c, j) => <i key={j} style={{ background: c }} />)}
+                </span>
+              )}
+              {on && <__TwkCheck light={__twkIsLight(hero)} />}
+            </button>
+          );
+        })}
+      </div>
+    </TweakRow>
+  );
+}
+
+function TweakButton({ label, onClick, secondary = false }) {
+  return (
+    <button type="button" className={secondary ? 'twk-btn secondary' : 'twk-btn'}
+            onClick={onClick}>{label}</button>
+  );
+}
+
+Object.assign(window, {
+  useTweaks, TweaksPanel, TweakSection, TweakRow,
+  TweakSlider, TweakToggle, TweakRadio, TweakSelect,
+  TweakText, TweakNumber, TweakColor, TweakButton,
+});
+
+})();
+
+
+const { useState, useEffect, useMemo } = React;
+
+    const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+      "homeVariant": "A",
+      "accent": "clay",
+      "showPbiTags": true
+    }/*EDITMODE-END*/;
+
+    const ACCENTS = {
+      clay:  { '--primary': '#B0431F', '--primary-hover': '#8C3214', '--clay-100': '#F6E0D4' },
+      palm:  { '--primary': '#2E5034', '--primary-hover': '#1E3622', '--clay-100': '#DCE7DC' },
+      ochre: { '--primary': '#9D6C1E', '--primary-hover': '#7A521A', '--clay-100': 'rgba(217,169,87,0.18)' },
+    };
+
+    function App() {
+      const [route, setRoute] = useState('home');
+      const [params, setParams] = useState({});
+      const [search, setSearch] = useState('');
+      const [toast, setToast] = useState(null);
+      const [tweaks, setTweaks] = useState(TWEAK_DEFAULTS);
+
+      // Router
+      window.navigate = (r, p = {}) => {
+        setRoute(r); setParams(p);
+        if (p.q) setSearch(p.q);
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        history.replaceState(null, '', '#' + r + (Object.keys(p).length ? '?' + new URLSearchParams(Object.fromEntries(Object.entries(p).filter(([k,v]) => typeof v !== 'object'))).toString() : ''));
+      };
+      const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(null), 2400); };
+
+      // Init from hash
+      useEffect(() => {
+        const m = location.hash.match(/^#([\w-]+)(?:\?(.+))?/);
+        if (m) {
+          const p = m[2] ? Object.fromEntries(new URLSearchParams(m[2])) : {};
+          setRoute(m[1]); setParams(p);
+        }
+      }, []);
+
+      // Apply accent tweak
+      useEffect(() => {
+        const a = ACCENTS[tweaks.accent] || ACCENTS.clay;
+        const root = document.documentElement;
+        Object.entries(a).forEach(([k, v]) => root.style.setProperty(k, v));
+      }, [tweaks.accent]);
+
+      // Hide PBI tags?
+      useEffect(() => {
+        if (tweaks.showPbiTags) {
+          document.documentElement.style.removeProperty('--pbi-display');
+          const style = document.getElementById('pbi-toggle-style');
+          if (style) style.remove();
+        } else {
+          let style = document.getElementById('pbi-toggle-style');
+          if (!style) {
+            style = document.createElement('style');
+            style.id = 'pbi-toggle-style';
+            style.textContent = '.label-eyebrow:has-text("PBI") { display: none; }';
+            // simpler: hide eyebrows that start with PBI
+            style.textContent = '.label-eyebrow { font-size: 0 !important; height: 0 !important; margin: 0 !important; overflow: hidden; }';
+            document.head.appendChild(style);
+          }
+        }
+      }, [tweaks.showPbiTags]);
+
+      const { Header, Footer } = window.PalChrome || {};
+      const isAdmin = route.startsWith('admin');
+      const openEdit = (entity, item = null) => {
+        setRoute('admin-edit'); setParams({ entity, item });
+      };
+
+      const S = window.PalScreens;
+
+      let content;
+      if (route === 'home') content = <S.Home variant={tweaks.homeVariant} />;
+      else if (route === 'catalog') content = <S.Catalog params={params} />;
+      else if (route === 'product-detail') content = <S.ProductDetail params={params} showToast={showToast} />;
+      else if (route === 'service-detail') content = <S.ServiceDetail params={params} showToast={showToast} />;
+      else if (route === 'business') content = <S.BusinessProfile params={params} showToast={showToast} />;
+      else if (route === 'admin-dashboard') content = <S.AdminDashboard />;
+      else if (route === 'admin-master-business') content = <S.AdminMasterData entity="business" openEdit={openEdit} />;
+      else if (route === 'admin-master-product') content = <S.AdminMasterData entity="product" openEdit={openEdit} />;
+      else if (route === 'admin-master-service') content = <S.AdminMasterData entity="service" openEdit={openEdit} />;
+      else if (route === 'admin-edit') content = <S.AdminEdit params={params} showToast={showToast} />;
+      else content = <S.Home />;
+
+      return (
+        <div className="app-root" data-screen-label={route}>
+          {!isAdmin && Header && <Header route={route} search={search} setSearch={setSearch} />}
+          {content}
+          {!isAdmin && Footer && <Footer />}
+          {toast && <div className="toast">{toast}</div>}
+          <window.TweaksPanel title="PALUGADA Tweaks">
+            <window.TweakSection label="Halaman Beranda">
+              <window.TweakRadio label="Varian Beranda" value={tweaks.homeVariant}
+                options={[{value:'A',label:'A · Editorial'},{value:'B',label:'B · Bold Hero'}]}
+                onChange={(v) => setTweak('homeVariant', v)} />
+            </window.TweakSection>
+            <window.TweakSection label="Identitas Visual">
+              <window.TweakColor label="Aksen Utama"
+                value={tweaks.accent}
+                options={['clay','palm','ochre']}
+                onChange={(v) => setTweak('accent', v)} />
+              <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
+                {[['clay','Terakota'],['palm','Hijau'],['ochre','Ochre']].map(([a,l]) => (
+                  <button key={a} onClick={() => setTweak('accent', a)}
+                    style={{
+                      flex: 1, padding: '8px', borderRadius: 8, fontSize: 12,
+                      background: tweaks.accent === a ? 'var(--ink-900)' : 'var(--cream-100)',
+                      color: tweaks.accent === a ? 'var(--cream-50)' : 'var(--ink-700)',
+                      border: '1px solid var(--line)', fontWeight: 500, cursor: 'pointer',
+                    }}>{l}</button>
+                ))}
+              </div>
+            </window.TweakSection>
+            <window.TweakSection label="Debug">
+              <window.TweakToggle label="Label PBI" value={tweaks.showPbiTags}
+                onChange={(v) => setTweak('showPbiTags', v)} />
+            </window.TweakSection>
+            <window.TweakSection label="Lompat ke Halaman">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+                {[
+                  ['home','Beranda'],['catalog','Katalog'],
+                  ['product-detail','Detail Produk'],['service-detail','Detail Jasa'],
+                  ['business','Profil Usaha'],['admin-dashboard','Admin Dashboard'],
+                  ['admin-master-business','Master UMKM'],['admin-edit','Tambah/Edit'],
+                ].map(([r,l]) => (
+                  <button key={r} onClick={() => window.navigate(r, r === 'admin-edit' ? {entity:'business'} : r === 'product-detail' ? {id:'p1'} : r === 'service-detail' ? {id:'s1'} : r === 'business' ? {id:'b1'} : {})}
+                    style={{
+                      padding: '8px', fontSize: 11, borderRadius: 6,
+                      background: route === r ? 'var(--clay-600)' : 'var(--cream-100)',
+                      color: route === r ? 'var(--cream-50)' : 'var(--ink-700)',
+                      textAlign: 'left', fontWeight: 500, cursor: 'pointer', border: '1px solid var(--line)',
+                    }}>{l}</button>
+                ))}
+              </div>
+            </window.TweakSection>
+          </window.TweaksPanel>
+        </div>
+      );
+
+      function setTweak(key, value) {
+        setTweaks(t => {
+          const next = typeof key === 'object' ? { ...t, ...key } : { ...t, [key]: value };
+          window.parent.postMessage({ type: '__edit_mode_set_keys', edits: next }, '*');
+          return next;
+        });
+      }
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  
+</script>
+</body>
+</html>

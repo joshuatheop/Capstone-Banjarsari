@@ -1,0 +1,551 @@
+/* ============================================================
+   Admin — Jasa List (table view)
+   Reusing produk.module.css styles
+   ============================================================ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---- Header ---- */
+.adminHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.headerActions { display: flex; gap: 10px; align-items: center; }
+
+/* ---- Buttons ---- */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: var(--font-body);
+  background: var(--color-accent);
+  color: var(--color-dark);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(205,255,0,0.25);
+}
+.btnPrimary:hover {
+  background: #d6ff2e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(205,255,0,0.35);
+}
+
+.btnSecondary {
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btnSecondary:hover:not(:disabled) { background: rgba(5,71,43,0.1); }
+
+.btnGhost {
+  padding: 7px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btnGhost:hover { background: var(--surface-2); }
+
+.btnDanger { color: #c0392b !important; }
+
+.btnDangerSolid {
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-body);
+  background: #c0392b;
+  color: white;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btnDangerSolid:hover:not(:disabled) { background: #a93226; }
+.btnDangerSolid:disabled, .btnSecondary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---- Toolbar ---- */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.searchBox {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 13px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 17px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  height: 40px;
+  padding: 0 14px 0 40px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-family: var(--font-body);
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.searchInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(5,71,43,0.1);
+}
+.searchInput::placeholder { color: var(--text-muted); }
+
+.selectFilter {
+  height: 40px;
+  padding: 0 32px 0 12px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font-body);
+  outline: none;
+  cursor: pointer;
+  transition: border 0.15s, box-shadow 0.15s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232D5740' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 14px;
+}
+.selectFilter:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(5,71,43,0.1);
+}
+
+.bulkActions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bulkCount {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ---- Table ---- */
+.tableWrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.tableScroll {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1100px;
+}
+
+.table thead tr {
+  border-bottom: 1px solid var(--border);
+  background: rgba(5,71,43,0.03);
+}
+
+.table th {
+  padding: 12px 16px;
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.table th input[type="checkbox"],
+.table td input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+.tableRow {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.12s;
+}
+.tableRow:last-child { border-bottom: none; }
+.tableRow:hover { background: rgba(5,71,43,0.02); }
+
+.table td {
+  padding: 13px 16px;
+  font-size: 14px;
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+/* ---- Produk cell ---- */
+.tdProduk { min-width: 200px; }
+
+.produkCell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.thumbnail {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+}
+
+.thumbPlaceholder {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  border: 1px dashed var(--border-strong);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.produkName {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.produkDesc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+  line-height: 1.3;
+}
+
+/* ---- Tags ---- */
+.tagKategori {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: var(--font-heading);
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  background: var(--surface-2);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.tagRange {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-family: var(--font-heading);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  background: rgba(0,192,163,0.1);
+  color: var(--color-aqua);
+  white-space: nowrap;
+}
+
+.mono {
+  font-family: var(--font-heading);
+  font-size: 13px;
+}
+
+/* ---- Action buttons (kebab style) ---- */
+.actionGroup {
+  display: inline-flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.kebab {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: background 0.13s;
+}
+.kebab:hover { background: var(--surface-2); }
+.kebabDanger:hover { background: rgba(192,57,43,0.08); }
+
+/* ---- Table footer ---- */
+.tableFoot {
+  padding: 13px 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border);
+  background: rgba(5,71,43,0.015);
+}
+
+.tableCount {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+/* ---- Loading ---- */
+.loadingWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 80px 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- Empty state ---- */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.emptyIcon { font-size: 40px; }
+.emptyTitle {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.emptyDesc { font-size: 13px; color: var(--text-muted); }
+
+/* ---- Modal ---- */
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(1,48,32,0.45);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.modal {
+  background: var(--surface);
+  border-radius: var(--radius-xl);
+  max-width: 440px;
+  width: 100%;
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
+}
+
+.modalTitle {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 10px;
+}
+
+.modalDesc {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0 0 22px;
+}
+
+.modalActions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+/* ---- Toast ---- */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 200;
+  box-shadow: var(--shadow-lg);
+  white-space: nowrap;
+}
+.toastOk { background: var(--color-primary); color: var(--color-white); }
+.toastErr { background: #c0392b; color: white; }
+
+/* ============================
+   RESPONSIVE — JASA LIST
+   ============================ */
+@media (max-width: 768px) {
+  .page {
+    gap: 14px;
+  }
+
+  .adminHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 20px;
+  }
+
+  .headerActions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .toolbar {
+    gap: 8px;
+  }
+
+  .searchBox {
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .selectFilter {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .bulkActions {
+    margin-left: 0;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .tableFoot {
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+    padding: 12px 14px;
+  }
+
+  .modal {
+    padding: 20px 16px;
+  }
+
+  .modalActions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .toast {
+    left: 12px;
+    right: 12px;
+    transform: none;
+    text-align: center;
+    border-radius: 12px;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 18px;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  .emptyState {
+    padding: 48px 0;
+  }
+}

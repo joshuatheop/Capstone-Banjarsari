@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+/* ============================================================
+   PALUGADA Design System — Color Palette
+   ============================================================ */
+.theo-theme {
+  /* === Brand Colors === */
+  --color-primary:   #05472B;  /* dark green — CTA, header bg */
+  --color-secondary: #AADCAB;  /* light green — aksen, badge */
+  --color-dark:      #013020;  /* darkest green — footer, sidebar */
+  --color-accent:    #CDFF00;  /* yellow-green — highlight, hover */
+  --color-aqua:      #00C0A3;  /* aqua green — ikon, status */
+  --color-black:     #000000;
+  --color-white:     #FFFFFF;
+
+  /* === Surface & Background === */
+  --bg:          #F5FBF5;
+  --surface:     #FFFFFF;
+  --surface-2:   #EAF5EA;
+
+  /* === Text === */
+  --text-primary:   #011A0F;
+  --text-secondary: #2D5740;
+  --text-muted:     #6B8F78;
+
+  /* === Border === */
+  --border:       rgba(5, 71, 43, 0.12);
+  --border-strong: rgba(5, 71, 43, 0.22);
+
+  /* === Typography === */
+  --font-heading: 'JetBrains Mono', ui-monospace, monospace;
+  --font-body:    'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+
+  /* === Spacing & Shape === */
+  --radius-sm: 6px;
+  --radius:    10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* === Shadows === */
+  --shadow-sm: 0 1px 3px rgba(5,71,43,0.06), 0 1px 2px rgba(5,71,43,0.04);
+  --shadow:    0 4px 16px rgba(5,71,43,0.10), 0 1px 3px rgba(5,71,43,0.05);
+  --shadow-lg: 0 20px 56px rgba(5,71,43,0.16), 0 8px 16px rgba(5,71,43,0.07);
+}
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.theo-theme {
+  background:  var(--bg);
+  color:       var(--text-primary);
+  font-family: var(--font-body);
+  font-size:   15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.theo-theme {
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  button {
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: none;
+    background: none;
+    color: inherit;
+  }
+
+  input, select, textarea {
+    font-family: var(--font-body);
+    font-size: inherit;
+    color: inherit;
+  }
+
+  img { display: block; max-width: 100%; }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-dark);
+  }
+
+  /* ============================================================
+     Layout Utilities
+     ============================================================ */
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .container-narrow {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ============================================================
+     Buttons
+     ============================================================ */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 11px 22px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 14px;
+    font-family: var(--font-body);
+    transition: all 0.18s ease;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .btn-primary {
+    background: var(--color-accent);
+    color: var(--color-dark);
+    box-shadow: 0 2px 8px rgba(205,255,0,0.3);
+  }
+  .btn-primary:hover {
+    background: #d6ff2e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(205,255,0,0.4);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--color-white);
+    border: 1.5px solid rgba(255,255,255,0.35);
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.6);
+  }
+
+  .btn-dark {
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+  .btn-dark:hover {
+    background: var(--color-dark);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1.5px solid var(--color-primary);
+  }
+  .btn-outline:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  .btn-sm  { padding: 7px 14px; font-size: 13px; }
+  .btn-lg  { padding: 14px 28px; font-size: 16px; }
+
+  /* ============================================================
+     Input
+     ============================================================ */
+  .input {
+    width: 100%;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: var(--radius);
+    border: 1.5px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--text-primary);
+    font-size: 15px;
+    outline: none;
+    transition: border 0.15s, box-shadow 0.15s;
+  }
+  .input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(5, 71, 43, 0.12);
+  }
+  .input::placeholder { color: var(--text-muted); }
+}

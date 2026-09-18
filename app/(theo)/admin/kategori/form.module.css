@@ -1,0 +1,372 @@
+/* ============================================================
+   Admin — Form Tambah / Edit Kategori
+   Mengikuti referensi admin-edit.jsx + PALUGADA globalstheo
+   ============================================================ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 100%;
+}
+
+/* ---- Breadcrumb ---- */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.breadcrumb a {
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: pointer;
+}
+.breadcrumb a:hover { color: var(--text-primary); }
+.breadcrumb .sep { color: var(--border-strong); }
+.breadcrumb span:last-child { color: var(--text-primary); }
+
+/* ---- Header ---- */
+.adminHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.eyebrow {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.pbiNote {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  letter-spacing: 0.02em;
+}
+
+.headerActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* ---- Body grid (form col + aside col) ---- */
+.editGrid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .editGrid { grid-template-columns: 1fr; }
+}
+
+.formCol {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.asideCol {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* ---- FormCard ---- */
+.formCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cardHeader {
+  margin-bottom: 4px;
+}
+
+.cardEyebrow {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 4px 0 0;
+}
+
+/* ---- Form grid ---- */
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+/* ---- Field ---- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.labelOptional {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.required { color: #c0392b; margin-left: 2px; }
+
+.input,
+.select,
+.textarea {
+  height: 40px;
+  padding: 0 13px;
+  border-radius: var(--radius);
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  transition: border 0.15s, box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(5,71,43,0.1);
+}
+
+.input::placeholder,
+.textarea::placeholder { color: var(--text-muted); }
+
+.textarea {
+  height: auto;
+  padding: 11px 13px;
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.55;
+}
+
+.select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232D5740' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 11px center;
+  background-size: 14px;
+  padding-right: 32px;
+}
+
+.inputMono {
+  font-family: var(--font-heading);
+  font-size: 13px;
+}
+
+/* ---- Error ---- */
+.errorMsg {
+  font-size: 11px;
+  color: #c0392b;
+}
+
+/* ---- Click tracking row ---- */
+.trackRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  background: var(--surface-2);
+  border-radius: var(--radius);
+}
+
+.trackInfo { display: flex; flex-direction: column; gap: 2px; }
+.trackTitle { font-weight: 600; font-size: 14px; }
+.trackSub { font-size: 12px; color: var(--text-muted); }
+
+.trackCheckbox {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}
+
+/* Error banner */
+.errorBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  background: rgba(192,57,43,0.07);
+  border: 1px solid rgba(192,57,43,0.18);
+  border-radius: var(--radius);
+  font-size: 13px;
+  color: #c0392b;
+}
+
+/* ---- Buttons ---- */
+.btnPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 14px;
+  font-family: var(--font-body);
+  background: var(--color-accent);
+  color: var(--color-dark);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(205,255,0,0.25);
+}
+.btnPrimary:hover:not(:disabled) {
+  background: #d6ff2e;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(205,255,0,0.35);
+}
+
+.btnSecondary {
+  padding: 9px 18px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-body);
+  background: var(--surface-2);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btnSecondary:hover:not(:disabled) { background: rgba(5,71,43,0.1); }
+
+.btnPrimary:disabled,
+.btnSecondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Not found state */
+.notFound {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 80px 0;
+  text-align: center;
+}
+
+.notFoundIcon { font-size: 40px; }
+.notFoundTitle {
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* ============================
+   RESPONSIVE — KATEGORI FORM
+   ============================ */
+@media (max-width: 768px) {
+  .adminHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .headerActions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .formCard {
+    padding: 16px 14px;
+  }
+
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .fullWidth {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .formCard {
+    padding: 14px 12px;
+    gap: 12px;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    font-size: 16px; /* Prevent iOS zoom on focus */
+  }
+}
