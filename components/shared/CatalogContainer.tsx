@@ -116,10 +116,29 @@ const CatalogContainer = ({
   );
   const getBusinessName = (id: string) => businessMap.get(id) || 'UMKM Banjarsari';
 
+  // Daftar area efektif dari data UMKM yang terdaftar (fallback ke props areas)
+  const effectiveAreas = useMemo(() => {
+    const set = new Set<string>();
+    businesses.forEach((b) => {
+      const a = b.area_name?.trim();
+      if (a) set.add(a);
+    });
+    if (set.size > 0) {
+      return Array.from(set).sort((a, b) => a.localeCompare(b, 'id', { sensitivity: 'base' }));
+    }
+    return areas && areas.length > 0 ? areas : [];
+  }, [areas, businesses]);
+
   const filteredProducts = useMemo(() => {
     let list = [...products];
     if (activeCategories.size > 0) list = list.filter((p) => activeCategories.has(p.category_id));
-    if (activeAreas.size > 0) list = list.filter((p) => activeAreas.has(businessAreaMap.get(p.business_id) ?? ''));
+    if (activeAreas.size > 0) {
+      const activeLower = new Set(Array.from(activeAreas).map((a) => a.trim().toLowerCase()));
+      list = list.filter((p) => {
+        const a = (businessAreaMap.get(p.business_id) || '').trim().toLowerCase();
+        return activeLower.has(a);
+      });
+    }
     if (searchQuery) list = list.filter((p) =>
       p.product_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (p.product_description || '').toLowerCase().includes(searchQuery.toLowerCase())
@@ -143,7 +162,13 @@ const CatalogContainer = ({
   const filteredServices = useMemo(() => {
     let list = [...services];
     if (activeCategories.size > 0) list = list.filter((s) => activeCategories.has(s.category_id));
-    if (activeAreas.size > 0) list = list.filter((s) => activeAreas.has(businessAreaMap.get(s.business_id) ?? ''));
+    if (activeAreas.size > 0) {
+      const activeLower = new Set(Array.from(activeAreas).map((a) => a.trim().toLowerCase()));
+      list = list.filter((s) => {
+        const a = (businessAreaMap.get(s.business_id) || '').trim().toLowerCase();
+        return activeLower.has(a);
+      });
+    }
     if (searchQuery) list = list.filter((s) =>
       s.service_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (s.service_description || '').toLowerCase().includes(searchQuery.toLowerCase())
@@ -316,7 +341,7 @@ const CatalogContainer = ({
                 />
                 <span className="fl-check-label">Semua Area</span>
               </label>
-              {areas.map((a) => (
+              {effectiveAreas.map((a) => (
                 <label key={a} className="fl-check-row">
                   <input
                     type="checkbox"
@@ -442,20 +467,22 @@ const CatalogContainer = ({
             ) : (
               <div className="fl-grid">
                 {type === 'product'
-                  ? filteredProducts.map((p) => (
+                  ? filteredProducts.map((p, index) => (
                       <ProductCard
                         key={p.product_id}
                         product={p}
                         businessName={getBusinessName(p.business_id)}
                         categoryName={categoryMap.get(p.category_id)}
+                        isPopular={index < 4}
                       />
                     ))
-                  : filteredServices.map((s) => (
+                  : filteredServices.map((s, index) => (
                       <ServiceCard
                         key={s.service_id}
                         service={s}
                         businessName={getBusinessName(s.business_id)}
                         categoryName={categoryMap.get(s.category_id)}
+                        isPopular={index < 4}
                       />
                     ))}
               </div>

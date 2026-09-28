@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    Admin — Jasa List (table view)
    Reusing produk.module.css styles
    ============================================================ */
@@ -258,6 +258,7 @@
   height: 40px;
   border-radius: var(--radius-sm);
   object-fit: cover;
+  object-position: center;
   flex-shrink: 0;
   border: 1px solid var(--border);
 }

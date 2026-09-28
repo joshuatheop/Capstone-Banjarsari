@@ -6,6 +6,7 @@ import ServiceCard from "@/components/shared/ServiceCard";
 import MostFavoriteSection from "@/components/shared/MostFavoriteSection";
 import RankRow from "@/components/shared/RankRow";
 import { Icons } from "@/components/shared/Icons";
+import { getServicePriceDisplay } from "@/lib/firestore/types";
 
 export const dynamic = "force-dynamic";
 
@@ -27,20 +28,57 @@ export default async function Home() {
   const businessMap = new Map(businesses.map((b) => [b.business_id, b.business_name]));
   const getBusinessName = (id: string) => businessMap.get(id) || "UMKM Banjarsari";
 
-  // Featured items (default first items)
-  const featuredProducts = products.slice(0, 4);
-  const featuredServices = services.slice(0, 4);
+  // Top 4 product/service IDs berdasarkan clickCount (untuk badge TERPOPULER yang konsisten)
+  const top4ProductIds = new Set(
+    [...products]
+      .sort((a, b) => (b.clickCount ?? 0) - (a.clickCount ?? 0))
+      .slice(0, 4)
+      .map((p) => p.product_id)
+  );
+  const top4ServiceIds = new Set(
+    [...services]
+      .sort((a, b) => (b.clickCount ?? 0) - (a.clickCount ?? 0))
+      .slice(0, 4)
+      .map((s) => s.service_id)
+  );
 
-  // Hero showcase item: produk dengan klik terbanyak (most clicked product)
-  const heroProduct = [...products].sort((a, b) => {
-    const clicksA = a.clickCount ?? 0;
-    const clicksB = b.clickCount ?? 0;
-    if (clicksB !== clicksA) return clicksB - clicksA;
-    const likesA = a.like_count ?? 0;
-    const likesB = b.like_count ?? 0;
-    if (likesB !== likesA) return likesB - likesA;
-    return a.product_name.localeCompare(b.product_name);
-  })[0] ?? products[0];
+  // Featured items: urut A-Z by name (beda dari section produk unggulan yang urut by popularitas)
+  const featuredProducts = [...products]
+    .sort((a, b) => a.product_name.localeCompare(b.product_name))
+    .slice(0, 4);
+  const featuredServices = [...services]
+    .sort((a, b) => a.service_name.localeCompare(b.service_name))
+    .slice(0, 4);
+
+  // Hero showcase item: produk atau jasa teratas dengan klik / minat terbanyak (most clicked product / service)
+  const heroCandidates = [
+    ...products.map((p) => ({
+      type: 'product' as const,
+      id: p.product_id,
+      name: p.product_name,
+      href: `/produk/${p.product_id}`,
+      thumbnailUrl: p.thumbnail_url,
+      priceDisplay: `Rp ${p.product_price ? p.product_price.toLocaleString("id-ID") : "0"}`,
+      clickCount: p.clickCount ?? 0,
+      likeCount: p.like_count ?? 0,
+    })),
+    ...services.map((s) => ({
+      type: 'service' as const,
+      id: s.service_id,
+      name: s.service_name,
+      href: `/layanan/${s.service_id}`,
+      thumbnailUrl: s.thumbnail_url,
+      priceDisplay: getServicePriceDisplay(s),
+      clickCount: s.clickCount ?? 0,
+      likeCount: s.like_count ?? 0,
+    })),
+  ];
+
+  const heroItem = [...heroCandidates].sort((a, b) => {
+    if (b.clickCount !== a.clickCount) return b.clickCount - a.clickCount;
+    if (b.likeCount !== a.likeCount) return b.likeCount - a.likeCount;
+    return a.name.localeCompare(b.name);
+  })[0] ?? null;
 
   // Sort and slice top items by name (PBI-05 and PBI-06)
   const topProducts = [...products]
@@ -108,7 +146,7 @@ export default async function Home() {
             {/* Hero Right Column: Full Image Cover + Floating Trending Card */}
             <div style={{ position: "relative", width: "100%" }}>
               <Link
-                href={heroProduct ? `/produk/${heroProduct.product_id}` : '/katalog?type=product'}
+                href={heroItem ? heroItem.href : '/katalog'}
                 className="hero-showcase-card"
                 style={{
                   borderRadius: "var(--radius-xl)",
@@ -126,11 +164,11 @@ export default async function Home() {
                   cursor: "pointer",
                 }}
               >
-                {/* Full Cover Product Image if available */}
-                {heroProduct?.thumbnail_url ? (
+                {/* Full Cover Item Image if available */}
+                {heroItem?.thumbnailUrl ? (
                   <Image
-                    src={heroProduct.thumbnail_url}
-                    alt={heroProduct.product_name}
+                    src={heroItem.thumbnailUrl}
+                    alt={heroItem.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 500px"
                     className="hero-showcase-img"
@@ -161,7 +199,7 @@ export default async function Home() {
                   zIndex: 3,
                   padding: "24px 24px 0",
                   display: "flex",
-                  justifyContent: "flex-end",
+                  justifyContent: "space-between",
                   alignItems: "center",
                   fontFamily: "var(--font-mono)",
                   fontSize: 11,
@@ -169,6 +207,20 @@ export default async function Home() {
                   letterSpacing: "0.12em",
                   textTransform: "uppercase",
                 }}>
+                  {heroItem ? (
+                    <span style={{
+                      background: heroItem.type === 'service' ? "rgba(0, 192, 163, 0.3)" : "rgba(255, 255, 255, 0.18)",
+                      border: heroItem.type === 'service' ? "1px solid rgba(0, 192, 163, 0.5)" : "1px solid rgba(255, 255, 255, 0.3)",
+                      padding: "3px 8px",
+                      borderRadius: 6,
+                      fontSize: 10,
+                      fontWeight: 600,
+                      backdropFilter: "blur(4px)",
+                      color: "#fff",
+                    }}>
+                      {heroItem.type === 'service' ? 'Layanan Jasa' : 'Produk'}
+                    </span>
+                  ) : <span />}
                   <span>BANJARSARI &apos;26</span>
                 </div>
 
@@ -182,7 +234,7 @@ export default async function Home() {
                   alignItems: "flex-end",
                   gap: 13,
                 }}>
-                  {/* Slogan on the bottom-left (sejajar dengan bagian bawah card info produk) */}
+                  {/* Slogan on the bottom-left (sejajar dengan bagian bawah card info) */}
                   <div className="hero-showcase-quote" style={{
                     fontFamily: "var(--font-display)",
                     fontSize: "clamp(18px, 2.2vw, 20px)",
@@ -199,7 +251,7 @@ export default async function Home() {
                   </div>
 
                   {/* Floating Trending Card on the bottom-right (Sudut Kanan Card) */}
-                  {heroProduct && (
+                  {heroItem && (
                     <div
                       className="hero-floating-card"
                       style={{
@@ -216,8 +268,23 @@ export default async function Home() {
                         flexShrink: 0,
                       }}
                     >
-                      <div className="label-eyebrow" style={{ marginBottom: 4, fontSize: 10, letterSpacing: "0.08em" }}>
-                        TRENDING HARI INI
+                      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4, gap: 6 }}>
+                        <div className="label-eyebrow" style={{ fontSize: 10, letterSpacing: "0.08em" }}>
+                          TRENDING HARI INI
+                        </div>
+                        <span style={{
+                          fontSize: 9,
+                          fontWeight: 700,
+                          textTransform: "uppercase",
+                          letterSpacing: "0.04em",
+                          padding: "1.5px 5px",
+                          borderRadius: 4,
+                          background: heroItem.type === 'service' ? "rgba(0, 192, 163, 0.12)" : "rgba(5, 71, 43, 0.08)",
+                          color: heroItem.type === 'service' ? "#008772" : "var(--primary)",
+                          border: heroItem.type === 'service' ? "1px solid rgba(0, 192, 163, 0.25)" : "1px solid rgba(5, 71, 43, 0.2)",
+                        }}>
+                          {heroItem.type === 'service' ? "Jasa" : "Produk"}
+                        </span>
                       </div>
                       <div style={{
                         fontFamily: "var(--font-display)",
@@ -229,7 +296,7 @@ export default async function Home() {
                         overflow: "hidden",
                         textOverflow: "ellipsis",
                       }}>
-                        {heroProduct.product_name}
+                        {heroItem.name}
                       </div>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 10 }}>
                         <span style={{
@@ -238,7 +305,7 @@ export default async function Home() {
                           fontSize: 15,
                           fontWeight: 700,
                         }}>
-                          Rp {heroProduct.product_price ? heroProduct.product_price.toLocaleString("id-ID") : "22.000"}
+                          {heroItem.priceDisplay}
                         </span>
                         {/* Hidden click count badge */}
                         <span style={{
@@ -250,7 +317,7 @@ export default async function Home() {
                           color: "#e11d48",
                           fontWeight: 600,
                         }}>
-                          🔥 {heroProduct.clickCount || heroProduct.like_count || 312} klik
+                          🔥 {heroItem.clickCount || heroItem.likeCount || 312} klik
                         </span>
                       </div>
                     </div>
@@ -325,6 +392,7 @@ export default async function Home() {
                 key={product.product_id}
                 product={product}
                 businessName={getBusinessName(product.business_id)}
+                isPopular={top4ProductIds.has(product.product_id)}
               />
             ))}
           </div>
@@ -350,6 +418,7 @@ export default async function Home() {
                 key={service.service_id}
                 service={service}
                 businessName={getBusinessName(service.business_id)}
+                isPopular={top4ServiceIds.has(service.service_id)}
               />
             ))}
           </div>

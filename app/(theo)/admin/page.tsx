@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { subscribeAnalytics } from '@/lib/firestore/analytics';
 import type { DashboardStats, EventType } from '@/lib/firestore/analytics';
 import { getAllProduk } from '@/lib/firestore/produk';
+import { getAllJasa } from '@/lib/firestore/jasa';
 import { getAllBisnis } from '@/lib/firestore/bisnis';
 import styles from './dashboard.module.css';
 
@@ -506,28 +507,47 @@ export default function AdminDashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<'daily' | 'monthly'>('daily');
-  const [topProductsFromDb, setTopProductsFromDb] = useState<{ name: string; businessName?: string; count: number; thumb?: string | null }[]>([]);
+  const [topItemsFilter, setTopItemsFilter] = useState<'all' | 'produk' | 'jasa'>('all');
+  const [topItemsFromDb, setTopItemsFromDb] = useState<{
+    name: string;
+    businessName?: string;
+    count: number;
+    thumb?: string | null;
+    type: 'produk' | 'jasa';
+  }[]>([]);
 
-  // Subscribe realtime ke Firestore & load produk clickCount
+  // Subscribe realtime ke Firestore & load produk + jasa clickCount
   useEffect(() => {
     const unsub = subscribeAnalytics(
       (data) => { setStats(data); setLoading(false); },
       () => { setLoading(false); },
     );
 
-    Promise.all([getAllProduk(), getAllBisnis()]).then(([products, businesses]) => {
+    Promise.all([getAllProduk(), getAllJasa(), getAllBisnis()]).then(([products, services, businesses]) => {
       const bMap = new Map(businesses.map((b) => [b.business_id, b.business_name]));
-      const sorted = products
+
+      const prodItems = products
         .filter((p) => !p.deletedAt && p.is_active !== false)
-        .sort((a, b) => (b.clickCount ?? 0) - (a.clickCount ?? 0))
-        .slice(0, 6)
         .map((p) => ({
           name: p.product_name,
           businessName: bMap.get(p.business_id) || 'UMKM Banjarsari',
           count: p.clickCount ?? 0,
           thumb: p.thumbnail_url,
+          type: 'produk' as const,
         }));
-      setTopProductsFromDb(sorted);
+
+      const serviceItems = services
+        .filter((s) => !s.deletedAt && s.is_active !== false)
+        .map((s) => ({
+          name: s.service_name,
+          businessName: bMap.get(s.business_id) || 'UMKM Banjarsari',
+          count: s.clickCount ?? 0,
+          thumb: s.thumbnail_url,
+          type: 'jasa' as const,
+        }));
+
+      const combined = [...prodItems, ...serviceItems].sort((a, b) => (b.count ?? 0) - (a.count ?? 0));
+      setTopItemsFromDb(combined);
     });
 
     return () => unsub();
@@ -653,17 +673,52 @@ export default function AdminDashboardPage() {
 
       {/* ===== PBI-19: TOP ITEMS ROW ===== */}
       <div className={styles.topRow}>
-        {/* Top Products */}
+        {/* Top Products & Services */}
         <div className={styles.card}>
-          <h4 className={styles.cardTitle}>Produk Paling Populer</h4>
+          <div className={styles.cardHead} style={{ marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
+            <h4 className={styles.cardTitle}>Produk / Jasa Paling Populer</h4>
+            <div className={styles.filterPills}>
+              <button
+                type="button"
+                className={`${styles.filterPill} ${topItemsFilter === 'all' ? styles.filterPillActive : ''}`}
+                onClick={() => setTopItemsFilter('all')}
+              >
+                Semua
+              </button>
+              <button
+                type="button"
+                className={`${styles.filterPill} ${topItemsFilter === 'produk' ? styles.filterPillActive : ''}`}
+                onClick={() => setTopItemsFilter('produk')}
+              >
+                Produk
+              </button>
+              <button
+                type="button"
+                className={`${styles.filterPill} ${topItemsFilter === 'jasa' ? styles.filterPillActive : ''}`}
+                onClick={() => setTopItemsFilter('jasa')}
+              >
+                Jasa
+              </button>
+            </div>
+          </div>
           <div className={styles.itemList}>
             {loading ? (
               [1, 2, 3, 4, 5, 6].map((i) => <div key={i} className={`${styles.itemRow} ${styles.skeleton}`} style={{ height: 44 }} />)
             ) : (() => {
-              const displayList: { name: string; businessName?: string; count: number; thumb?: string | null }[] =
-                topProductsFromDb.length > 0
-                  ? topProductsFromDb
-                  : (stats?.topProducts ?? []).map((p) => ({ name: p.name, businessName: 'UMKM Banjarsari', count: p.count, thumb: null }));
+              const rawList: { name: string; businessName?: string; count: number; thumb?: string | null; type: 'produk' | 'jasa' }[] =
+                topItemsFromDb.length > 0
+                  ? topItemsFromDb
+                  : (stats?.topProducts ?? []).map((p) => ({
+                      name: p.name,
+                      businessName: 'UMKM Banjarsari',
+                      count: p.count,
+                      thumb: null,
+                      type: p.type || 'produk',
+                    }));
+
+              const displayList = rawList
+                .filter((it) => (topItemsFilter === 'all' ? true : it.type === topItemsFilter))
+                .slice(0, 6);
 
               if (displayList.length === 0) {
                 return <p className={styles.emptyText}>Belum ada data.</p>;
@@ -685,7 +740,12 @@ export default function AdminDashboardPage() {
                     />
                   )}
                   <div className={styles.itemMeta}>
-                    <div className={styles.itemName}>{it.name}</div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+                      <span className={styles.itemName} title={it.name}>{it.name}</span>
+                      <span className={it.type === 'jasa' ? styles.badgeJasa : styles.badgeProduk}>
+                        {it.type === 'jasa' ? 'Jasa' : 'Produk'}
+                      </span>
+                    </div>
                     <div className={styles.itemSub}>{it.businessName || 'UMKM Banjarsari'}</div>
                   </div>
                   <span className={styles.itemClicks}>{it.count}</span>

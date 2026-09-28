@@ -82,6 +82,17 @@ export default async function CatalogPage({ searchParams }: PageProps) {
     }
   }
 
+  // Ambil seluruh area unik yang terdaftar pada data UMKM
+  const registeredAreas = Array.from(
+    new Set(
+      businesses
+        .map((b) => b.area_name?.trim())
+        .filter((a): a is string => Boolean(a && a.length > 0))
+    )
+  ).sort((a, b) => a.localeCompare(b, 'id', { sensitivity: 'base' }));
+
+  const areas = registeredAreas.length > 0 ? registeredAreas : mockAreas;
+
   return (
     <>
       <CatalogScrollHelper query={initialQuery} />
@@ -91,7 +102,7 @@ export default async function CatalogPage({ searchParams }: PageProps) {
         services={services}
         businesses={businesses}
         categories={categories}
-        areas={mockAreas}
+        areas={areas}
         initialType={initialType}
         initialQuery={initialQuery}
         initialCategory={initialCategory}

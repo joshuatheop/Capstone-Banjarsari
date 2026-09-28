@@ -8,9 +8,10 @@ interface ServiceCardProps {
   service: ServiceItem;
   businessName: string;
   categoryName?: string;
+  isPopular?: boolean;
 }
 
-const ServiceCard = ({ service, businessName, categoryName }: ServiceCardProps) => {
+const ServiceCard = ({ service, businessName, categoryName, isPopular = false }: ServiceCardProps) => {
   const displayCategory = categoryName || service.category_id;
   const priceDisplay = getServicePriceDisplay(service);
 
@@ -26,7 +27,13 @@ const ServiceCard = ({ service, businessName, categoryName }: ServiceCardProps) 
             <span>{displayCategory}</span>
           </div>
         )}
-        <div className="fl-card-service-badge">JASA</div>
+        {isPopular ? (
+          <div className="fl-card-hot-badge">
+            <span>⚡ TERPOPULER</span>
+          </div>
+        ) : (
+          <div className="fl-card-service-badge">Jasa</div>
+        )}
       </div>
 
       {/* Body */}

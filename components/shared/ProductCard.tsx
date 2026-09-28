@@ -7,6 +7,7 @@ interface ProductCardProps {
   product: ProdukItem;
   businessName: string;
   categoryName?: string;
+  isPopular?: boolean;
 }
 
 const formatPrice = (price: number) => {
@@ -14,7 +15,7 @@ const formatPrice = (price: number) => {
   return `Rp ${formatted}`;
 };
 
-const ProductCard = ({ product, businessName, categoryName }: ProductCardProps) => {
+const ProductCard = ({ product, businessName, categoryName, isPopular = false }: ProductCardProps) => {
   const displayCategory = categoryName || product.category_id;
 
   return (
@@ -29,9 +30,15 @@ const ProductCard = ({ product, businessName, categoryName }: ProductCardProps) 
             <span>{displayCategory}</span>
           </div>
         )}
-        <div className="fl-card-hot-badge">
-          <span>⚡ TERPOPULER</span>
-        </div>
+        {isPopular ? (
+          <div className="fl-card-hot-badge">
+            <span>⚡ TERPOPULER</span>
+          </div>
+        ) : (
+          <div className="fl-card-type-badge">
+            <span>Produk</span>
+          </div>
+        )}
       </div>
 
       {/* Body */}

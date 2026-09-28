@@ -21,7 +21,7 @@ export type { AnalyticsEvent, EventType };
 export interface DashboardStats {
   totalSessions:    number;                       // unique visitor sessions
   totalEvents:      number;                       // total event count
-  topProducts:      { name: string; count: number }[];
+  topProducts:      { name: string; count: number; type?: 'produk' | 'jasa' }[];
   topBusinesses:    { name: string; count: number }[];
   eventTypeCounts:  Record<EventType, number>;
   recentEvents:     AnalyticsEvent[];
@@ -150,9 +150,10 @@ function toLocalDateStr(date: Date): string {
     PAGE_VIEW:         0,
   };
 
-  // Top products — keyed by product_id, name from itemName or Top_Clicked_Item
+  // Top products & services — keyed by product_id or service_id, name from itemName or Top_Clicked_Item
   const productCount: Record<string, number> = {};
   const productNames: Record<string, string> = {};
+  const productTypes: Record<string, 'produk' | 'jasa'> = {};
 
   // Top businesses — keyed by business_id or businessName, count ANY interaction
   // We count: BUSINESS_VIEW + WHATSAPP_CLICK + MARKETPLACE_CLICK toward that UMKM
@@ -164,7 +165,7 @@ function toLocalDateStr(date: Date): string {
       eventTypeCounts[e.event_type]++;
     }
 
-    // Track product popularity (PRODUCT_VIEW + SERVICE_VIEW)
+    // Track product & service popularity (PRODUCT_VIEW + SERVICE_VIEW)
     if ((e.event_type === 'PRODUCT_VIEW' || e.event_type === 'SERVICE_VIEW')) {
       const key = e.product_id || e.service_id;
       if (key) {
@@ -172,6 +173,7 @@ function toLocalDateStr(date: Date): string {
         // Prefer itemName (Top_Clicked_Item) over destination_url
         const displayName = e.itemName || e.destination_url;
         if (displayName) productNames[key] = displayName;
+        productTypes[key] = (e.service_id || e.event_type === 'SERVICE_VIEW') ? 'jasa' : 'produk';
       }
     }
 
@@ -229,7 +231,11 @@ function toLocalDateStr(date: Date): string {
   const topProducts = Object.entries(productCount)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 6)
-    .map(([id, count]) => ({ name: productNames[id] || id, count }));
+    .map(([id, count]) => ({
+      name: productNames[id] || id,
+      count,
+      type: productTypes[id] || 'produk',
+    }));
 
   const topBusinesses = Object.entries(bizCount)
     .sort((a, b) => b[1] - a[1])

@@ -8,6 +8,8 @@ import { auth } from '@/lib/firebase';
 import { getUserRole, createUserDocument } from '@/lib/auth';
 import { seedAdmin } from '@/lib/seedAdmin';
 import { useAuth } from '@/context/AuthContext';
+import { getAllBisnis } from '@/lib/firestore/bisnis';
+import { getAllKategori } from '@/lib/firestore/kategori';
 import styles from './login.module.css';
 
 export default function LoginPage() {
@@ -20,6 +22,8 @@ export default function LoginPage() {
   const [pending, setPending] = useState(false);
   const [greeting, setGreeting] = useState('Selamat Datang');
   const [showPassword, setShowPassword] = useState(false);
+  const [statsUmkm, setStatsUmkm] = useState<number | null>(null);
+  const [statsKategori, setStatsKategori] = useState<number | null>(null);
 
   const seededRef = useRef(false);
 
@@ -38,6 +42,18 @@ export default function LoginPage() {
       }
     }, 0);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Fetch real stats
+  useEffect(() => {
+    Promise.all([getAllBisnis(), getAllKategori()]).then(([bisnis, kategori]) => {
+      setStatsUmkm(bisnis.length);
+      // Hanya kategori PRODUCT
+      const produkKategori = kategori.filter(
+        (k) => (k.category_type || '').toUpperCase() === 'PRODUCT'
+      );
+      setStatsKategori(produkKategori.length);
+    }).catch(() => {});
   }, []);
 
   // Kalau sudah login, redirect sesuai role
@@ -166,11 +182,15 @@ export default function LoginPage() {
           {/* Stats Cards dengan Glassmorphism */}
           <div className={styles.statsCardContainer}>
             <div className={styles.glassStat}>
-              <div className={styles.statVal}>150+</div>
+              <div className={styles.statVal}>
+                {statsUmkm !== null ? statsUmkm : '...'}
+              </div>
               <div className={styles.statLabel}>UMKM Terdaftar</div>
             </div>
             <div className={styles.glassStat}>
-              <div className={styles.statVal}>10+</div>
+              <div className={styles.statVal}>
+                {statsKategori !== null ? statsKategori : '...'}
+              </div>
               <div className={styles.statLabel}>Kategori Produk</div>
             </div>
             <div className={styles.glassStat}>
