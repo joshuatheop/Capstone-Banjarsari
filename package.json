@@ -3,26 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "setup:local": "node scripts/setup-local.mjs",
+    "test:monitoring": "node --experimental-strip-types --test scripts/monitoring.test.mjs",
+    "test:local-api": "node scripts/check-local-api.mjs",
+    "dev:local": "next dev --hostname 127.0.0.1",
+    "dev:lan": "next dev --hostname 0.0.0.0 --port 3000",
+    "setup:lan": "node scripts/setup-lan.mjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --experimental-strip-types --test scripts/*.test.mjs",
+    "test:commerce": "node scripts/check-commerce-api.mjs"
   },
   "dependencies": {
     "firebase": "^12.15.0",
     "firebase-admin": "^14.1.0",
     "lucide-react": "^1.28.0",
-    "next": "16.2.9",
+    "next": "^16.3.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "xlsx": "^0.18.5"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.9",
+    "eslint-config-next": "^16.3.6",
     "typescript": "^5"
   }
 }

@@ -1,2 +1,5 @@
 @import './globalstheo.css';
 @import './globalsdavy.css';
+
+.preview-banner { background: var(--color-accent); color: var(--color-dark); padding: 8px 16px; text-align: center; font-size: 12px; font-weight: 600; }
+*:focus-visible { outline: 3px solid var(--color-aqua); outline-offset: 4px; }

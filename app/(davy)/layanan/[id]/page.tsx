@@ -3,6 +3,9 @@ import ServiceDetailClient from "./ServiceDetailClient";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getSeoMeta, autoGenerateSeo } from "@/lib/firestore/seo";
+import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { loadCatalog } from '@/lib/catalog';
+import CatalogDetail from '@/components/commerce/CatalogDetail';
 
 export const revalidate = 60;
 
@@ -79,6 +82,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ServiceDetailPage({ params }: PageProps) {
   const resolvedParams = await params;
+  if (LOCAL_PREVIEW) {
+    const { entries } = await loadCatalog();
+    const item = entries.find((entry) => entry.id === resolvedParams.id && entry.kind === 'service');
+    if (!item) notFound();
+    return <CatalogDetail item={item} />;
+  }
   const service = await getService(resolvedParams.id);
 
   if (!service) {

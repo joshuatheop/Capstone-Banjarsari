@@ -1,0 +1,36 @@
+import { readFileSync } from 'node:fs';
+import assert from 'node:assert/strict';
+
+const base = 'http://127.0.0.1:3000';
+const accounts = JSON.parse(readFileSync('.local/accounts.json', 'utf8'));
+const session = '/api/local/session';
+const login = (account, origin = base) => fetch(base + session, { method: 'POST', headers: { 'Content-Type': 'application/json', Origin: origin }, body: JSON.stringify(account) });
+const read = (path, cookie) => fetch(base + path, { headers: cookie ? { Cookie: cookie } : {} });
+
+assert.equal((await read('/api/local/monitoring')).status, 401);
+assert.equal((await login({ email: accounts.admin.email, password: 'incorrect' })).status, 401);
+assert.equal((await login(accounts.admin, 'https://example.com')).status, 403);
+const customerResponse = await login(accounts.customer);
+assert.equal(customerResponse.status, 200);
+const customerCookie = customerResponse.headers.get('set-cookie').split(';')[0];
+assert.equal((await read('/api/local/monitoring', customerCookie)).status, 403);
+const activity = await read('/api/local/activity', customerCookie);
+assert.equal(activity.status, 200);
+const { data } = await activity.json();
+assert.ok(data.orders.length > 0);
+assert.ok(data.orders.every((order) => order.customerId === 'preview-customer'));
+assert.ok(data.bookings.every((booking) => booking.customerId === 'preview-customer'));
+const adminResponse = await login(accounts.admin);
+assert.equal(adminResponse.status, 200);
+assert.match(adminResponse.headers.get('set-cookie'), /httponly/i);
+assert.match(adminResponse.headers.get('set-cookie'), /samesite=strict/i);
+const adminCookie = adminResponse.headers.get('set-cookie').split(';')[0];
+const monitoring = await read('/api/local/monitoring', adminCookie);
+assert.equal(monitoring.status, 200);
+assert.equal(monitoring.headers.get('cache-control'), 'no-store');
+assert.equal((await read('/api/local/monitoring', adminCookie + 'tampered')).status, 401);
+const logout = await fetch(base + session, { method: 'DELETE', headers: { Cookie: adminCookie, Origin: base } });
+assert.equal(logout.status, 200);
+assert.match(logout.headers.get('set-cookie'), /expires=Thu, 01 Jan 1970/i);
+assert.equal((await read('/api/local/monitoring')).status, 401);
+console.log('PASS: login, bad credentials, same-origin, HttpOnly cookie, admin RBAC, customer ownership, tampered session, logout.');

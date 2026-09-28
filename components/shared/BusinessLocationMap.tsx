@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { LeafletMap } from '@/lib/leaflet-types';
 import { Icons } from './Icons';
 
 interface BusinessLocationMapProps {
@@ -21,15 +22,15 @@ export default function BusinessLocationMap({
 }: BusinessLocationMapProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
-  const mapRef = useRef<any>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
 
   const lat = latitude ?? DEFAULT_LAT;
   const lng = longitude ?? DEFAULT_LNG;
 
   useEffect(() => {
-    if ((window as any).L) {
-      setLoaded(true);
-      return;
+    if (window.L) {
+      const timer = setTimeout(() => setLoaded(true), 0);
+      return () => clearTimeout(timer);
     }
 
     const link = document.createElement('link');
@@ -50,7 +51,7 @@ export default function BusinessLocationMap({
   useEffect(() => {
     if (!loaded || !containerRef.current || mapRef.current) return;
 
-    const L = (window as any).L;
+    const L = window.L;
     if (!L) return;
 
     const map = L.map(containerRef.current, {
@@ -75,7 +76,11 @@ export default function BusinessLocationMap({
     });
 
     const marker = L.marker([lat, lng], { icon: customIcon }).addTo(map);
-    marker.bindPopup(`<b>${businessName}</b><br/>${address || 'Kelurahan Banjarsari'}`).openPopup();
+    const popup = document.createElement('div');
+    const title = document.createElement('strong'); title.textContent = businessName;
+    popup.append(title, document.createElement('br'), document.createTextNode(address || 'Kelurahan Banjarsari'));
+    marker.bindPopup(popup).openPopup();
+    return () => { map.remove(); mapRef.current = null; };
   }, [loaded, lat, lng, businessName, address]);
 
   return (

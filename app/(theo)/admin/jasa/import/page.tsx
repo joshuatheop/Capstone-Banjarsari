@@ -95,7 +95,7 @@ export default function BulkImportJasaPage() {
         const worksheet = workbook.Sheets[firstSheetName];
 
         // Parse sheet to 2D Array of rows
-        const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as any[][];
+        const rawRows = XLSX.utils.sheet_to_json(worksheet, { header: 1 }) as unknown[][];
 
         if (rawRows.length <= 1) {
           alert('File kosong atau hanya memiliki baris header.');

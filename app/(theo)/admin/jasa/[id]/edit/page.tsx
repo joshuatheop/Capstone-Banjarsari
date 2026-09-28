@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 import { useState, useEffect, use, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -547,7 +548,7 @@ export default function EditJasaPage({ params }: { params: Promise<{ id: string 
                   <span className={styles.thumbZoneSub}>Resize & konversi ke WebP</span>
                 </div>
               ) : thumbPreview ? (
-                <img className={styles.thumbPreviewImg} src={thumbPreview} alt="Thumbnail" />
+                <Image unoptimized width={160} height={160} className={styles.thumbPreviewImg} src={thumbPreview} alt="Thumbnail" />
               ) : (
                 <div className={styles.thumbZoneContent}>
                   <span className={styles.thumbZoneIcon}>🔄</span>

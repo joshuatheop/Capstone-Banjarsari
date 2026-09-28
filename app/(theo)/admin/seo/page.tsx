@@ -265,7 +265,7 @@ export default function AdminSeoPage() {
     }
   }, []);
 
-  useEffect(() => { loadData(tab); }, [tab, loadData]);
+  useEffect(() => { const timer = setTimeout(() => void loadData(tab), 0); return () => clearTimeout(timer); }, [tab, loadData]);
 
   const handleSaved = useCallback((id: string, seo: SeoMeta) => {
     setRows((prev) => prev.map((r) => (r.id === id ? { ...r, seo } : r)));

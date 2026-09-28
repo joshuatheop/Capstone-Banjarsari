@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { getAllReviews, deleteReview } from '@/lib/firestore/reviews';
 import { getProdukById } from '@/lib/firestore/produk';
 import { getJasaById } from '@/lib/firestore/jasa';
@@ -44,7 +44,6 @@ function formatDate(date: Date | null | undefined) {
 
 export default function AdminUlasanPage() {
   const [reviews, setReviews] = useState<ReviewWithItemName[]>([]);
-  const [filtered, setFiltered] = useState<ReviewWithItemName[]>([]);
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('');
   const [filterRating, setFilterRating] = useState('');
@@ -85,16 +84,15 @@ export default function AdminUlasanPage() {
       }));
 
       setReviews(enriched);
-      setFiltered(enriched);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => { const timer = setTimeout(() => void loadData(), 0); return () => clearTimeout(timer); }, [loadData]);
 
   // Filter logic
-  useEffect(() => {
+  const filtered = useMemo(() => {
     let result = reviews;
     const q = search.trim().toLowerCase();
     if (q) {
@@ -107,8 +105,8 @@ export default function AdminUlasanPage() {
     }
     if (filterType) result = result.filter((r) => r.item_type === filterType);
     if (filterRating) result = result.filter((r) => r.rating === Number(filterRating));
-    setFiltered(result);
-  }, [search, filterType, filterRating, reviews]);
+    return result;
+}, [search, filterType, filterRating, reviews]);
 
   const showToast = (msg: string, ok: boolean) => {
     setToast({ msg, ok });

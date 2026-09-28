@@ -75,6 +75,7 @@ export async function toggleProductFavoriteInFirestore(productId: string, userId
 
   setFavoriteProductIds(newFavs, userId);
 
+  if (process.env.NEXT_PUBLIC_LOCAL_PREVIEW === 'true') return { isFavorited: !isFavorited, delta };
   // Sync to Firestore
   try {
     const ref = doc(db, 'produk', productId);
@@ -114,6 +115,7 @@ export async function toggleServiceFavoriteInFirestore(serviceId: string, userId
 
   setFavoriteServiceIds(newFavs, userId);
 
+  if (process.env.NEXT_PUBLIC_LOCAL_PREVIEW === 'true') return { isFavorited: !isFavorited, delta };
   // Sync to Firestore
   try {
     const ref = doc(db, 'jasa', serviceId);

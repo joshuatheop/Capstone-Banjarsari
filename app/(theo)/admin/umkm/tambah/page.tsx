@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
@@ -385,7 +386,7 @@ export default function TambahUmkmPage() {
                   <span className={styles.thumbZoneSub}>Resize & konversi ke WebP</span>
                 </div>
               ) : logoPreview ? (
-                <img className={styles.thumbPreviewImg} src={logoPreview} alt="Logo" />
+                <Image unoptimized width={160} height={160} className={styles.thumbPreviewImg} src={logoPreview} alt="Logo" />
               ) : (
                 <div className={styles.thumbZoneContent}>
                   <span className={styles.thumbZoneIcon}>🏢</span>

@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
@@ -350,7 +351,7 @@ export default function TambahProdukPage() {
                  * Browser langsung render tanpa perlu URL eksternal
                  * Format: "data:image/webp;base64,/9j/4AAQ..."
                  */
-                <img className={styles.thumbPreviewImg} src={thumbPreview} alt="Thumbnail produk" />
+                <Image unoptimized width={160} height={160} className={styles.thumbPreviewImg} src={thumbPreview} alt="Thumbnail produk" />
               ) : (
                 /* State: belum ada foto */
                 <div className={styles.thumbZoneContent}>

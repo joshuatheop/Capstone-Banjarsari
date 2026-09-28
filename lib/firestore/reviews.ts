@@ -12,6 +12,7 @@ import {
   limit,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { LOCAL_PREVIEW } from '@/lib/local-preview';
 import type { ReviewItem } from './types';
 
 const COLLECTION = 'ulasan';
@@ -31,6 +32,7 @@ function toReviewItem(id: string, data: Record<string, unknown>): ReviewItem {
 }
 
 export async function getReviews(itemId: string, itemType: 'product' | 'service'): Promise<ReviewItem[]> {
+  if (LOCAL_PREVIEW) return [];
   try {
     const q = query(
       collection(db, COLLECTION),
@@ -82,6 +84,7 @@ export async function getUserReview(
   itemType: 'product' | 'service',
   userId: string
 ): Promise<ReviewItem | null> {
+  if (LOCAL_PREVIEW) return null;
   const q = query(
     collection(db, COLLECTION),
     where('item_id', '==', itemId),
@@ -119,6 +122,7 @@ export async function updateReview(
 export async function addReview(
   payload: Omit<ReviewItem, 'review_id' | 'createdAt'>
 ): Promise<string> {
+  if (LOCAL_PREVIEW) throw new Error('Ulasan tersedia setelah transaksi selesai. Pratinjau lokal belum membuat transaksi.');
   // Enforce 1 review per user per item
   const existing = await getUserReview(payload.item_id, payload.item_type, payload.user_id);
   if (existing) {

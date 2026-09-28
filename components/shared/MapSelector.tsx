@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { LeafletMap, LeafletMarker } from '@/lib/leaflet-types';
 
 interface MapSelectorProps {
   latitude: number | null;
@@ -15,17 +16,17 @@ const DEFAULT_LNG = 110.123456;
 export default function MapSelector({ latitude, longitude, onChange }: MapSelectorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
-  const mapRef = useRef<any>(null);
-  const markerRef = useRef<any>(null);
+  const mapRef = useRef<LeafletMap | null>(null);
+  const markerRef = useRef<LeafletMarker | null>(null);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [searching, setSearching] = useState(false);
 
   // 1. Dynamic script loader for Leaflet
   useEffect(() => {
-    if ((window as any).L) {
-      setLoaded(true);
-      return;
+    if (window.L) {
+      const timer = setTimeout(() => setLoaded(true), 0);
+      return () => clearTimeout(timer);
     }
 
     // Add Leaflet CSS
@@ -49,7 +50,7 @@ export default function MapSelector({ latitude, longitude, onChange }: MapSelect
   useEffect(() => {
     if (!loaded || !containerRef.current) return;
 
-    const L = (window as any).L;
+    const L = window.L;
     if (!L) return;
 
     const initialLat = latitude ?? DEFAULT_LAT;
@@ -105,7 +106,7 @@ export default function MapSelector({ latitude, longitude, onChange }: MapSelect
     });
 
     // Listen to map click events to place marker
-    map.on('click', (e: any) => {
+    map.on('click', (e) => {
       const { lat, lng } = e.latlng;
       marker.setLatLng([lat, lng]);
       onChange(lat, lng);
@@ -119,7 +120,7 @@ export default function MapSelector({ latitude, longitude, onChange }: MapSelect
         markerRef.current = null;
       }
     };
-  }, [loaded, onChange]);
+  }, [loaded, onChange, latitude, longitude]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();

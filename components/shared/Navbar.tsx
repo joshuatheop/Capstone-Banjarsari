@@ -74,7 +74,8 @@ export default function Navbar() {
 
   // Tutup mobile menu saat route berubah
   useEffect(() => {
-    setMobileMenuOpen(false);
+    const timer = setTimeout(() => setMobileMenuOpen(false), 0);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   // Lock body scroll saat menu mobile terbuka
@@ -151,7 +152,7 @@ export default function Navbar() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     const val = (e.target as HTMLInputElement).value.trim();
-                    if (val) window.location.href = `/katalog?search=${encodeURIComponent(val)}`;
+                    if (val) router.push(`/katalog?search=${encodeURIComponent(val)}`);
                   }
                 }}
               />
@@ -404,7 +405,7 @@ export default function Navbar() {
                   const val = (e.target as HTMLInputElement).value.trim();
                   if (val) {
                     setMobileMenuOpen(false);
-                    window.location.href = `/katalog?search=${encodeURIComponent(val)}`;
+                    router.push(`/katalog?search=${encodeURIComponent(val)}`);
                   }
                 }
               }}

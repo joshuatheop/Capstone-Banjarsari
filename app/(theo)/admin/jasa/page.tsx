@@ -1,6 +1,7 @@
 'use client';
+import Image from 'next/image';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAllJasa, deleteJasa, updateJasa } from '@/lib/firestore/jasa';
 import { getCategories, getBusinesses } from '@/lib/firestore/data-loader';
@@ -14,7 +15,6 @@ export default function AdminJasaPage() {
   const [jasaList, setJasaList] = useState<ServiceItem[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [filtered, setFiltered] = useState<ServiceItem[]>([]);
   const [search, setSearch] = useState('');
   const [filterKategori, setFilterKategori] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
@@ -27,6 +27,7 @@ export default function AdminJasaPage() {
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setSelected([]);
     const [data, cats, bizs] = await Promise.all([
       getAllJasa(),
       getCategories(),
@@ -36,16 +37,13 @@ export default function AdminJasaPage() {
     setJasaList(visible);
     setCategories(cats.filter((c) => c.category_type === 'SERVICE'));
     setBusinesses(bizs);
-    setFiltered(visible.filter((j) => j.is_active));
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  useEffect(() => { const timer = setTimeout(() => void loadData(), 0); return () => clearTimeout(timer); }, [loadData]);
 
   // Filter logic
-  useEffect(() => {
+  const filtered = useMemo(() => {
     const base = jasaList.filter((j) => showArchived ? !j.is_active : j.is_active);
     let result = base;
     const q = search.trim().toLowerCase();
@@ -59,9 +57,8 @@ export default function AdminJasaPage() {
     if (filterKategori) {
       result = result.filter((j) => j.category_id === filterKategori);
     }
-    setFiltered(result);
-    setSelected([]);
-  }, [search, filterKategori, jasaList, showArchived]);
+    return result;
+}, [search, filterKategori, jasaList, showArchived]);
 
   const showToast = (msg: string, ok: boolean) => {
     setToast({ msg, ok });
@@ -169,14 +166,14 @@ export default function AdminJasaPage() {
             type="text"
             placeholder="Cari di katalog jasa..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setSelected([]); }}
           />
         </div>
 
         <select
           className={styles.selectFilter}
           value={filterKategori}
-          onChange={(e) => setFilterKategori(e.target.value)}
+          onChange={(e) => { setFilterKategori(e.target.value); setSelected([]); }}
         >
           <option value="">Semua Kategori</option>
           {categories.map((c) => (
@@ -259,7 +256,7 @@ export default function AdminJasaPage() {
                     <td className={styles.tdProduk}>
                       <div className={styles.produkCell}>
                         {j.thumbnail_url ? (
-                          <img className={styles.thumbnail} src={j.thumbnail_url} alt={j.service_name} />
+                          <Image unoptimized width={160} height={160} className={styles.thumbnail} src={j.thumbnail_url} alt={j.service_name} />
                         ) : (
                           <div className={styles.thumbPlaceholder}>🛠️</div>
                         )}

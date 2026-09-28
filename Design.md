@@ -1,13 +1,17 @@
 # Design & Technical Specification — PALUGADA Banjarsari
 
-**Document Type:** Product Design + System Design  
-**Project:** PALUGADA Banjarsari  
-**Version:** 1.0  
-**Last Updated:** 28 September 2026  
+**Document Type:** Product Design + System Design
+**Project:** PALUGADA Banjarsari
+**Version:** 1.2
+**Last Updated:** 29 September 2026
 
 ---
 
 ## 1. Design Objective
+
+**Status implementasi terbaru:** pembaruan UI customer dan monitoring admin dengan akun uji lokal.
+Bagian 2–32 tetap menjadi rancangan target, bukan klaim bahwa seluruh PRD sudah diimplementasikan.
+Lihat bagian 34 untuk status terkini, forecasting, transaksi demo, dan akses LAN. Bagian 33 merupakan catatan tahap pertama dan digantikan oleh bagian 34 jika berbeda.
 
 Dokumen ini menerjemahkan `PRD.md` menjadi rancangan UI/UX, system architecture, data model, route, state machine, integration boundary, dan developer ownership.
 
@@ -1327,3 +1331,211 @@ Sebelum implementation besar, status baseline harus diselesaikan dan disepakati.
 ## 32. Design Principle Summary
 
 > **UI dibuat familiar dan mobile-first; state transaksi authoritative di server/service layer; data ownership mengikuti seller/customer/courier; analytics membaca fakta transaksi tanpa mengendalikan business process; dan arsitektur disusun agar Firebase dapat diganti kemudian tanpa menulis ulang keseluruhan aplikasi.**
+
+---
+
+## 33. Implemented UI & Local Preview — 29 September 2026
+
+### 33.1 Scope and ownership
+
+ACTIVE_DEVELOPER = `lukas`. Scope yang dipilih user: tampilan customer, monitoring admin,
+penyesuaian desain, dan akun uji lokal. Perubahan UI lintas domain dilakukan sesuai permintaan
+eksplisit ini. Tidak ada perubahan lifecycle order, stock reservation, payment gateway,
+courier assignment, maupun mutation booking milik Theo/Zikri.
+
+### 33.2 Customer experience
+
+- Beranda: hero pencarian, tiga pintu discovery (produk, makanan, jasa), pilihan katalog,
+  dan profil usaha warga. Warna hijau PALUGADA, JetBrains Mono, dan Plus Jakarta Sans dipertahankan.
+- `/katalog`: pencarian nama/deskripsi/usaha, kategori, wilayah, ketersediaan, urutan nama/harga/popularitas,
+  status kosong, dan tautan detail. Query lama `type`, `q`, `search`, `keyword` tetap diterima.
+- `/makanan` dan `/jasa`: halaman discovery khusus vertical; food saat ini dipetakan dari
+  kategori katalog existing dengan slug `makanan`, `makanan-minuman`, atau `food`.
+  Ini klasifikasi tampilan, bukan implementasi menu, stok, jam buka, ongkir, atau fulfillment.
+- `/favorites`: favorit per akun pada localStorage browser melalui helper existing.
+- `/produk/[id]` dan `/layanan/[id]`: pada mode lokal memakai detail pratinjau;
+  checkout/booking dinonaktifkan dengan alasan yang terlihat. Tidak membuat order palsu.
+  Detail Firebase existing tetap dipakai ketika mode lokal mati.
+- `/orders` dan `/bookings`: riwayat contoh dibatasi server ke UID pemilik akun.
+- `/login`, `/register`, `/profile`: mode lokal memakai akun uji yang telah disiapkan;
+  pendaftaran dan perubahan profil lokal belum tersedia. Integrasi Firebase existing
+  tetap tersedia di luar mode lokal. Login tidak lagi menjalankan seeder admin otomatis.
+
+Header menyediakan navigasi produk/makanan/jasa/usaha, favorit, aktivitas, profil,
+dashboard untuk admin, logout, dan navigasi mobile. Footer mengarah ke rute yang tersedia.
+Banner global menandai bahwa data lokal adalah contoh dan transaksi belum aktif.
+
+### 33.3 Admin monitoring
+
+| Route | Implementasi |
+|---|---|
+| `/admin` | KPI, tren GMV harian, kesehatan pesanan, ranking usaha, ringkasan delivery/booking, daftar pesanan |
+| `/admin/orders` | Pencarian, filter status, periode 7/30 hari, rincian snapshot item, ekspor CSV |
+| `/admin/payments` | Status pembayaran per pesanan, metode dan rincian, filter status |
+| `/admin/deliveries` | Status pengantaran dan identitas kurir contoh |
+| `/admin/bookings` | Jadwal WIB, provider, estimasi, status booking |
+| `/admin/sellers` | Daftar seller, usaha, status akun |
+| `/admin/users` | Customer dan kurir beserta status akun |
+| `/admin/engagement` | Dashboard Firestore engagement lama, dipertahankan untuk mode Firebase |
+
+Navigasi utama admin berfokus pada monitoring. Rute CRUD lama tetap ada untuk kompatibilitas,
+tetapi tidak dijalankan pada mode lokal. Pemindahan authorization CRUD ke seller dan integrasi
+monitoring produksi masih pekerjaan berikutnya. Pada mode Firebase, monitoring baru menampilkan
+pesan sumber data belum terhubung; tidak menampilkan fixture sebagai data produksi.
+
+Data monitoring contoh konsisten pada snapshot **28 September 2026, 17:00 WIB**.
+Filter 7/30 hari relatif terhadap snapshot, bukan tanggal jam perangkat.
+Pesanan/pembayaran/pengantaran mengikuti periode; jumlah akun aktif dan booking memakai
+seluruh snapshot dan diberi label demikian. Klik ID pesanan membuka rincian inline.
+
+### 33.4 KPI definitions
+
+- GMV terbayar = jumlah `total` pesanan dengan payment `PAID` dan status bukan `CANCELLED`.
+  `PENDING`, `FAILED`, dan `REFUNDED` tidak dihitung. GMV bukan laba atau pendapatan platform.
+- Average paid order = GMV / jumlah pesanan yang masuk GMV; nol bila tidak ada data.
+- Completion rate = pesanan `COMPLETED` / seluruh pesanan periode.
+- Cancellation rate = pesanan `CANCELLED` / seluruh pesanan periode.
+- Active orders = selain `COMPLETED` dan `CANCELLED`.
+- Ranking usaha dan grafik memakai definisi GMV yang sama.
+
+Adapter fixture saat ini memakai satu seller per baris order untuk demonstrasi monitoring.
+Ini **bukan** model final multi-seller checkout: integrasi produksi perlu adapter Order/SubOrder
+yang mencegah double counting, mendefinisikan shipping/refund, dan direview owner domain.
+Analytics hanya membaca data; tidak mengubah payment atau order state.
+
+### 33.5 Local account and API boundary
+
+```text
+Local UI → /api/local/session → signed HttpOnly cookie
+Admin UI → /api/local/monitoring → server role check → read-only fixtures
+Customer UI → /api/local/activity → server UID filter → own fixture history
+```
+
+`lib/server/preview-session.ts` hanya menerima request localhost/127.0.0.1 dan memerlukan
+`NODE_ENV=development` serta `NEXT_PUBLIC_LOCAL_PREVIEW=true`. API lokal menghasilkan 404
+di production, bahkan bila flag preview terbawa. POST/DELETE memeriksa same-origin.
+Cookie menggunakan HMAC-SHA256, HttpOnly, SameSite=Strict, expiry 8 jam. Identitas/peran
+ditentukan di server, tidak diterima dari form atau localStorage. Logout menghapus cookie;
+ini sesi lokal stateless, bukan sistem revocation production.
+
+`GET /api/local/monitoring` menghasilkan 401 tanpa sesi dan 403 untuk customer.
+`GET /api/local/activity` selalu memfilter customerId di server. Semua response tidak di-cache.
+Preview menggunakan konfigurasi Firebase dummy; pembacaan katalog/review/SEO dan event/favorit
+yang digunakan layar preview tidak mengirim request Firestore. Kontak contoh pada profil usaha
+dinonaktifkan. Tidak ada seed akun/data pada Firebase production.
+
+### 33.6 Running locally
+
+```powershell
+npm ci
+npm run setup:local
+npm run dev:local
+```
+
+Buka `http://127.0.0.1:3000` atau `http://localhost:3000`.
+`setup:local` membuat `.env.local` dan `.local/accounts.json`; keduanya diabaikan Git.
+Script menolak menimpa `.env.local` existing. Jika sudah ada, atur variabel berikut secara manual:
+
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_LOCAL_PREVIEW=true` | Mengaktifkan UI fixture lokal; bukan secret |
+| `LOCAL_SESSION_SECRET` | Secret server acak minimal 32 karakter |
+| `LOCAL_ADMIN_PASSWORD` | Kata sandi acak admin lokal |
+| `LOCAL_CUSTOMER_PASSWORD` | Kata sandi acak customer lokal |
+| `NEXT_PUBLIC_SITE_URL=http://localhost:3000` | URL metadata lokal |
+
+Email uji: `admin@palugada.local` dan `user@palugada.local`. Password dihasilkan acak
+oleh script dan hanya disimpan lokal. Gunakan `/login` untuk keduanya. Akun admin menuju
+`/admin`, customer menuju `/`. Tidak ada credential yang ditambahkan ke source control.
+Matikan flag dan lengkapi environment Firebase sebelum memakai mode produksi.
+
+### 33.7 Validation and follow-up
+
+- `npm run test:monitoring`: definisi GMV, empty state, serta batas periode WIB.
+- `npm run test:local-api`: jalankan ketika server lokal aktif; memeriksa login, password salah,
+  origin, cookie, admin RBAC, kepemilikan riwayat, pemalsuan sesi, dan logout.
+- `npx tsc --noEmit`, `npm run build`, dan lint kode baru.
+- Uji browser desktop/mobile: navigasi, login kedua role, filter katalog, favorit,
+  periode/filter monitoring, rincian pesanan, serta penolakan halaman admin untuk customer.
+
+Lint seluruh repositori masih memiliki pelanggaran pada kode baseline; tidak dilakukan
+refactor di luar scope. Lockfile diperbaiki untuk dua peer dependency transitif yang hilang
+(`@emnapi/core`, `@emnapi/wasi-threads`), tanpa mengganti framework atau dependency utama.
+Tools browser sementara berada di `.local/`, bukan dependency aplikasi.
+
+Hasil verifikasi 29 September 2026: build production dan TypeScript lulus; tiga unit test
+monitoring lulus; pemeriksaan API lokal lulus; lint seluruh kode baru lulus; uji Chrome
+1440px dan 390px lulus tanpa page error dan tanpa overflow horizontal halaman.
+Lint keseluruhan repository masih melaporkan 34 error dan 19 warning pada kode legacy.
+Screenshot dan laporan lint lokal tersedia di `.local/` (tidak masuk Git).
+
+Belum diimplementasikan: mutation cart/checkout, payment provider, booking creation,
+seller/courier operation, production monitoring repository, migrasi role Firebase,
+dan review terverifikasi transaksi. Tidak ada migration database pada perubahan ini.
+
+---
+
+## 34. Marketplace, transaksi demo, analisis, dan LAN (v1.2)
+
+Bagian ini menggantikan batas implementasi tahap pertama pada bagian 33. Rancangan produksi bagian 2–32 tetap menjadi target. User secara eksplisit meminta perbaikan customer/admin, fungsi demo, forecasting, akses HP, dan push branch lukas; scope lint/security juga diperluas untuk audit.
+
+### 34.1 Struktur layar dan identitas visual
+
+Identitas PALUGADA tetap memakai token hijau #05472B, #AADCAB, #013020, #CDFF00, #00C0A3, hitam/putih, JetBrains Mono untuk heading dan Plus Jakarta Sans untuk body. Permukaan memakai tint dari token. Ilustrasi produk berbasis CSS/SVG diberi label ilustrasi.
+
+- Header marketplace: brand, kolom pencarian utama, favorit, keranjang dengan jumlah item, akun; navigasi kategori di bawah.
+- Beranda: banner ringkas, kategori, grid produk dengan harga dan toko, layanan jasa, pintasan profil usaha.
+- HP: grid dua kolom dan bottom navigation Beranda/Katalog/Keranjang/Pesanan/Akun. Login menempatkan formulir langsung di layar, tanpa panel promosi desktop. Input 16px, autofill username/current-password, tampilkan/sembunyikan sandi.
+- Detail produk menunjukkan stok demo, tombol tambah, tautan keranjang, favorit, identitas toko. Detail jasa menyediakan jadwal, alamat layanan, dan catatan.
+- Keranjang berkelompok per seller; checkout menunjukkan total dan pilihan ambil di toko/tunai demo. State loading/error/empty/success tersedia.
+- Admin memakai sidebar desktop/drawer HP, KPI, insight deskriptif, tren, performa toko, daftar aktivitas, pencarian/filter/ekspor CSV, dan menu Forecasting stok. Admin tetap monitoring; tidak menggantikan seller.
+
+### 34.2 Kontrak transaksi development
+
+| Area | Kontrak lokal |
+|---|---|
+| Cart | CartLine { productId, quantity } pada localStorage per UID; harga bukan otoritas client |
+| Checkout | CheckoutInput { items, address, phone, note, idempotencyKey } |
+| Hasil | Satu MonitorOrder per seller, shared checkoutId, snapshot item/harga, AWAITING_SELLER, payment PENDING, delivery PICKUP |
+| Booking | serviceId, schedule ISO, address, notes, idempotencyKey; hasil REQUESTED; jadwal masa depan hingga 90 hari |
+| Persistence | .local/commerce.json: stock, orders, bookings, requests; atomic rename dan exclusive file lock |
+| Pembatalan | Pemilik order, hanya sebelum konfirmasi; idempotent; restore stok; order/payment/delivery menjadi CANCELLED |
+
+POST /api/local/commerce memiliki action checkout/cancel/booking, otorisasi customer, validasi origin, body limit, harga dari katalog server, stok nonnegatif, penggabungan item duplikat, dan idempotensi per UID/action/key. GET memberi stok publik demo. Activity memfilter UID di server; monitoring menggabungkan transaksi demo dengan fixture. Uji API meninggalkan order dibatalkan dan booking berlabel otomatis untuk jejak pengujian.
+
+Pola ini tidak mendefinisikan kontrak produksi lintas tim. Shipping, payment gateway, seller acceptance, courier assignment, refund, dan aturan Firestore transaksi tetap perlu integrasi domain ERP/ESD. Tidak ada uang atau pesan WhatsApp yang dikirim.
+
+### 34.3 Insight dan forecasting
+
+Monitoring menampilkan pembayaran tertunda (selain dibatalkan), rasio pembatalan, konsentrasi GMV seller, dan tautan peninjauan. Insight tidak mengklaim sebab-akibat. Periode/grafik dihitung menurut kalender WIB. Ini nilai pembelian customer/penjualan seller; data biaya supplier belum ada sehingga laba/margin tidak ditampilkan.
+
+Sumber forecasting:
+1. Dataset contoh deterministik 56 hari, empat produk, tanggal acuan 2026-09-28; jelas terpisah dari fixture order.
+2. CSV admin berisi product_id, product_name, kind (RETAIL/FOOD), unit, date, quantity, on_hand, incoming, lead_days, review_days, shelf_life_days.
+
+CSV dibatasi 1 MB, 20.000 baris, 100 produk. Metadata produk harus konsisten. Kuantitas/stok berupa bilangan bulat nonnegatif; makanan wajib umur simpan positif. Satu observasi per produk/hari. Tanggal hilang tidak dianggap nol. Minimal 28 hari lengkap sampai tanggal acuan; maksimal 56 hari terakhir dipakai. Histori duplikat/tidak valid/masa depan ditolak untuk rekomendasi.
+
+Empat kandidat: rata-rata 7 hari, rata-rata sampai 28 hari, pola mingguan (lag 7), dan exponential smoothing alpha 0,3. Empat belas hari terakhir dievaluasi dengan rolling one-step forecast menggunakan observasi sebelum hari uji. Pilih MAE terendah; laporkan MAE dan WAPE (null bila total aktual nol). Forecast multi-hari bersifat rekursif dan belum divalidasi sebagai multi-step; skor adalah skor pemilihan model, bukan estimasi akurasi independen atau jaminan.
+
+Rumus:
+- Hari rencana barang = leadDays + reviewDays (maksimal 30).
+- Hari rencana makanan = minimum(hari rencana, shelfLifeDays).
+- Target = ceil(jumlah prediksi hari rencana + buffer).
+- Buffer barang = ceil(MAE × sqrt(hari rencana)); buffer makanan = 0.
+- Tambahan = max(0, target − stok layak jual − incoming tepat waktu).
+- Coverage memakai stok saat ini / rata-rata demand prediksi tujuh hari.
+- Risk low jika pasokan kurang dari demand; excess jika pasokan >1,5 × target (atau demand nol tetapi stok ada); selainnya healthy. Saran tambahan dapat muncul untuk buffer sebelum risk low.
+
+Umur simpan membatasi saran persiapan, bukan model keamanan pangan. Operator tetap harus mengecek batch layak jual, waktu pasokan, dan kapasitas produksi. Belum ada BOM/resep, promosi, cuaca, distribusi ketidakpastian, dan koreksi stockout/lost sales. Tidak ada pembelian/produksi otomatis. Impor dianalisis server hanya untuk sesi halaman dan tidak disimpan.
+
+### 34.4 Akun dan jaringan lokal
+
+Ikuti README.md: setup:local (sekali), setup:lan, dev:lan. Akun demo mudah: admin / Admin123!, user / User123!. Alias email tetap berlaku. Password demo bukan credential Firebase. Secret HMAC dihasilkan acak dan hanya berada di .env.local yang diabaikan Git.
+
+setup:lan memperbarui allowlist alamat IPv4 perangkat, menyetel password demo, dan merotasi secret (logout sesi lama). Jalankan ulang bila IP Wi-Fi berubah lalu restart server. API menerima localhost/127.0.0.1 dan host allowlist persis; POST/DELETE harus Origin yang sesuai Host. Mode ini tetap khusus NODE_ENV development. Lima API lokal terbukti mengembalikan 404 saat production start. Login dibatasi 20 kegagalan/menit per identitas demo dalam proses server.
+
+VS Code: .vscode/tasks.json menyediakan task dev:lan dan firewall Administrator; launch.json membuka Edge; settings.json memberi label port 3000. Server listen 0.0.0.0:3000, URL Wi-Fi saat verifikasi http://192.168.0.103:3000. Firewall LocalSubnet membutuhkan hak Administrator; percobaan UAC dibatalkan sehingga belum ada aturan yang dibuat. Private cloud port forwarding memerlukan aksi Ports/sign-in pengguna; belum dibuat tunnel atau public URL.
+
+### 34.5 Audit dan dependensi
+
+Lihat AUDIT.md untuk matriks perbaikan, pengujian, keterbatasan, dan referensi. Next.js serta eslint-config-next diperbarui ke 16.3.6; SheetJS ke 0.20.3 dari distribusi resmi; dependency transitif kompatibel diperbarui sampai npm audit melaporkan 0 vulnerabilities. Font/palette dan stack utama tetap dipertahankan.

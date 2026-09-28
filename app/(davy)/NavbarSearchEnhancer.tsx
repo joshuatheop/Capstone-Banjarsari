@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function NavbarSearchEnhancer() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const currentQuery = searchParams ? (searchParams.get('search') || searchParams.get('q') || '') : '';
 
@@ -11,7 +12,7 @@ export default function NavbarSearchEnhancer() {
     const handleSearch = (input: HTMLInputElement) => {
       const val = input.value.trim();
       if (val) {
-        window.location.href = `/katalog?search=${encodeURIComponent(val)}`;
+        router.push(`/katalog?search=${encodeURIComponent(val)}`);
       }
     };
 
@@ -59,7 +60,7 @@ export default function NavbarSearchEnhancer() {
     return () => {
       cleanupFns.forEach((fn) => fn());
     };
-  }, [currentQuery]);
+  }, [currentQuery, router]);
 
   return null;
 }

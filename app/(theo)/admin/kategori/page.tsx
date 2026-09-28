@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAllKategori, deleteKategori } from '@/lib/firestore/kategori';
 import type { Category } from '@/lib/firestore/types';
@@ -10,7 +10,6 @@ export default function AdminKategoriPage() {
   const router = useRouter();
 
   const [kategoriList, setKategoriList] = useState<Category[]>([]);
-  const [filtered, setFiltered] = useState<Category[]>([]);
   const [search, setSearch] = useState('');
   const [filterType, setFilterType] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
@@ -21,19 +20,17 @@ export default function AdminKategoriPage() {
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setSelected([]);
     const data = await getAllKategori();
     const visible = data.filter((k) => !k.deletedAt);
     setKategoriList(visible);
-    setFiltered(visible);
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  useEffect(() => { const timer = setTimeout(() => void loadData(), 0); return () => clearTimeout(timer); }, [loadData]);
 
   // Filter logic
-  useEffect(() => {
+  const filtered = useMemo(() => {
     let result = kategoriList;
     const q = search.trim().toLowerCase();
     if (q) {
@@ -46,9 +43,8 @@ export default function AdminKategoriPage() {
     if (filterType) {
       result = result.filter((k) => k.category_type === filterType);
     }
-    setFiltered(result);
-    setSelected([]);
-  }, [search, filterType, kategoriList]);
+    return result;
+}, [search, filterType, kategoriList]);
 
   const showToast = (msg: string, ok: boolean) => {
     setToast({ msg, ok });
@@ -106,14 +102,14 @@ export default function AdminKategoriPage() {
             type="text"
             placeholder="Cari nama kategori..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setSelected([]); }}
           />
         </div>
 
         <select
           className={styles.selectFilter}
           value={filterType}
-          onChange={(e) => setFilterType(e.target.value)}
+          onChange={(e) => { setFilterType(e.target.value); setSelected([]); }}
         >
           <option value="">Semua Tipe</option>
           <option value="PRODUCT">Produk (PRODUCT)</option>

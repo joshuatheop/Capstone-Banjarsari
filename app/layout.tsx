@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
+import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { CartProvider } from '@/context/CartContext';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://palugada.banjarsarigarut.id';
 
@@ -42,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id">
       <body className="theo-theme">
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider><CartProvider>{LOCAL_PREVIEW && <div className="preview-banner">Mode demo · Pesanan uji tersimpan lokal · Tidak ada pembayaran nyata</div>}{children}</CartProvider></AuthProvider>
       </body>
     </html>
   );

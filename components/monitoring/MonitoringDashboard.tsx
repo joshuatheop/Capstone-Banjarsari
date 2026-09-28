@@ -1,0 +1,67 @@
+'use client';
+import { Fragment, useState } from 'react';
+import Link from 'next/link';
+import { ArrowDownToLine, ArrowUpRight, Wallet, ShoppingBag, Store, Users, Truck, CalendarDays, CircleCheck, Search, RefreshCw } from 'lucide-react';
+import { wibDate, ordersInPeriod, rupiah, statusLabels, summarizeOrders } from '@/lib/monitoring/metrics';
+import { useMonitoring } from './useMonitoring';
+import styles from './monitoring.module.css';
+import SalesInsights from './SalesInsights';
+
+interface MonitoringDashboardProps { section?: string }
+const names: Record<string, string> = { overview: 'Kabar baik dimulai dari data.', orders: 'Pantau setiap pesanan.', payments: 'Pembayaran yang tercatat.', deliveries: 'Perjalanan pesanan warga.', bookings: 'Jadwal layanan warga.', sellers: 'Usaha yang tumbuh bersama.', users: 'Warga di balik ekosistem.' };
+
+const MonitoringDashboard = ({ section = 'overview' }: MonitoringDashboardProps) => {
+  const { data, error, loading, reload } = useMonitoring();
+  const [days, setDays] = useState(7);
+  const [query, setQuery] = useState('');
+  const [status, setStatus] = useState('');
+  const [expanded, setExpanded] = useState<string | null>(null);
+  if (loading) return <div className={styles.state} role="status"><RefreshCw size={28} /><p>Memuat ringkasan ekosistem…</p></div>;
+  if (error || !data) return <div className={styles.state} role="alert"><h1>Data belum dapat ditampilkan</h1><p>{error}</p><button onClick={reload}>Coba lagi</button></div>;
+  const periodOrders = ordersInPeriod(data.orders, data.asOf, days);
+  const metrics = summarizeOrders(periodOrders);
+  const search = query.toLowerCase().trim();
+  const statusKey = section === 'payments' ? 'payment' : section === 'deliveries' ? 'delivery' : 'status';
+  const orders = periodOrders.filter((order) => `${order.id} ${order.customer} ${order.seller}`.toLowerCase().includes(search) && (!status || order[statusKey] === status));
+  const accounts = data.accounts.filter((account) => (section === 'sellers' ? account.role === 'seller' : account.role !== 'seller') && `${account.name} ${account.business ?? ''}`.toLowerCase().includes(search));
+  const bookings = data.bookings.filter((booking) => `${booking.id} ${booking.customer} ${booking.service} ${booking.provider}`.toLowerCase().includes(search) && (!status || booking.status === status));
+  const isAccounts = section === 'sellers' || section === 'users';
+  const isBooking = section === 'bookings';
+  const choices = Array.from(new Set(isBooking ? data.bookings.map((booking) => booking.status) : periodOrders.map((order) => order[statusKey])));
+  const gmvDays = Array.from({ length: days }, (_, index) => {
+    const date = wibDate(new Date(new Date(data.asOf).getTime() - (days - 1 - index) * 86400000).toISOString());
+    return { date, amount: summarizeOrders(periodOrders.filter((order) => wibDate(order.createdAt) === date)).gmv };
+  });
+  const maxGmv = Math.max(...gmvDays.map((day) => day.amount), 1);
+  const topSellers = Array.from(new Set(periodOrders.map((order) => order.seller))).map((seller) => ({ seller, ...summarizeOrders(periodOrders.filter((order) => order.seller === seller)) })).sort((a, b) => b.gmv - a.gmv);
+  const exportCsv = () => {
+    const cell = (value: unknown) => '"' + String(value).replace(/"/g, '""').replace(/^[=+@-]/, "'") + '"';
+    const rows = [['ID', 'Usaha', 'Total IDR', 'Status', 'Pembayaran', 'Pengantaran', 'Tanggal'], ...orders.map((order) => [order.id, order.seller, order.total, order.status, order.payment, order.delivery, order.createdAt])];
+    const url = URL.createObjectURL(new Blob(['\uFEFF' + rows.map((row) => row.map(cell).join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8;' }));
+    const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'palugada-pesanan-contoh.csv'; anchor.click(); URL.revokeObjectURL(url);
+  };
+  return <main className={styles.content}>
+    <div className={styles.heading}><div><span className={styles.eyebrow}>MONITORING EKOSISTEM</span><h1>{names[section]}</h1><p>Gambaran aktivitas PALUGADA Banjarsari dalam satu tempat.</p></div><div className={styles.headingActions}>{!isAccounts && !isBooking && <select aria-label="Periode monitoring" value={days} onChange={(event) => setDays(Number(event.target.value))}><option value={7}>7 hari terakhir</option><option value={30}>30 hari terakhir</option></select>}<button className={styles.iconButton} aria-label="Muat ulang monitoring" onClick={reload}><RefreshCw size={17} /></button></div></div>
+    <div className={styles.sourceNote}><span className={styles.dot} /><strong>Pratinjau dengan data contoh</strong><span>Data contoh + pesanan uji lokal. Diperbarui {new Date(data.asOf).toLocaleString('id-ID', {timeZone:'Asia/Jakarta'})} WIB.</span></div>
+    {section === 'overview' && <>
+      <SalesInsights orders={periodOrders} />
+      <div className={styles.metrics}>{[
+        { title: 'GMV terbayar', value: rupiah(metrics.gmv), detail: 'Pesanan dibayar, selain dibatalkan', icon: Wallet },
+        { title: 'Total pesanan', value: metrics.total, detail: `${metrics.active} aktif · ${metrics.completed} selesai`, icon: ShoppingBag },
+        { title: 'Seller aktif', value: data.accounts.filter((a) => a.role === 'seller' && a.active).length, detail: 'Snapshot seluruh platform', icon: Store },
+        { title: 'Customer aktif', value: data.accounts.filter((a) => a.role === 'customer' && a.active).length, detail: 'Akun aktif, bukan jumlah kunjungan', icon: Users },
+      ].map(({ title, value, detail, icon: Icon }, index) => <article className={`${styles.metric} ${index === 0 ? styles.featuredMetric : ''}`} key={title}><div><span>{title}</span><Icon size={20} /></div><strong>{value}</strong><small>{detail}</small></article>)}</div>
+      <div className={styles.chartRow}><section className={styles.panel}><div className={styles.panelHeading}><div><h2>Tren nilai transaksi</h2><p>GMV terbayar per hari · WIB</p></div><span className={styles.badge}>{days} HARI</span></div><div className={styles.chart} role="img" aria-label={`Grafik GMV ${days} hari. Total ${rupiah(metrics.gmv)}.`}>{gmvDays.map((day) => <div key={day.date} className={styles.barColumn} title={`${day.date}: ${rupiah(day.amount)}`}><div className={styles.barTrack}><span style={{ height: `${day.amount / maxGmv * 100}%`, minHeight: day.amount ? 4 : 0 }} /></div>{days === 7 && <small>{day.date.slice(-2)}</small>}</div>)}</div><details className={styles.chartDetails}><summary>Lihat angka per hari</summary><ul>{gmvDays.map((day) => <li key={day.date}>{day.date}: {rupiah(day.amount)}</li>)}</ul></details></section><section className={styles.panel}><div className={styles.panelHeading}><div><h2>Kesehatan pesanan</h2><p>Dari {metrics.total} pesanan periode ini</p></div><CircleCheck size={20} /></div><div className={styles.completion}><strong>{metrics.completionRate}%</strong><span>pesanan selesai</span></div><div className={styles.statusList}>{[['Selesai', metrics.completed], ['Aktif', metrics.active], ['Dibatalkan', metrics.cancelled]].map(([label, count]) => <div key={label}><span>{label}</span><strong>{count}</strong></div>)}</div><p className={styles.footnote}>Rata-rata pesanan terbayar: {rupiah(metrics.averagePaidOrder)}</p></section></div>
+      <div className={styles.operations}>{[{ icon: Truck, label: 'Sedang diantar', count: periodOrders.filter((o) => o.delivery === 'ON_DELIVERY').length, href: '/admin/deliveries' }, { icon: CalendarDays, label: 'Booking aktif · seluruh snapshot', count: data.bookings.filter((b) => !['COMPLETED', 'CANCELLED'].includes(b.status)).length, href: '/admin/bookings' }, { icon: Users, label: 'Kurir aktif · seluruh snapshot', count: data.accounts.filter((a) => a.role === 'courier' && a.active).length, href: '/admin/users' }].map(({ icon: Icon, label, count, href }) => <Link href={href} key={href}><Icon size={21} /><div><strong>{count}</strong><span>{label}</span></div><ArrowUpRight size={18} /></Link>)}</div>
+      <section className={styles.panel}><div className={styles.panelHeading}><div><h2>Performa usaha</h2><p>Berdasarkan GMV terbayar periode terpilih</p></div><Link href="/admin/sellers">Lihat seller ↗</Link></div><div className={styles.sellers}>{topSellers.map((seller, index) => <div key={seller.seller}><span className={styles.rank}>0{index + 1}</span><div><strong>{seller.seller}</strong><small>{seller.completed} pesanan selesai</small></div><b>{rupiah(seller.gmv)}</b></div>)}</div></section>
+    </>}
+    <section className={styles.panel}><div className={styles.panelHeading}><div><h2>{isAccounts ? (section === 'sellers' ? 'Daftar seller' : 'Customer & kurir') : isBooking ? 'Daftar booking jasa' : section === 'overview' ? 'Pesanan periode ini' : section === 'payments' ? 'Status pembayaran' : section === 'deliveries' ? 'Status pengantaran' : 'Daftar pesanan'}</h2><p>{isAccounts || isBooking ? 'Seluruh data pada snapshot contoh.' : 'Klik ID pesanan untuk melihat rincian.'}</p></div>{!isAccounts && !isBooking && <button className={styles.exportButton} onClick={exportCsv}><ArrowDownToLine size={16} />Ekspor CSV</button>}</div>
+      <div className={styles.filters}><label><Search size={17} /><input aria-label="Cari data monitoring" value={query} onChange={(event) => setQuery(event.target.value)} placeholder={isAccounts ? 'Cari nama atau usaha…' : 'Cari ID, warga, atau usaha…'} /></label>{!isAccounts && <select aria-label="Filter status" value={status} onChange={(event) => setStatus(event.target.value)}><option value="">Semua status</option>{choices.map((value) => <option value={value} key={value}>{statusLabels[value]}</option>)}</select>}</div>
+      <div className={styles.tableWrap} tabIndex={0} aria-label="Tabel monitoring dapat digeser horizontal"><table><thead><tr>{(isAccounts ? ['Nama', 'Peran', 'Usaha', 'Status akun'] : isBooking ? ['Booking', 'Layanan & provider', 'Jadwal', 'Estimasi', 'Status'] : ['Pesanan', 'Usaha', 'Nilai', 'Pembayaran', 'Status']).map((label) => <th key={label}>{label}</th>)}</tr></thead><tbody>
+        {isAccounts ? accounts.map((account) => <tr key={account.id}><td><strong>{account.name}</strong></td><td>{account.role}</td><td>{account.business ?? '—'}</td><td><span className={styles.status}>{account.active ? 'Aktif' : 'Tidak aktif'}</span></td></tr>) : isBooking ? bookings.map((booking) => <tr key={booking.id}><td><strong>{booking.id}</strong><small>{booking.customer}</small></td><td>{booking.service}<small>{booking.provider}</small></td><td>{new Date(booking.schedule).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta', dateStyle: 'medium', timeStyle: 'short' })} WIB</td><td>{rupiah(booking.estimate)}</td><td><span className={styles.status}>{statusLabels[booking.status]}</span></td></tr>) : orders.map((order) => <Fragment key={order.id}><tr><td><button className={styles.orderLink} aria-expanded={expanded === order.id} onClick={() => setExpanded(expanded === order.id ? null : order.id)}>{order.id}</button><small>{order.customer}</small></td><td>{order.seller}<small>{order.vertical === 'FOOD' ? 'Makanan' : 'Produk'}</small></td><td><strong>{rupiah(order.total)}</strong></td><td><span className={styles.status} data-status={order.payment}>{statusLabels[order.payment]}</span></td><td><span className={styles.status} data-status={order[statusKey]}>{statusLabels[order[statusKey]]}</span></td></tr>{expanded === order.id && <tr><td colSpan={5} className={styles.orderDetail}><strong>Snapshot item: {order.item} × {order.quantity}</strong><p>Metode: {order.method} · Pengantaran: {statusLabels[order.delivery]} · Kurir: {order.courier ?? 'Belum ditugaskan'}</p><p>Dibuat {new Date(order.createdAt).toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' })} WIB. Monitoring hanya membaca status.</p></td></tr>}</Fragment>)}
+        {(isAccounts ? accounts.length : isBooking ? bookings.length : orders.length) === 0 && <tr><td colSpan={5}><div className={styles.empty}>Tidak ada data yang sesuai filter. Coba kata kunci atau status lain.</div></td></tr>}
+      </tbody></table></div><div className={styles.tableFooter}>{isAccounts ? accounts.length : isBooking ? bookings.length : orders.length} baris ditampilkan · Data contoh PALUGADA</div>
+    </section>
+  </main>;
+};
+export default MonitoringDashboard;

@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Icons } from './Icons';
 
 export default function Footer() {
   const year = new Date().getFullYear();
@@ -26,7 +25,7 @@ export default function Footer() {
 
             <h3>PALUGADA</h3>
             <p>
-              Platform katalog digital UMKM Kelurahan Banjarsari. Menghubungkan warga dan memajukan ekonomi lokal
+              Produk, makanan, dan jasa dari usaha warga Banjarsari. Dekat kebutuhannya, terasa manfaatnya.
             </p>
           </div>
 
@@ -38,7 +37,8 @@ export default function Footer() {
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
                 { label: 'Produk UMKM', href: '/katalog?type=product' },
-                { label: 'Layanan Jasa', href: '/katalog?type=service' },
+                { label: 'Makanan', href: '/makanan' },
+                { label: 'Layanan Jasa', href: '/jasa' },
                 { label: 'Profil UMKM', href: '/bisnis' },
               ].map((item) => (
                 <li key={item.href}>
@@ -57,8 +57,9 @@ export default function Footer() {
             </h4>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
               {[
-                { label: 'Website Desa', href: '#' },
-                { label: 'Hubungi Kami', href: '' },
+                { label: 'Pesanan saya', href: '/orders' },
+                { label: 'Booking jasa', href: '/bookings' },
+                { label: 'Akun saya', href: '/profile' },
               ].map((item) => (
                 <li key={item.label}>
                   <Link href={item.href} style={{ color: 'rgba(255,255,255,0.6)', fontSize: 14, transition: 'color 0.15s' }}>

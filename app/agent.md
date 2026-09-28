@@ -303,6 +303,9 @@ users/{uid}
 
 | Tanggal    | Paket / Library             | Versi    | Alasan Penambahan                         |
 |------------|-----------------------------|----------|-------------------------------------------|
+| 2026-09-29 | next / eslint-config-next | 16.3.6 | Pembaruan keamanan hasil audit |
+| 2026-09-29 | xlsx (SheetJS, CDN resmi) | 0.20.3 | Perbaikan prototype pollution/ReDoS versi npm lama |
+| 2026-09-29 | commerce-store / forecasting / LAN | internal | Transaksi demo lokal, rolling validation, CSV, dan akses HP |
 | 2026-06-30 | `next`                      | 16.2.9   | Framework utama (App Router)              |
 | 2026-06-30 | `react` + `react-dom`       | 19.2.4   | UI library                                |
 | 2026-06-30 | `typescript`                | ^5       | Type safety                               |

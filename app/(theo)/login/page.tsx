@@ -1,18 +1,23 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/firebase';
 import { getUserRole, createUserDocument } from '@/lib/auth';
-import { seedAdmin } from '@/lib/seedAdmin';
+import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import LocalAccount from '@/components/commerce/LocalAccount';
 import { useAuth } from '@/context/AuthContext';
 import { getAllBisnis } from '@/lib/firestore/bisnis';
 import { getAllKategori } from '@/lib/firestore/kategori';
 import styles from './login.module.css';
 
 export default function LoginPage() {
+  return LOCAL_PREVIEW ? <LocalAccount /> : <FirebaseLoginPage />;
+}
+
+function FirebaseLoginPage() {
   const router = useRouter();
   const { user, role, loading } = useAuth();
 
@@ -25,7 +30,6 @@ export default function LoginPage() {
   const [statsUmkm, setStatsUmkm] = useState<number | null>(null);
   const [statsKategori, setStatsKategori] = useState<number | null>(null);
 
-  const seededRef = useRef(false);
 
   // Set greeting based on local time
   useEffect(() => {
@@ -64,13 +68,6 @@ export default function LoginPage() {
     }
   }, [user, role, loading, router]);
 
-  // Seed admin sekali saja saat halaman dimuat
-  useEffect(() => {
-    if (!seededRef.current) {
-      seededRef.current = true;
-      seedAdmin().catch(() => {});
-    }
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -31,6 +31,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [likeCounts, setLikeCounts] = useState<Record<string, number>>({});
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+    setLikeCounts({});
     if (user?.uid) {
       setFavProductIds(new Set(getFavoriteProductIds(user.uid)));
       setFavServiceIds(new Set(getFavoriteServiceIds(user.uid)));
@@ -38,6 +40,8 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
       setFavProductIds(new Set());
       setFavServiceIds(new Set());
     }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [user]);
 
   const isProductFavorited = useCallback(

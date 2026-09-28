@@ -1,6 +1,7 @@
 'use client';
+import Image from 'next/image';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAllBisnis, deleteBisnis, updateBisnis } from '@/lib/firestore/bisnis';
 import type { Business } from '@/lib/firestore/types';
@@ -10,7 +11,6 @@ export default function AdminUmkmPage() {
   const router = useRouter();
 
   const [businesses, setBusinesses] = useState<Business[]>([]);
-  const [filtered, setFiltered] = useState<Business[]>([]);
   const [search, setSearch] = useState('');
   const [filterArea, setFilterArea] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
@@ -23,19 +23,17 @@ export default function AdminUmkmPage() {
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setSelected([]);
     const data = await getAllBisnis();
     const visible = data.filter((b) => !b.deletedAt);
     setBusinesses(visible);
-    setFiltered(visible.filter((b) => b.is_active));
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  useEffect(() => { const timer = setTimeout(() => void loadData(), 0); return () => clearTimeout(timer); }, [loadData]);
 
   // Filter logic
-  useEffect(() => {
+  const filtered = useMemo(() => {
     const base = businesses.filter((b) => showArchived ? !b.is_active : b.is_active);
     let result = base;
     const q = search.trim().toLowerCase();
@@ -50,9 +48,8 @@ export default function AdminUmkmPage() {
     if (filterArea) {
       result = result.filter((b) => b.area_name === filterArea);
     }
-    setFiltered(result);
-    setSelected([]);
-  }, [search, filterArea, businesses, showArchived]);
+    return result;
+}, [search, filterArea, businesses, showArchived]);
 
   // Distinct areas for filter dropdown
   const uniqueAreas = Array.from(
@@ -144,14 +141,14 @@ export default function AdminUmkmPage() {
             type="text"
             placeholder="Cari nama usaha, pemilik, atau telepon..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setSelected([]); }}
           />
         </div>
 
         <select
           className={styles.selectFilter}
           value={filterArea}
-          onChange={(e) => setFilterArea(e.target.value)}
+          onChange={(e) => { setFilterArea(e.target.value); setSelected([]); }}
         >
           <option value="">Semua Dusun</option>
           {uniqueAreas.map((area) => (
@@ -226,7 +223,7 @@ export default function AdminUmkmPage() {
                     <td className={styles.tdProduk}>
                       <div className={styles.produkCell}>
                         {b.business_logo_url ? (
-                          <img
+                          <Image unoptimized width={160} height={160}
                             className={styles.thumbnail}
                             src={b.business_logo_url}
                             alt={b.business_name}

@@ -89,15 +89,15 @@ export default function ReviewSection({ itemId, itemType, itemName }: ReviewSect
   }, [itemId, itemType]);
 
   useEffect(() => {
-    fetchReviewsData();
+    const timer = setTimeout(() => void fetchReviewsData(), 0);
+    return () => clearTimeout(timer);
   }, [fetchReviewsData]);
 
   // Fetch current user's review whenever user or reviews change
   useEffect(() => {
     if (!user || !itemId) {
-      setMyReview(null);
-      setIsEditing(false);
-      return;
+      const timer = setTimeout(() => { setMyReview(null); setIsEditing(false); }, 0);
+      return () => clearTimeout(timer);
     }
     getUserReview(itemId, itemType, user.uid).then((existing) => {
       setMyReview(existing);

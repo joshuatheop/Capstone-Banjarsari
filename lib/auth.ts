@@ -28,7 +28,7 @@ export async function createUserDocument(
   displayName?: string | null,
   photoURL?: string | null
 ) {
-  const data: Record<string, any> = {
+  const data: Record<string, unknown> = {
     email,
     role,
     updatedAt: serverTimestamp(),
@@ -78,7 +78,7 @@ export async function updateUserDocument(
   }
 ) {
   const userRef = doc(db, 'users', uid);
-  const cleanData: Record<string, any> = {
+  const cleanData: Record<string, unknown> = {
     ...data,
     updatedAt: serverTimestamp(),
   };

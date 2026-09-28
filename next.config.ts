@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: (process.env.LOCAL_PREVIEW_HOSTS ?? '').split(',').filter(Boolean),
   images: {
     remotePatterns: [
       {

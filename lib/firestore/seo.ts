@@ -6,6 +6,7 @@
   Timestamp,
 } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { LOCAL_PREVIEW } from '@/lib/local-preview';
 import type { SeoMeta } from "./types";
 
 // ============================================================
@@ -24,6 +25,7 @@ export async function getSeoMeta(
   type: "product" | "service",
   id: string
 ): Promise<SeoMeta | null> {
+  if (LOCAL_PREVIEW) return null;
   try {
     const ref = doc(db, collectionFor(type), id);
     const snap = await getDoc(ref);

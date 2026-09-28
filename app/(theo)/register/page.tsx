@@ -8,8 +8,14 @@ import { auth } from '@/lib/firebase';
 import { createUserDocument } from '@/lib/auth';
 import { useAuth } from '@/context/AuthContext';
 import styles from './register.module.css';
+import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import LocalAccount from '@/components/commerce/LocalAccount';
 
 export default function RegisterPage() {
+  return LOCAL_PREVIEW ? <LocalAccount register /> : <FirebaseRegisterPage />;
+}
+
+function FirebaseRegisterPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
 

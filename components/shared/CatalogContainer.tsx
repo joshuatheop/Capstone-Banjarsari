@@ -3,7 +3,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import type { ProdukItem, ServiceItem, Business, Category } from '@/lib/firestore/types';
-import { getServicePriceDisplay } from '@/lib/firestore/types';
 import ProductCard from './ProductCard';
 import ServiceCard from './ServiceCard';
 import { Icons } from './Icons';
@@ -71,7 +70,8 @@ const CatalogContainer = ({
   const [type, setType] = useState<'product' | 'service'>(initialType);
 
   useEffect(() => {
-    setType(initialType);
+    const timer = setTimeout(() => setType(initialType), 0);
+    return () => clearTimeout(timer);
   }, [initialType]);
 
   const handleSwitchType = (newType: 'product' | 'service') => {

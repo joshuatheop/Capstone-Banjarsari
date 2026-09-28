@@ -7,10 +7,16 @@ import { updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useAuth } from '@/context/AuthContext';
 import { getUserDocument, updateUserDocument } from '@/lib/auth';
-import { compressToWebPBase64, estimateBase64SizeKB } from '@/lib/imageUtils';
+import { compressToWebPBase64 } from '@/lib/imageUtils';
 import styles from './profile.module.css';
+import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import LocalAccount from '@/components/commerce/LocalAccount';
 
 export default function ProfilePage() {
+  return LOCAL_PREVIEW ? <LocalAccount profile /> : <FirebaseProfilePage />;
+}
+
+function FirebaseProfilePage() {
   const router = useRouter();
   const { user, loading, logout } = useAuth();
   
@@ -31,7 +37,8 @@ export default function ProfilePage() {
 
   // Reset image error on profile data load
   useEffect(() => {
-    setImageError(false);
+    const timer = setTimeout(() => setImageError(false), 0);
+    return () => clearTimeout(timer);
   }, [photoURL]);
 
   // Guard: Redirect if not logged in
@@ -64,9 +71,10 @@ export default function ProfilePage() {
 
     if (!loading) {
       if (user) {
-        fetchUserProfile();
+        void fetchUserProfile();
       } else {
-        setInitialLoading(false);
+        const timer = setTimeout(() => setInitialLoading(false), 0);
+        return () => clearTimeout(timer);
       }
     }
   }, [user, loading]);

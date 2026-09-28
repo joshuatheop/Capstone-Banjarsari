@@ -1,10 +1,6 @@
 import {
   collection,
   getDocs,
-  query,
-  where,
-  orderBy,
-  limit,
   doc,
   getDoc,
   updateDoc,
@@ -12,6 +8,8 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
+import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { previewProducts } from '@/lib/commerce/catalog';
 import type { ProdukItem, ServiceItem, Business, Category } from './types';
 import { mockProducts, mockServices, mockBusinesses, mockCategories } from './mock-data';
 
@@ -132,6 +130,7 @@ function toCategory(id: string, data: Record<string, unknown>): Category {
 // ============================================================
 
 export async function getProducts(): Promise<ProdukItem[]> {
+  if (LOCAL_PREVIEW) return previewProducts;
   try {
     const snap = await getDocs(collection(db, 'produk'));
     const realItems = snap.docs
@@ -149,6 +148,7 @@ export async function getProducts(): Promise<ProdukItem[]> {
 }
 
 export async function getServices(): Promise<ServiceItem[]> {
+  if (LOCAL_PREVIEW) return mockServices;
   try {
     const snap = await getDocs(collection(db, 'jasa'));
     const realItems = snap.docs
@@ -166,6 +166,7 @@ export async function getServices(): Promise<ServiceItem[]> {
 }
 
 export async function getBusinesses(): Promise<Business[]> {
+  if (LOCAL_PREVIEW) return mockBusinesses;
   try {
     const snap = await getDocs(collection(db, 'bisnis'));
     const realItems = snap.docs
@@ -183,6 +184,7 @@ export async function getBusinesses(): Promise<Business[]> {
 }
 
 export async function getCategories(): Promise<Category[]> {
+  if (LOCAL_PREVIEW) return mockCategories;
   try {
     const snap = await getDocs(collection(db, 'kategori'));
     const realItems = snap.docs
@@ -198,6 +200,7 @@ export async function getCategories(): Promise<Category[]> {
 }
 
 export async function getProduct(id: string): Promise<ProdukItem | null> {
+  if (LOCAL_PREVIEW) return previewProducts.find((item) => item.product_id === id) ?? null;
   try {
     const docRef = doc(db, 'produk', id);
     const docSnap = await getDoc(docRef);
@@ -212,6 +215,7 @@ export async function getProduct(id: string): Promise<ProdukItem | null> {
 }
 
 export async function getService(id: string): Promise<ServiceItem | null> {
+  if (LOCAL_PREVIEW) return mockServices.find((item) => item.service_id === id) ?? null;
   try {
     const docRef = doc(db, 'jasa', id);
     const docSnap = await getDoc(docRef);
@@ -226,6 +230,7 @@ export async function getService(id: string): Promise<ServiceItem | null> {
 }
 
 export async function getBusiness(id: string): Promise<Business | null> {
+  if (LOCAL_PREVIEW) return mockBusinesses.find((item) => item.business_id === id) ?? null;
   try {
     const docRef = doc(db, 'bisnis', id);
     const docSnap = await getDoc(docRef);
@@ -240,6 +245,7 @@ export async function getBusiness(id: string): Promise<Business | null> {
 }
 
 export async function incrementProductClicks(id: string): Promise<void> {
+  if (LOCAL_PREVIEW) return;
   try {
     const docRef = doc(db, 'produk', id);
     const docSnap = await getDoc(docRef);
@@ -254,6 +260,7 @@ export async function incrementProductClicks(id: string): Promise<void> {
 }
 
 export async function incrementServiceClicks(id: string): Promise<void> {
+  if (LOCAL_PREVIEW) return;
   try {
     const docRef = doc(db, 'jasa', id);
     const docSnap = await getDoc(docRef);

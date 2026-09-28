@@ -1,6 +1,7 @@
 'use client';
+import Image from 'next/image';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAllProduk, deleteProduk, updateProduk } from '@/lib/firestore/produk';
 import { getCategories } from '@/lib/firestore/data-loader';
@@ -12,7 +13,6 @@ export default function AdminProdukPage() {
 
   const [produkList, setProdukList] = useState<ProdukItem[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [filtered, setFiltered] = useState<ProdukItem[]>([]);
   const [search, setSearch] = useState('');
   const [filterKategori, setFilterKategori] = useState('');
   const [selected, setSelected] = useState<string[]>([]);
@@ -25,19 +25,19 @@ export default function AdminProdukPage() {
 
   const loadData = useCallback(async () => {
     setLoading(true);
+    setSelected([]);
     const [data, cats] = await Promise.all([getAllProduk(), getCategories()]);
     // Tampilkan semua produk di admin (aktif maupun tidak aktif), kecuali yang dihapus
     const visible = data.filter((p) => !p.deletedAt);
     setProdukList(visible);
     setCategories(cats.filter((c) => c.category_type === 'PRODUCT'));
-    setFiltered(visible.filter((p) => p.is_active));
     setLoading(false);
   }, []);
 
-  useEffect(() => { loadData(); }, [loadData]);
+  useEffect(() => { const timer = setTimeout(() => void loadData(), 0); return () => clearTimeout(timer); }, [loadData]);
 
   // Filter logic
-  useEffect(() => {
+  const filtered = useMemo(() => {
     const base = produkList.filter((p) => showArchived ? !p.is_active : p.is_active);
     let result = base;
     const q = search.trim().toLowerCase();
@@ -46,9 +46,8 @@ export default function AdminProdukPage() {
         || (p.product_description ?? '').toLowerCase().includes(q)
     );
     if (filterKategori) result = result.filter((p) => p.category_id === filterKategori);
-    setFiltered(result);
-    setSelected([]);
-  }, [search, filterKategori, produkList, showArchived]);
+    return result;
+}, [search, filterKategori, produkList, showArchived]);
 
   const showToast = (msg: string, ok: boolean) => {
     setToast({ msg, ok });
@@ -141,14 +140,14 @@ export default function AdminProdukPage() {
             type="text"
             placeholder="Cari di katalog produk..."
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => { setSearch(e.target.value); setSelected([]); }}
           />
         </div>
 
         <select
           className={styles.selectFilter}
           value={filterKategori}
-          onChange={(e) => setFilterKategori(e.target.value)}
+          onChange={(e) => { setFilterKategori(e.target.value); setSelected([]); }}
         >
           <option value="">Semua Kategori</option>
           {categories.map((c) => (
@@ -226,7 +225,7 @@ export default function AdminProdukPage() {
                     <td className={styles.tdProduk}>
                       <div className={styles.produkCell}>
                         {p.thumbnail_url ? (
-                          <img className={styles.thumbnail} src={p.thumbnail_url} alt={p.product_name} />
+                          <Image unoptimized width={160} height={160} className={styles.thumbnail} src={p.thumbnail_url} alt={p.product_name} />
                         ) : (
                           <div className={styles.thumbPlaceholder} />
                         )}

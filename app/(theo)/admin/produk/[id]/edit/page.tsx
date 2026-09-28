@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image';
 
 import { useState, useEffect, useRef, use } from 'react';
 import { useRouter } from 'next/navigation';
@@ -381,7 +382,7 @@ export default function EditProdukPage({ params }: { params: Promise<{ id: strin
                  * Render foto: bisa Base64 (data:image/webp;base64,...) atau URL lama
                  * Browser menangani keduanya secara otomatis via tag <img>
                  */
-                <img className={styles.thumbPreviewImg} src={thumbPreview} alt="Thumbnail produk" />
+                <Image unoptimized width={160} height={160} className={styles.thumbPreviewImg} src={thumbPreview} alt="Thumbnail produk" />
               ) : (
                 /* State: belum ada foto */
                 <div className={styles.thumbZoneContent}>

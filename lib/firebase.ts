@@ -3,6 +3,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 import { getAuth } from 'firebase/auth';
 import { getAnalytics, isSupported } from 'firebase/analytics';
+import { LOCAL_PREVIEW } from './local-preview';
 
 const firebaseConfig = {
   apiKey:            process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,13 +16,15 @@ const firebaseConfig = {
 };
 
 // Cegah inisialisasi ganda (penting di Next.js hot reload)
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const app = getApps().length === 0 ? initializeApp(LOCAL_PREVIEW ? {
+  apiKey: 'local-preview-placeholder', projectId: 'demo-palugada', appId: 'local-preview',
+} : firebaseConfig) : getApp();
 
 export const db      = getFirestore(app);
 export const storage = getStorage(app);
 export const auth    = getAuth(app);
 
 // Analytics hanya bisa dipakai di browser (bukan SSR/server)
-export const analytics = isSupported().then((yes) =>
+export const analytics = LOCAL_PREVIEW ? Promise.resolve(null) : isSupported().then((yes) =>
   yes ? getAnalytics(app) : null
 );
