@@ -2,7 +2,7 @@
 
 **Document Type:** Product Design + System Design
 **Project:** PALUGADA Banjarsari
-**Version:** 1.5
+**Version:** 1.6
 **Last Updated:** 29 September 2026
 
 ---
@@ -11,7 +11,7 @@
 
 **Status implementasi terbaru:** pembaruan UI customer dan monitoring admin dengan akun uji lokal.
 Bagian 2–32 tetap menjadi rancangan target, bukan klaim bahwa seluruh PRD sudah diimplementasikan.
-Lihat bagian 37 untuk kontrak UI terbaru, bagian 36 untuk fondasi redesign, dan bagian 34 untuk transaksi demo serta akses LAN. Bagian terbaru menggantikan bagian sebelumnya bila berbeda.
+Lihat bagian 38 untuk kontrak UI terbaru, bagian 36 untuk fondasi redesign, dan bagian 34 untuk transaksi demo serta akses LAN. Bagian terbaru menggantikan bagian sebelumnya bila berbeda.
 
 Dokumen ini menerjemahkan `PRD.md` menjadi rancangan UI/UX, system architecture, data model, route, state machine, integration boundary, dan developer ownership.
 
@@ -2404,3 +2404,50 @@ Ini simulasi skenario, bukan model prediksi terlatih, laba seller, arus kas, ata
 ### 37.4 Batas dan verifikasi
 
 Tidak ada dependensi runtime baru, perubahan Firestore rules, migrasi schema, atau perubahan logic Theo/Zikri. Transaksi customer dan monitoring tetap demo development; detail Firebase production mempertahankan jalur WhatsApp/marketplace existing. Registrasi serta penyimpanan profil Firebase belum diuji terhadap layanan live. Hasil pemeriksaan terbaru dicatat di AUDIT.md; runner/screenshot browser berada di `.local/` yang tidak ikut Git.
+
+## 38. Commerce, direktori Ojek, dan keputusan persiapan — v1.6
+
+Tanggal: 29 September 2026. Developer: Asricky, branch `lukas`. Bagian ini menggantikan keputusan UI sebelumnya yang berbeda; arsitektur, kepemilikan domain, dan target produksi tetap dipertahankan.
+
+### 38.1 Penemuan dan pembelian
+
+- Empat vertical **Belanja / Makanan / Jasa / Ojek** memakai grid **2×2 pada mobile**, empat kolom pada desktop. Seluruh kartu menjadi tautan, dengan ikon, judul, deskripsi, dan ruang sentuh yang lega.
+- `/ojek` adalah **direktori kontak**, terpisah dari Jasa. Tidak ada order internal, titik jemput/tujuan, kalkulasi tarif, atau matching. Kontrak kontak mendukung foto, nama, nomor WhatsApp, area, rating, dan jumlah review opsional. Data belum tersedia tidak diisi dengan rating fiktif; avatar menggantikan foto yang belum tersedia. Dua kontak contoh hanya muncul dalam preview development dan ditandai demo. Production menampilkan empty state sampai direktori asli tersedia.
+- CTA Ojek hijau gelap/putih membuka `wa.me` dengan nomor dari data serta sapaan sopan berisi nama pengemudi dan asal PALUGADA. Tautan hanya menyiapkan pesan, tidak mengirim otomatis.
+- Pencarian tampil bersama tombol **Filter**. Panel kategori, area, harga, ketersediaan, dan urutan tertutup secara default. Input filter menjadi draft sampai **Terapkan**; tersedia reset dan tutup. Tidak menyediakan filter rating tanpa data terverifikasi.
+- Detail barang/makanan demo memiliki jumlah 1–99, dibatasi stok. **Beli Sekarang** adalah CTA utama; **Tambah ke keranjang** sekunder. `/checkout?buy=<id>&qty=<jumlah>` tidak menambah atau menghapus keranjang permanen. Jumlah invalid memblokir checkout; harga/stok tetap diperiksa server. Detail Firebase production mempertahankan jalur transaksi existing.
+- Tombol kembali memakai `ChevronLeft` Lucide, kontrol minimal 44px, fokus keyboard terlihat, dan nama produk/alamat dapat membungkus tanpa melebarkan halaman.
+
+### 38.2 Profil dan alamat
+
+- Customer login dengan profil belum lengkap diarahkan ke `/profile/complete`, dengan tujuan semula disimpan sebagai return path internal. Wajib nama, nomor HP valid, serta satu alamat utama sebelum checkout. Pesan: **Lengkapi nomor HP dan alamat terlebih dahulu sebelum melakukan transaksi.** Admin tidak melewati onboarding customer.
+- `/profile/addresses` menyediakan maksimum sepuluh alamat: label, penerima, nomor HP, alamat lengkap, catatan opsional, dan pilihan utama. Nomor +62/62 dinormalisasi ke 0. Registrasi email Firebase menyimpan nama/kontak; login Google atau akun lama yang belum lengkap memakai onboarding.
+- Checkout hanya menampilkan kartu penerima, HP, alamat, dan **Ubah** yang membuka pemilih alamat tersimpan. Mengelola/menambah alamat dilakukan di halaman profil; tidak mengulang input kontak di checkout. Fulfillment demo tetap ambil di toko; alamat belum menghitung ongkir.
+- Kontrak kompatibel: profil utama production memakai field existing `displayName`, `alamat`, `noTelepon`; label/penerima/catatan/alamat tambahan disimpan per UID/browser. Demo seluruh profil disimpan di browser. Belum ada sinkronisasi address book lintas perangkat atau koleksi Firestore baru. Guard kelengkapan adalah kontrak UI; API lokal tetap memvalidasi kontak payload dan ownership existing, bukan sumber kebenaran profil production.
+
+### 38.3 Voucher dan Pesanan
+
+- Cart mempertahankan pengelompokan seller, pilihan item, kontrol jumlah, subtotal, dan CTA checkout tetap. Selector **Voucher PALUGADA — Demo** juga tersedia pada checkout. Kode `DEMOHEMAT10`: 10%, minimum Rp50.000, maksimum Rp15.000; `DEMOLOKAL5`: Rp5.000, minimum Rp25.000. Satu kode per checkout, dapat dilepas; pilihan tersimpan per UID/browser dan dibersihkan setelah sukses.
+- Ringkasan memperlihatkan subtotal, diskon voucher, biaya pengantaran Rp0 (ambil di toko), dan total. Jika minimum tidak lagi terpenuhi, diskon menjadi nol dengan pesan yang jelas. Promo production tidak diaktifkan.
+- API development menghitung harga/diskon sendiri, menolak kode invalid, dan membagi diskon proporsional antar seller dengan pembulatan rupiah yang menjaga total. Field opsional `customerName`, `recipientName`, `voucherCode`, `subtotal`, `discount` menjaga kompatibilitas order lama. Lifecycle, reservasi/pengembalian stok, ownership, dan idempotency dipertahankan.
+- Checkout sukses menuju **Pesanan**, lalu rincian transaksi baru terbuka. Setiap sub-order memiliki CTA utama hijau gelap/putih **WhatsApp Penjual**. Draft menyertakan ID, nama customer, item, total sub-order, dan permintaan konfirmasi. Nomor wajib cocok unik dengan seller; kontak ambigu/invalid dinonaktifkan. Tidak menyertakan alamat atau HP customer.
+- **Batalkan pesanan uji** menjadi tindakan teks sekunder di bawah rincian, tetap dengan konfirmasi dan batas lifecycle existing.
+
+### 38.4 Admin dan pembayaran
+
+- Desktop menggunakan sidebar persisten; mobile memakai header statis **Menu / PALUGADA Admin / Profile** dan native modal drawer. Ada overlay, close/Escape, focus trap, scroll lock, auto-close saat navigasi atau beralih ke desktop. Logo/menu tidak mengambang saat menggulir halaman.
+- Dashboard mendahulukan empat KPI, tren, ringkasan operasi order/seller/customer/delivery/booking/kurir, pembayaran/exception, dan pesanan terbaru. Analisis rinci dapat dibuka agar halaman tidak penuh sejak awal.
+- Pembayaran memiliki filter **metode** (All/Cash-COD/Transfer/QRIS existing) dan **status** (All/PENDING/PAID/FAILED/CANCELLED/REFUNDED) terpisah. Tabel/CSV memuat ID, customer, seller, metode, nominal, status, dan tanggal WIB. Tabel boleh bergeser dalam panel, bukan melebarkan body.
+
+### 38.5 Forecast stok dan Financial Projection
+
+- Forecast stok menonjolkan **Siapkan Besok: N unit**, disertai current stock, estimated demand, incoming, risiko, alasan, dan confidence. Besok berarti satu hari setelah tanggal akhir dataset; tanggal target tampil eksplisit. Jumlah adalah **tambahan** setelah stok layak jual, bukan total stok target. Incoming belum mengurangi kebutuhan besok tanpa kepastian tanggal tiba.
+- Label **High Confidence / Medium Confidence / Low Confidence** mengikuti heuristik validasi existing bagian 37. Persentase keyakinan tidak dibuat dari WAPE karena bukan probabilitas akurasi. Confidence rendah meminta review manual. Data tidak cukup diberi status belum tersedia. Impor CSV dan metrik teknis/grafik rinci berada di disclosure **Lihat Analisis**.
+- Disclaimer: **Forecast adalah estimasi berdasarkan pola data historis dan bukan jaminan permintaan aktual.** Model forecasting, umur simpan, buffer, dan rumus periode existing tidak diubah.
+- `/admin/financial-projection` menyediakan kartu Actual Revenue (GMV terbayar), Projected Revenue (GMV skenario), Growth (asumsi), dan Average Order Value. GMV seller bukan pendapatan fee platform; pendapatan platform aktual belum tersedia. Estimasi fee/biaya/selisih ditampilkan terpisah.
+- Grafik: tren GMV harian, aktual vs skenario, volume order harian, komposisi pembayaran, dan kontribusi seller. Perbandingan aktual/skenario memakai rata-rata harian supaya periode dasar 7/28 hari dan bulan 30 hari sebanding. Estimasi memakai garis putus-putus; angka grafik dapat dibuka sebagai teks. Volume mencakup pesanan batal, sedangkan GMV hanya terbayar nonbatal.
+- Asumsi berada di panel yang dapat dibuka. Rumus keuangan existing dipertahankan; ini skenario, bukan model prediksi terlatih atau kepastian. Confidence statistik belum tersedia; pengguna harus memvalidasi asumsi.
+
+### 38.6 Verifikasi dan batas
+
+Viewport wajib 390/768/1440, dengan overflow halaman, modal, keyboard, drawer, grafik, checkout, dan error/empty state diperiksa. Unit test meliputi profil, jumlah buy-now, voucher, WhatsApp/Ojek, filter pembayaran, serta rekomendasi forecast. API test memverifikasi diskon server, pembagian seller, retry, dan stok. Hasil akhir tercatat di AUDIT.md. Tidak ada dependensi baru, migrasi produksi, perubahan rules/payment provider/courier/booking lifecycle, refactor folder besar, atau perubahan arsip `UI Katalog v1` dalam commit ini.

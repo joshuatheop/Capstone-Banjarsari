@@ -1,35 +1,33 @@
 'use client';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import Link from 'next/link';
-import { Search, SlidersHorizontal, SearchX } from 'lucide-react';
+import { Search, SlidersHorizontal, SearchX, ChevronUp } from 'lucide-react';
 import type { CatalogEntry } from '@/lib/catalog';
 import CatalogCard from './CatalogCard';
 import { useFavorites } from '@/context/FavoritesContext';
 import styles from './commerce.module.css';
-
+import refine from './refinement.module.css';
 interface CatalogExplorerProps { entries: CatalogEntry[]; kind?: CatalogEntry['kind']; initialQuery?: string; initialCategory?: string; favoritesOnly?: boolean }
-const CatalogExplorer = ({ entries, kind, initialQuery = '', initialCategory = '', favoritesOnly = false }: CatalogExplorerProps) => {
-  const [query, setQuery] = useState(initialQuery);
-  const [category, setCategory] = useState(entries.find((item) => item.categoryId === initialCategory)?.category ?? initialCategory);
-  const [area, setArea] = useState('');
-  const [sort, setSort] = useState('name');
-  const [availableOnly, setAvailableOnly] = useState(false);
-  const favorites = useFavorites();
-  const relevant = entries.filter((item) => (!kind || item.kind === kind) && (!favoritesOnly || (item.kind === 'service' ? favorites.isServiceFavorited(item.id) : favorites.isProductFavorited(item.id))));
-  const categories = Array.from(new Set(relevant.map((item) => item.category))).sort();
-  const areas = Array.from(new Set(relevant.map((item) => item.area).filter(Boolean))).sort();
-  const filtered = relevant.filter((item) => `${item.name} ${item.description} ${item.business}`.toLowerCase().includes(query.toLowerCase().trim()) && (!category || item.category === category) && (!area || item.area === area) && (!availableOnly || item.available))
-    .sort((a, b) => sort === 'popular' ? b.popularity - a.popularity : sort === 'low' ? (a.price ?? Infinity) - (b.price ?? Infinity) : sort === 'high' ? (b.price ?? -1) - (a.price ?? -1) : a.name.localeCompare(b.name, 'id'));
+const emptyFilters = { category: '', area: '', sort: 'name', availableOnly: false, min: '', max: '' };
+export default function CatalogExplorer({ entries, kind, initialQuery = '', initialCategory = '', favoritesOnly = false }: CatalogExplorerProps) {
+  const [query, setQuery] = useState(initialQuery), [open, setOpen] = useState(false), [error, setError] = useState('');
+  const initial = { ...emptyFilters, category: entries.find(item => item.categoryId === initialCategory)?.category ?? initialCategory };
+  const [filters, setFilters] = useState(initial), [draft, setDraft] = useState(initial);
+  const id = useId(), favorites = useFavorites();
+  const relevant = entries.filter(item => (!kind || item.kind === kind) && (!favoritesOnly || (item.kind === 'service' ? favorites.isServiceFavorited(item.id) : favorites.isProductFavorited(item.id))));
+  const categories = [...new Set(relevant.map(item => item.category))].sort(), areas = [...new Set(relevant.map(item => item.area).filter(Boolean))].sort();
+  const filtered = relevant.filter(item => `${item.name} ${item.description} ${item.business}`.toLowerCase().includes(query.toLowerCase().trim()) && (!filters.category || item.category === filters.category) && (!filters.area || item.area === filters.area) && (!filters.availableOnly || item.available) && (!filters.min || (item.price !== null && item.price >= Number(filters.min))) && (!filters.max || (item.price !== null && item.price <= Number(filters.max))))
+    .sort((a,b) => filters.sort === 'popular' ? b.popularity - a.popularity : filters.sort === 'low' ? (a.price ?? Infinity) - (b.price ?? Infinity) : filters.sort === 'high' ? (b.price ?? -1) - (a.price ?? -1) : a.name.localeCompare(b.name,'id'));
+  const count = Object.entries(filters).filter(([key, value]) => key === 'sort' ? value !== 'name' : !!value).length;
   const title = favoritesOnly ? 'Pilihan yang Anda simpan.' : kind === 'food' ? 'Rasa lokal, dekat di hati.' : kind === 'service' ? 'Ada ahlinya di sekitar kita.' : kind === 'product' ? 'Belanja baik, dari yang dekat.' : 'Cari kebutuhan Anda di sini.';
-  return <main className={styles.page}>
-    <header className={styles.pageHeading}><span className={styles.eyebrow}>JELAJAHI BANJARSARI</span><h1>{title}</h1><p>{favoritesOnly ? 'Produk dan jasa favorit tersimpan di browser ini.' : 'Temukan pilihan dari usaha warga. Kenali produknya, lihat usahanya, dukung tetangga.'}</p></header>
-    <nav className={styles.tabs} aria-label="Jenis katalog">{[['/katalog', 'Semua'], ['/katalog?type=product', 'Produk'], ['/makanan', 'Makanan'], ['/jasa', 'Jasa'], ['/favorites', 'Favorit']].map(([href, label], index) => <Link key={href} href={href} aria-current={(favoritesOnly ? index === 4 : index === (kind === 'product' ? 1 : kind === 'food' ? 2 : kind === 'service' ? 3 : 0)) ? 'page' : undefined}>{label}</Link>)}</nav>
-    <div className={styles.explorerLayout}>
-      <aside className={styles.filters}><h2><SlidersHorizontal size={18} /> Filter pilihan</h2><label>Kategori<select value={category} onChange={(event) => setCategory(event.target.value)}><option value="">Semua kategori</option>{categories.map((name) => <option key={name}>{name}</option>)}</select></label><label>Wilayah<select value={area} onChange={(event) => setArea(event.target.value)}><option value="">Semua wilayah</option>{areas.map((name) => <option key={name}>{name}</option>)}</select></label><label className={styles.checkbox}><input type="checkbox" checked={availableOnly} onChange={(event) => setAvailableOnly(event.target.checked)} /> Tersedia saja</label><button className={styles.textLink} onClick={() => { setQuery(''); setCategory(''); setArea(''); setAvailableOnly(false); setSort('name'); }}>Reset filter</button><div className={styles.filterNote}>Setiap pilihan Anda membantu usaha lokal tumbuh.</div></aside>
-      <section><div className={styles.searchToolbar}><label className={styles.search}><Search size={20} /><input aria-label="Cari di katalog" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Cari produk, makanan, jasa, atau usaha…" /></label><select aria-label="Urutkan katalog" value={sort} onChange={(event) => setSort(event.target.value)}><option value="name">Nama A–Z</option><option value="popular">Paling dilihat</option><option value="low">Harga terendah</option><option value="high">Harga tertinggi</option></select></div><p className={styles.resultCount} aria-live="polite">{filtered.length} pilihan ditemukan</p>
-        {filtered.length ? <div className={styles.catalogGrid}>{filtered.map((item) => <CatalogCard key={`${item.kind}-${item.id}`} item={item} />)}</div> : <div className={styles.empty}><SearchX size={40} /><h2>Belum ada pilihan yang cocok</h2><p>Coba kata kunci lain atau reset filter. Simpan produk untuk melihatnya di Favorit.</p><button className={styles.secondaryButton} onClick={() => { setQuery(''); setCategory(''); setArea(''); setAvailableOnly(false); }}>Reset pencarian</button></div>}
-      </section>
-    </div>
+  const reset = () => { setDraft(emptyFilters); setFilters(emptyFilters); setError(''); };
+  return <main className={styles.page}><header className={styles.pageHeading}><span className={styles.eyebrow}>JELAJAHI BANJARSARI</span><h1>{title}</h1><p>Temukan pilihan dari usaha warga. Kenali produknya, lihat usahanya, dukung tetangga.</p></header>
+    <nav className={styles.tabs} aria-label="Jenis katalog">{[['/katalog','Semua'],['/katalog?type=product','Produk'],['/makanan','Makanan'],['/jasa','Jasa'],['/favorites','Favorit']].map(([href,label],index) => <Link key={href} href={href} aria-current={(favoritesOnly ? index === 4 : index === (kind === 'product' ? 1 : kind === 'food' ? 2 : kind === 'service' ? 3 : 0)) ? 'page' : undefined}>{label}</Link>)}</nav>
+    <div className={refine.filterToolbar}><label><Search size={20}/><input aria-label="Cari di katalog" value={query} onChange={e => setQuery(e.target.value)} placeholder="Cari produk, makanan, jasa…"/></label><button className={refine.filterToggle} aria-expanded={open} aria-controls={id} onClick={() => { if (!open) setDraft(filters); setOpen(!open); }}><SlidersHorizontal size={18}/>Filter{count > 0 && ` (${count})`}{open && <ChevronUp size={16}/>}</button></div>
+    <form id={id} hidden={!open} className={refine.filterPanel} onSubmit={event => { event.preventDefault(); if ((draft.min && (!Number.isFinite(Number(draft.min)) || Number(draft.min) < 0)) || (draft.max && (!Number.isFinite(Number(draft.max)) || Number(draft.max) < 0)) || (draft.min && draft.max && Number(draft.min) > Number(draft.max))) { setError('Periksa rentang harga minimum dan maksimum.'); return; } setFilters(draft); setError(''); setOpen(false); }}><div className={refine.filterFields}>
+      <label>Kategori<select aria-label="Kategori filter" value={draft.category} onChange={e => setDraft({ ...draft, category: e.target.value })}><option value="">Semua kategori</option>{categories.map(name => <option key={name}>{name}</option>)}</select></label><label>Wilayah<select aria-label="Wilayah filter" value={draft.area} onChange={e => setDraft({ ...draft, area: e.target.value })}><option value="">Semua wilayah</option>{areas.map(name => <option key={name}>{name}</option>)}</select></label>
+      <label>Harga minimum<input type="number" min={0} value={draft.min} onChange={e => setDraft({ ...draft, min: e.target.value })} placeholder="Rp 0"/></label><label>Harga maksimum<input type="number" min={0} value={draft.max} onChange={e => setDraft({ ...draft, max: e.target.value })} placeholder="Tanpa batas"/></label><label>Urutan<select aria-label="Urutkan katalog" value={draft.sort} onChange={e => setDraft({ ...draft, sort: e.target.value })}><option value="name">Nama A–Z</option><option value="popular">Paling dilihat</option><option value="low">Harga terendah</option><option value="high">Harga tertinggi</option></select></label><label className={refine.check}><input type="checkbox" checked={draft.availableOnly} onChange={e => setDraft({ ...draft, availableOnly: e.target.checked })}/>Tersedia saja</label></div>
+      {error && <p role="alert" className={refine.error}>{error}</p>}<div className={refine.filterActions}><button className={styles.primaryButton}>Terapkan filter</button><button type="button" className={styles.secondaryButton} onClick={reset}>Reset filter</button><button type="button" className={refine.back} onClick={() => setOpen(false)}>Tutup filter</button></div></form>
+    <p className={styles.resultCount} aria-live="polite">{filtered.length} pilihan ditemukan{count > 0 && ` · ${count} filter aktif`}</p>{filtered.length ? <div className={styles.catalogGrid}>{filtered.map(item => <CatalogCard key={`${item.kind}-${item.id}`} item={item}/>)}</div> : <div className={styles.empty}><SearchX size={40}/><h2>Belum ada pilihan yang cocok</h2><p>Coba kata kunci lain atau reset filter.</p><button className={styles.secondaryButton} onClick={() => { reset(); setQuery(''); }}>Reset pencarian</button></div>}
   </main>;
-};
-export default CatalogExplorer;
+}

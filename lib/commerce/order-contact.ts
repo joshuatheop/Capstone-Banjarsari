@@ -8,6 +8,6 @@ export function whatsappOrderLink(order: MonitorOrder, contacts: SellerContact[]
   if (!/^[1-9]\d{9,14}$/.test(phone)) return null;
   const items = order.items?.map(item => `${item.name} x${item.quantity}`).join(', ') || `${order.item} x${order.quantity}`;
   const total = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(order.total);
-  const text = `Halo ${order.seller}, saya ingin menanyakan pesanan PALUGADA ${order.id}.\nProduk: ${items}\nTotal: ${total}\nStatus: ${order.status}\nMohon informasi tindak lanjutnya. Terima kasih.`;
+  const text = `Halo ${order.seller}, saya ingin mengonfirmasi pesanan PALUGADA.\nOrder ID: ${order.id}\nNama: ${order.customer}\nProduk: ${items}\nTotal: ${total}\nStatus: ${order.status}\nMohon konfirmasi pesanannya. Terima kasih.`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
 }

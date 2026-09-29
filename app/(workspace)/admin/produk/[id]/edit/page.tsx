@@ -1,5 +1,5 @@
 'use client';
-import { ArrowLeft as BackIcon } from 'lucide-react';
+import { ChevronLeft as BackIcon } from 'lucide-react';
 import Image from 'next/image';
 
 import { useState, useEffect, useRef, use } from 'react';

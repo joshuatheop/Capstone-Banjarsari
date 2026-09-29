@@ -1,3 +1,4 @@
+import { CustomerProfileProvider } from '@/context/CustomerProfileContext';
 import React from 'react';
 import Navbar from "@/components/commerce/CommerceNav";
 import Footer from "@/components/shared/Footer";
@@ -10,7 +11,7 @@ export default function StorefrontLayout({
   children: React.ReactNode;
 }) {
   return (
-    <FavoritesProvider>
+    <FavoritesProvider><CustomerProfileProvider>
       <div className="storefront-theme" style={{ minHeight: '100vh' }}>
         <div className="app-root">
           <Navbar />
@@ -18,6 +19,6 @@ export default function StorefrontLayout({
           <Footer />
         </div>
       </div>
-    </FavoritesProvider>
+    </CustomerProfileProvider></FavoritesProvider>
   );
 }

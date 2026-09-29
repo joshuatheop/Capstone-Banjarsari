@@ -7,6 +7,7 @@ import { mockBusinesses, mockServices } from '@/lib/firestore/mock-data';
 import type { CheckoutInput, ItemSnapshot } from '@/lib/commerce/types';
 import type { MonitorOrder, MonitorBooking } from '@/lib/monitoring/types';
 import type { PreviewUser } from '@/lib/local-preview';
+import { voucherDiscount, allocateDiscount } from '@/lib/commerce/vouchers';
 
 interface CommerceStore { stock: Record<string, number>; orders: MonitorOrder[]; bookings: MonitorBooking[]; requests: Record<string, string[]> }
 const folder = path.join(process.cwd(), '.local');
@@ -41,6 +42,7 @@ export const createCheckout = async (user: PreviewUser, input: CheckoutInput) =>
   if (store.requests[key]) return store.orders.filter((order) => store.requests[key].includes(order.id));
   if (typeof input.address !== 'string' || input.address.trim().length < 10 || input.address.length > 500 || typeof input.phone !== 'string' || !/^0[0-9]{8,14}$/.test(input.phone) || typeof input.note !== 'string' || input.note.length > 500) throw new Error('Alamat minimal 10 karakter dan nomor HP Indonesia wajib diisi.');
   if (!Array.isArray(input.items) || !input.items.length || input.items.length > 50) throw new Error('Keranjang tidak valid.');
+  for (const name of [input.customerName, input.recipientName]) if (name !== undefined && (typeof name !== 'string' || name.trim().length < 2 || name.length > 100)) throw new Error('Nama customer dan penerima harus valid.');
   const quantities = new Map<string, number>();
   for (const line of input.items) {
     if (!line || typeof line.productId !== 'string' || !Number.isInteger(line.quantity) || line.quantity < 1 || line.quantity > 99) throw new Error('Jumlah produk harus 1–99.');
@@ -54,11 +56,17 @@ export const createCheckout = async (user: PreviewUser, input: CheckoutInput) =>
     items.push({ productId: id, name: product.product_name, price: product.product_price, quantity }); groups.set(product.business_id, items);
   }
   const checkoutId = `DEMO-${randomUUID().slice(0, 8).toUpperCase()}`;
+  const subtotals = [...groups.values()].map(items => items.reduce((sum, item) => sum + item.price * item.quantity, 0));
+  if (input.voucherCode !== undefined && typeof input.voucherCode !== 'string') throw new Error('Voucher demo tidak valid.');
+  const discount = voucherDiscount(input.voucherCode, subtotals.reduce((sum, value) => sum + value, 0));
+  if (input.voucherCode && !discount) throw new Error('Voucher tidak tersedia atau minimum belanja belum terpenuhi.');
+  const discounts = allocateDiscount(subtotals, discount);
   const orders: MonitorOrder[] = [...groups].map(([businessId, items], index) => ({
-    id: `${checkoutId}-${index + 1}`, checkoutId, customerId: user.uid, customer: user.displayName,
+    id: `${checkoutId}-${index + 1}`, checkoutId, customerId: user.uid, customer: input.customerName?.trim() || user.displayName,
     seller: mockBusinesses.find((b) => b.business_id === businessId)?.business_name ?? businessId,
     vertical: items.some((item) => ['1','3'].includes(previewProducts.find((p) => p.product_id === item.productId)?.category_id ?? '')) ? 'FOOD' : 'RETAIL',
-    total: items.reduce((sum, item) => sum + item.price * item.quantity, 0), item: items.map((i) => i.name).join(', '), quantity: items.reduce((sum, i) => sum + i.quantity, 0), items,
+    total: subtotals[index] - discounts[index], subtotal: subtotals[index], discount: discounts[index], ...(discount ? { voucherCode: input.voucherCode } : {}), recipientName: input.recipientName?.trim() || user.displayName,
+    item: items.map((i) => i.name).join(', '), quantity: items.reduce((sum, i) => sum + i.quantity, 0), items,
     status: 'AWAITING_SELLER', payment: 'PENDING', method: 'COD', delivery: 'PICKUP', courier: null,
     createdAt: new Date().toISOString(), address: input.address.trim(), phone: input.phone, note: input.note.trim(),
   }));

@@ -1,5 +1,5 @@
 'use client';
-import { ArrowLeft as BackIcon } from 'lucide-react';
+import { ChevronLeft as BackIcon } from 'lucide-react';
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Eye, EyeOff, Leaf } from 'lucide-react';

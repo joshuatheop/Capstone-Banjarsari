@@ -19,6 +19,10 @@ export interface MonitorOrder {
   address?: string;
   phone?: string;
   note?: string;
+  recipientName?: string;
+  subtotal?: number;
+  discount?: number;
+  voucherCode?: string;
 }
 export interface MonitorBooking {
   id: string;

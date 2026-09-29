@@ -1,6 +1,6 @@
 # PALUGADA Banjarsari
 
-Marketplace warga: produk, makanan, dan jasa; monitoring admin dan rekomendasi stok. Status implementasi dan batas demo dijelaskan di [Design.md](Design.md#34-marketplace-transaksi-demo-analisis-dan-lan-v12) dan [AUDIT.md](AUDIT.md).
+Marketplace warga: Belanja, Makanan, Jasa, dan direktori kontak Ojek; monitoring admin dan rekomendasi stok. Status implementasi dan batas demo dijelaskan di [Design.md](Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16) dan [AUDIT.md](AUDIT.md).
 
 ## Menjalankan demo lokal
 
@@ -34,7 +34,7 @@ Alias email admin@palugada.local dan user@palugada.local juga diterima. Kredensi
 
 ## Mencoba fitur
 
-Customer: pilih produk → tambah keranjang → checkout → isi alamat/kontak → buat pesanan uji → Pesanan. Checkout terpisah per toko; pembatalan sebelum konfirmasi mengembalikan stok. Makanan dan barang pada demo memakai ambil di toko/tunai. Detail jasa menyediakan form pengajuan booking.
+Customer: login → lengkapi nama/HP/alamat pertama → pilih produk dan jumlah → Beli Sekarang atau tambah keranjang → pilih voucher demo bila sesuai → checkout memakai alamat tersimpan → Pesanan. Checkout terpisah per toko; pembatalan sebelum konfirmasi mengembalikan stok. Makanan dan barang pada demo memakai ambil di toko/tunai. Detail jasa menyediakan form pengajuan booking. Ojek hanya direktori kontak dan draft WhatsApp, tanpa order perjalanan internal.
 
 Admin: buka Ringkasan untuk KPI dan insight, Pesanan/Pembayaran/Booking untuk monitoring, **Forecasting stok** untuk saran barang dan produksi makanan. Unduh contoh CSV, isi data harian lengkap minimal 28 hari, pilih tanggal akhir data, lalu impor. Dataset awal berupa simulasi 56 hari; data impor hanya dianalisis untuk sesi halaman.
 
@@ -61,10 +61,10 @@ Customer berada di `app/(storefront)`, autentikasi di `app/(auth)`, dan admin di
 Halaman baru `/promo` menampilkan status penawaran yang belum aktif secara jujur. Keranjang mendukung pilihan per barang/toko; hanya barang terpilih yang dikirim saat checkout. Akun menyediakan alamat tersimpan khusus browser yang diisi otomatis pada checkout. Booking jasa disajikan dalam tiga langkah tanpa mengubah aturan transaksi. [Ilustrasi demo dan prompt](public/illustrations/README.md) dibuat dengan built-in imagegen.
 
 Setelah berpindah dari struktur route group lama, hentikan dev server dan hapus cache generated `.next` bila TypeScript masih mereferensikan `(davy)`/`(theo)`, lalu jalankan kembali. Jangan hapus `.local` karena menyimpan transaksi demo.
-## Pembaruan alur customer dan perencanaan admin — v1.5
+## Pembaruan alur customer dan perencanaan admin — v1.6
 
-Customer kini dapat memakai **Beli Sekarang** untuk checkout satu produk tanpa mengubah keranjang, atau checkout barang terpilih dari Keranjang. Simpan alamat/HP melalui **Akun → Alamat tersimpan**; checkout menampilkan kontak tersebut otomatis. Setelah konfirmasi langsung masuk Pesanan. Buka rincian untuk tombol WhatsApp seller (draft dengan konteks pesanan, nomor toko demo belum terverifikasi).
+Customer dapat memakai **Beli Sekarang** untuk checkout satu produk dengan jumlah pilihan tanpa mengubah keranjang, atau checkout barang terpilih dari Keranjang. Profil belum lengkap diarahkan ke onboarding. Kelola alamat lewat **Akun → Alamat tersimpan**; checkout hanya menampilkan kontak dan selector **Ubah**. Nama/HP/alamat utama production memakai field Firebase existing; metadata dan alamat tambahan masih per browser. Setelah konfirmasi langsung masuk Pesanan. Buka rincian untuk tombol **WhatsApp Penjual** per toko; nomor demo belum terverifikasi.
 
-Beranda mempunyai empat vertical termasuk **Ojek**. Ojek masih halaman informasi layanan yang belum beroperasi. Pada Firebase, register/profil menggunakan field alamat/noTelepon existing; registrasi lokal tetap menggunakan akun demo yang disediakan.
+Beranda mempunyai empat vertical dalam grid **2×2 di HP**. **Ojek** adalah direktori kontak dengan data contoh berlabel demo, avatar, dan status rating belum tersedia. Tidak ada booking internal. Search/filter dapat dibuka saat dibutuhkan. Voucher lokal: **DEMOHEMAT10** (10%, min. Rp50.000, maks. Rp15.000) atau **DEMOLOKAL5** (Rp5.000, min. Rp25.000). Diskon server dibagi per toko; belum merupakan promo production. Registrasi lokal tetap menggunakan akun demo yang disediakan.
 
-Admin menyediakan **Forecasting stok** dengan demand/stok/persiapan besok, risiko, alasan, dan confidence indikatif. **Financial Projection** menjadi halaman tersendiri: ubah asumsi pertumbuhan, fee, biaya, dan horizon untuk melihat GMV, pendapatan, biaya, serta selisih. Forecast adalah estimasi; proyeksi keuangan adalah skenario, bukan laporan laba aktual. Kontrak lengkap: [Design.md bagian 37](Design.md#37-checkout-empat-vertical-dan-perencanaan-admin--v15).
+Admin mobile memakai drawer melalui tombol Menu. Pembayaran menyediakan filter metode COD/Transfer/QRIS terpisah dari status. **Forecasting stok** menonjolkan **Siapkan Besok**, demand/stok/incoming, risiko, alasan, dan High/Medium/Low Confidence; metrik teknis tersedia di **Lihat Analisis**. Besok mengikuti tanggal akhir dataset. **Financial Projection** menyajikan grafik tren GMV, aktual vs skenario, volume order, komposisi pembayaran, dan kontribusi seller. Buka **Ubah asumsi skenario** untuk pertumbuhan, fee, biaya, dan horizon. Forecast adalah estimasi; GMV bukan pendapatan fee platform dan proyeksi bukan laporan laba aktual. Kontrak lengkap: [Design.md bagian 38](Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16).

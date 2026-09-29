@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ArrowRight, MapPin, CalendarDays, CheckCircle2 } from 'lucide-react';
+import { ChevronLeft, ArrowRight, MapPin, CalendarDays, CheckCircle2 } from 'lucide-react';
 import type { CatalogEntry } from '@/lib/catalog';
 import styles from './marketplace.module.css';
 export default function ServiceBookingForm({ item }: { item: CatalogEntry }) {
@@ -21,6 +21,6 @@ export default function ServiceBookingForm({ item }: { item: CatalogEntry }) {
     {step === 1 && <label><span><MapPin size={15} style={{ display: 'inline' }}/> Alamat layanan</span><textarea required minLength={10} maxLength={500} value={address} onChange={event => setAddress(event.target.value)} placeholder="Jalan, nomor rumah, RT/RW, dan patokan lokasi"/></label>}
     {step === 2 && <><label><span><CalendarDays size={15} style={{ display: 'inline' }}/> Jadwal kunjungan (waktu perangkat Anda)</span><input type="datetime-local" required value={schedule} onChange={event => setSchedule(event.target.value)}/></label><label>Keluhan / kebutuhan (opsional)<textarea maxLength={500} value={notes} onChange={event => setNotes(event.target.value)}/></label></>}
     {step === 3 && <div className={styles.feedback}><strong>{item.name}</strong><p>{address}</p><p>{new Date(schedule).toLocaleString('id-ID')}</p>{notes && <p>{notes}</p>}<p>Estimasi: {item.priceLabel}. Harga dan jadwal akhir perlu dikonfirmasi penyedia.</p></div>}
-    {error && <p role="alert" className={styles.feedback}>{error}</p>}<div className={styles.actionRow}>{step > 1 && <button className={styles.outlineButton} type="button" disabled={pending} onClick={() => { setError(''); setStep(step - 1); }}><ArrowLeft size={16}/>Kembali</button>}<button className={styles.mainButton} disabled={pending || !item.available}>{pending ? 'Mengirim…' : step === 3 ? 'Ajukan booking uji' : 'Lanjut'}<ArrowRight size={16}/></button></div>
+    {error && <p role="alert" className={styles.feedback}>{error}</p>}<div className={styles.actionRow}>{step > 1 && <button className={styles.outlineButton} type="button" disabled={pending} onClick={() => { setError(''); setStep(step - 1); }}><ChevronLeft size={16}/>Kembali</button>}<button className={styles.mainButton} disabled={pending || !item.available}>{pending ? 'Mengirim…' : step === 3 ? 'Ajukan booking uji' : 'Lanjut'}<ArrowRight size={16}/></button></div>
   </form>;
 }

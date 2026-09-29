@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef } from 'react';
-import { Search, ShoppingCart, UserRound, Home, ClipboardList, Tags, MapPin, Bell, ChevronDown, X, Leaf, ArrowLeft } from 'lucide-react';
+import { Search, ShoppingCart, UserRound, Home, ClipboardList, Tags, MapPin, Bell, ChevronDown, X, Leaf, ChevronLeft } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useCart } from '@/context/CartContext';
 import styles from './marketplace.module.css';
@@ -21,8 +21,8 @@ export default function CommerceNav() {
         <Link className={styles.brand} href="/"><Leaf size={32} /><span>Palugada<small>BELANJA LOKAL, PENUH MAKNA</small></span></Link>
         <button className={styles.locationButton} onClick={() => dialog.current?.showModal()}><MapPin size={26} /><span>Lokasi belanja<strong>Banjarsari, Garut <ChevronDown size={15} /></strong></span></button>
         <div className={styles.navTools}><Link href="/orders" aria-label="Lihat kabar pesanan"><Bell size={23} /></Link><Link className={styles.desktopOnly} href="/cart" aria-label={`Keranjang, ${cart.count} produk`}><ShoppingCart size={23} />{cart.count > 0 && <b className={styles.cartCount}>{cart.count}</b>}</Link><Link className={styles.desktopOnly} href={account}><UserRound size={23} /><span>{user ? 'Akun saya' : 'Masuk'}</span></Link></div>
-        {titles[pathname] && <div className={styles.mobileTitle}><Link href={checkout ? '/cart' : '/'} aria-label="Kembali"><ArrowLeft size={23}/></Link><strong>{titles[pathname]}</strong></div>}
-        <form action="/katalog" className={`${styles.search} ${titles[pathname] ? styles.transactionSearch : ''}`} role="search"><Search size={21} /><input name="q" aria-label="Cari produk, makanan, atau jasa" placeholder="Cari produk, makanan, atau jasa" /><button aria-label="Cari"><ArrowLeft size={20} style={{ transform: 'rotate(180deg)' }} /></button></form>
+        {titles[pathname] && <div className={styles.mobileTitle}><Link href={checkout ? '/cart' : '/'} aria-label="Kembali"><ChevronLeft size={23}/></Link><strong>{titles[pathname]}</strong></div>}
+        <form action="/katalog" className={`${styles.search} ${titles[pathname] ? styles.transactionSearch : ''}`} role="search"><Search size={21} /><input name="q" aria-label="Cari produk, makanan, atau jasa" placeholder="Cari produk, makanan, atau jasa" /><button aria-label="Cari"><ChevronLeft size={20} style={{ transform: 'rotate(180deg)' }} /></button></form>
       </div>
       <nav className={styles.navLinks} aria-label="Navigasi utama">{[['/', 'Beranda'], ['/promo', 'Promo'], ['/katalog', 'Belanja'], ['/makanan', 'Makanan'], ['/jasa', 'Jasa'], ['/ojek', 'Ojek'], ['/bisnis', 'Toko warga']].map(([href, label]) => <Link key={href} href={href} aria-current={pathname === href ? 'page' : undefined}>{label}</Link>)}</nav>
     </header>

@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft as BackIcon } from 'lucide-react';
+import { ChevronLeft as BackIcon } from 'lucide-react';
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { getKategoriById, updateKategori } from '@/lib/firestore/kategori';

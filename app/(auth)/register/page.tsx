@@ -1,5 +1,6 @@
 'use client';
 
+import { ChevronLeft } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -24,6 +25,7 @@ function FirebaseRegisterPage() {
 
   const [contact, setContact] = useState(emptyContact);
   const registrationStarted = useRef(false);
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -42,7 +44,7 @@ function FirebaseRegisterPage() {
     e.preventDefault();
     setError('');
 
-    if (!email || !password || !confirmPassword) {
+    if (name.trim().length < 2 || !email || !password || !confirmPassword) {
       setError('Harap lengkapi semua kolom.');
       return;
     }
@@ -66,7 +68,7 @@ function FirebaseRegisterPage() {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       created = true; setAccountCreated(true);
       // Buat dokumen user di Firestore dengan role 'pelanggan'
-      await createUserDocument(cred.user.uid, email, 'pelanggan');
+      await createUserDocument(cred.user.uid, email, 'pelanggan', name.trim());
       await saveCustomerContact(cred.user.uid, contact);
       router.replace('/');
     } catch (err: unknown) {
@@ -195,7 +197,7 @@ function FirebaseRegisterPage() {
               <p className={styles.subGreeting}>Silakan lengkapi formulir pendaftaran</p>
             </div>
 
-            <form id="register-form" onSubmit={handleSubmit} className={styles.form} noValidate><ContactFields value={contact} onChange={setContact} disabled={pending}/>
+            <form id="register-form" onSubmit={handleSubmit} className={styles.form} noValidate><label>Nama lengkap<input required minLength={2} maxLength={100} autoComplete="name" value={name} onChange={event=>setName(event.target.value)}/></label><ContactFields value={contact} onChange={setContact} disabled={pending}/>
               <div className={styles.field}>
                 <label htmlFor="register-email" className={styles.label}>Alamat Email</label>
                 <div className={styles.inputWrapper}>
@@ -310,7 +312,7 @@ function FirebaseRegisterPage() {
 
             <p className={styles.backLink}>
               <Link href="/" className={styles.backAnchor}>
-                <svg className={styles.backArrow} xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                <ChevronLeft className={styles.backArrow} size={20} aria-hidden="true"/>
                 Kembali ke Beranda
               </Link>
             </p>
