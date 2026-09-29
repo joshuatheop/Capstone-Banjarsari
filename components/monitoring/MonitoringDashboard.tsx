@@ -8,7 +8,7 @@ import styles from './monitoring.module.css';
 import SalesInsights from './SalesInsights';
 
 interface MonitoringDashboardProps { section?: string }
-const names: Record<string, string> = { overview: 'Kabar baik dimulai dari data.', orders: 'Pantau setiap pesanan.', payments: 'Pembayaran yang tercatat.', deliveries: 'Perjalanan pesanan warga.', bookings: 'Jadwal layanan warga.', sellers: 'Usaha yang tumbuh bersama.', users: 'Warga di balik ekosistem.' };
+const names: Record<string, string> = { overview: 'Ringkasan penjualan', orders: 'Monitoring pesanan', payments: 'Monitoring pembayaran', deliveries: 'Monitoring pengantaran', bookings: 'Monitoring booking jasa', sellers: 'Seller & usaha', users: 'Customer & kurir' };
 
 const MonitoringDashboard = ({ section = 'overview' }: MonitoringDashboardProps) => {
   const { data, error, loading, reload } = useMonitoring();

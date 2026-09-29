@@ -2,7 +2,7 @@
 
 **Document Type:** Product Design + System Design
 **Project:** PALUGADA Banjarsari
-**Version:** 1.2
+**Version:** 1.4
 **Last Updated:** 29 September 2026
 
 ---
@@ -11,14 +11,14 @@
 
 **Status implementasi terbaru:** pembaruan UI customer dan monitoring admin dengan akun uji lokal.
 Bagian 2–32 tetap menjadi rancangan target, bukan klaim bahwa seluruh PRD sudah diimplementasikan.
-Lihat bagian 34 untuk status terkini, forecasting, transaksi demo, dan akses LAN. Bagian 33 merupakan catatan tahap pertama dan digantikan oleh bagian 34 jika berbeda.
+Lihat bagian 36 untuk hasil redesign terbaru; bagian 34 menjelaskan forecasting, transaksi demo, dan akses LAN. Bagian 33 merupakan catatan tahap pertama dan digantikan oleh bagian 34 jika berbeda.
 
 Dokumen ini menerjemahkan `PRD.md` menjadi rancangan UI/UX, system architecture, data model, route, state machine, integration boundary, dan developer ownership.
 
 Prinsip utama:
 
 1. Transformasi dilakukan bertahap dari existing catalogue app ke transactional marketplace.
-2. Existing visual identity PALUGADA dipertahankan.
+2. Identitas merek PALUGADA dipertahankan, tetapi customer UI direstrukturisasi menggunakan pola interaksi dari referensi Astro, Shopee/ShopeeFood, dan Gojek tanpa menyalin identitas visual mereka.
 3. Transactional state tidak boleh bergantung pada client-only logic.
 4. UI tidak boleh mengetahui detail persistence Firebase/PostgreSQL.
 5. Domain Lukas, Zikri, dan Theo harus dapat berkembang paralel melalui contract yang jelas.
@@ -46,8 +46,9 @@ Existing top-level patterns:
 
 ```text
 app/
-├── (davy)/         # public catalogue pages
-├── (theo)/         # auth/admin pages
+├── (storefront)/   # customer marketplace and profile pages
+├── (workspace)/    # admin monitoring and Firebase management
+├── (auth)/         # login and registration
 ├── globals.css
 └── layout.tsx
 
@@ -83,44 +84,262 @@ Pola tersebut tidak boleh menjadi default untuk payment, order, inventory mutati
 
 ## 3. Visual Design System
 
-Design system existing dari `agent.md` dipertahankan kecuali ada redesign yang disetujui.
+### 3.0 Reference-driven design direction
 
-### 3.1 Colors
+Customer UI PALUGADA menggunakan screenshot referensi yang diberikan sebagai **inspirasi pola interaksi**, bukan sebagai template yang disalin mentah.
+
+| Referensi | Pola yang diadopsi | Adaptasi untuk PALUGADA |
+|---|---|---|
+| Astro | search-first grocery experience, product grid yang cepat dipindai, cart/order empty state, promo screen, bottom navigation sederhana | dipakai untuk katalog barang, keranjang, pesanan, promo, dan profil |
+| Shopee / ShopeeFood | discovery yang kaya, kategori horizontal, promo/deal module, merchant/menu browsing, multi-seller commerce | dipakai untuk marketplace barang, food discovery, merchant card, voucher/promo, dan grouping seller |
+| Gojek | location-first flow, map/location picker, bottom sheet, satu CTA utama yang jelas, booking/service journey | dipakai untuk alamat, pengantaran, pemilihan lokasi, booking jasa, dan delivery tracking |
+
+**Design rule:** PALUGADA harus terasa familiar bagi pengguna aplikasi commerce Indonesia, tetapi tetap memakai identitas Banjarsari dan warna PALUGADA. Jangan menyalin logo, icon proprietary, layout pixel-perfect, ilustrasi, campaign visual, atau trade dress aplikasi referensi.
+
+Target karakter visual:
+
+- lokal dan ramah;
+- cepat dipahami oleh pengguna non-teknis;
+- mobile-first dan touch-friendly;
+- commerce-dense tetapi tidak berantakan;
+- whitespace cukup untuk hierarchy;
+- CTA utama selalu jelas;
+- promo terlihat hidup tetapi tidak menutupi fungsi utama;
+- visual Banjarsari/UMKM dapat muncul pada banner/empty state/illustration tanpa mengganggu transaksi.
+
+### 3.1 Color system
+
+PALUGADA tetap **green-first**. Warna referensi tidak diambil sebagai warna brand utama.
 
 | Token | Value | Usage |
 |---|---|---|
-| Primary | `#05472B` | CTA, header, primary action |
-| Secondary | `#AADCAB` | secondary surface/highlight |
-| Dark | `#013020` | dark background/footer |
-| Accent | `#CDFF00` | highlight/status/accent |
-| Aqua | `#00C0A3` | icon/active state |
-| Black | `#000000` | text/high contrast |
-| White | `#FFFFFF` | surface/background/text on dark |
+| Brand / Primary | `#05472B` | CTA utama, active navigation, price emphasis tertentu, seller/customer action |
+| Brand Dark | `#013020` | text/header gelap, desktop sidebar, high-emphasis surface |
+| Brand Soft | `#AADCAB` | chip, selected surface, secondary highlight |
+| Accent Lime | `#CDFF00` | badge, promo highlight kecil, attention accent |
+| Aqua | `#00C0A3` | info, tracking accent, secondary interactive state |
+| Commerce Orange | `#FF7A1A` | promo/deal, food highlight, discount; **bukan** warna global navigation |
+| Background | `#F6F7F5` | app background |
+| Surface | `#FFFFFF` | card, sheet, navbar, form |
+| Border | `#E5E9E6` | divider/card border |
+| Text Primary | `#161A17` | body/headline utama |
+| Text Secondary | `#69716B` | helper/metadata |
+| Success | `#15803D` | successful state |
+| Warning | `#D97706` | attention state |
+| Error | `#DC2626` | destructive/error state |
 
-Jangan menambah palette baru secara acak. Semantic states seperti error/warning/success sebaiknya didefinisikan sebagai design token resmi jika dibutuhkan dan disetujui, bukan hardcode per page.
+Rules:
+
+- halaman customer mayoritas menggunakan background putih / off-white;
+- green menjadi anchor brand; orange hanya accent commerce/promo;
+- jangan membuat tiap vertical memiliki brand color berbeda secara ekstrem;
+- warna status transactional tidak boleh bergantung pada warna saja; tetap gunakan label/icon;
+- contrast text/CTA minimal mengikuti WCAG AA bila memungkinkan.
 
 ### 3.2 Typography
 
-- Heading: JetBrains Mono
-- Body/UI: Plus Jakarta Sans
+Untuk customer-facing marketplace, **Plus Jakarta Sans menjadi font utama untuk heading dan body** agar lebih dekat dengan karakter aplikasi commerce modern dan lebih mudah dipindai di layar kecil.
 
-### 3.3 Layout
+- Customer heading/display: Plus Jakarta Sans 600–800.
+- Customer body/UI: Plus Jakarta Sans 400–700.
+- Seller/admin analytics dan order ID: JetBrains Mono boleh dipakai secara selektif untuk angka, code, ID, atau data teknis.
+- Hindari JetBrains Mono sebagai heading utama customer karena memberi kesan terlalu teknis.
+
+Recommended mobile scale:
+
+| Role | Size | Weight |
+|---|---:|---:|
+| Hero title | 28–32 px | 700–800 |
+| Page title | 20–24 px | 700 |
+| Section title | 18–20 px | 700 |
+| Card title | 14–16 px | 600–700 |
+| Body | 14–16 px | 400–500 |
+| Caption/meta | 11–13 px | 400–600 |
+| Price | 16–20 px | 700–800 |
+
+### 3.3 Layout and spacing
+
+Base rules:
 
 - mobile-first;
-- 8px spacing system;
-- maximum content width desktop yang konsisten;
-- sticky bottom action diperbolehkan pada mobile checkout/product/detail;
-- seller/admin dashboard dapat menggunakan sidebar desktop + compact navigation mobile.
+- 4px base grid dengan spacing utama 8 / 12 / 16 / 20 / 24 / 32;
+- mobile content padding 16px; promo/banner dapat edge-to-edge bila desain membutuhkan;
+- minimum touch target 44×44px;
+- card radius 12–16px;
+- modal/bottom sheet radius atas 20–24px;
+- subtle shadow hanya untuk floating/sheet/elevated card;
+- divider tipis lebih disukai daripada shadow berat;
+- product grid customer: 2 kolom pada mobile, 3–4 tablet, 4–6 desktop sesuai container;
+- seller/admin desktop dapat menggunakan sidebar; customer desktop menggunakan top navigation + content container;
+- sticky bottom CTA diperbolehkan pada product detail, checkout, booking, dan delivery selection.
 
-### 3.4 UI Interaction Rules
+### 3.4 Global customer app shell
+
+Mobile shell PALUGADA mengikuti mental model Astro/Shopee: **header kontekstual + content + fixed bottom navigation**.
+
+Default bottom navigation:
+
+```text
+[Beranda] [Promo] [Keranjang] [Pesanan] [Akun]
+```
+
+Rules:
+
+- 5 item maksimum;
+- active item memakai `Brand / Primary` dan label terlihat;
+- cart dapat memiliki numeric badge;
+- promo dapat memiliki dot indicator bila ada campaign baru;
+- navigation tidak ditampilkan pada full-screen checkout/payment/location picker bila mengganggu task;
+- desktop mengganti bottom nav dengan header/navigation yang sesuai, tidak memperbesar bottom nav.
+
+Header customer memiliki tiga variant:
+
+1. **Home header** — delivery/address context + notification + search.
+2. **Listing header** — back/search/filter/sort sesuai konteks.
+3. **Transaction header** — back + page title, tanpa elemen promo yang mengganggu.
+
+### 3.5 Search pattern
+
+Search adalah primary discovery control.
+
+Home:
+
+```text
+Dikirim ke: [Alamat aktif ▾]                    [🔔]
+[ 🔍 Cari produk, makanan, atau jasa... ]
+```
+
+Listing:
+
+```text
+[←] [ 🔍 Cari di kategori ini... ] [Filter]
+```
+
+Search suggestions dapat menampilkan:
+
+- recent search;
+- kategori;
+- product/merchant/service suggestion;
+- popular local query.
+
+### 3.6 Cards and commerce density
+
+**ProductCard** customer mengikuti prinsip kartu Astro: gambar dominan, informasi ringkas, CTA cepat.
+
+Urutan visual:
+
+```text
+[image]
+[badge/promo optional]
+Product name (max 2 lines)
+Rp price
+Seller / area (optional)
+Stock/delivery info
+[ + ] quick add
+```
+
+**MerchantCard** mengikuti pola food marketplace:
+
+```text
+[merchant image]
+Merchant name
+rating • distance/area • ETA
+promo/delivery badge
+```
+
+**ServiceCard** mengikuti pola service marketplace:
+
+```text
+[service image/icon]
+Service name
+Provider
+Mulai dari Rp...
+availability/area
+```
+
+Rules:
+
+- product card mobile tidak boleh penuh dengan lebih dari 3 badge sekaligus;
+- harga dan CTA lebih menonjol daripada metadata;
+- nama maksimal 2 baris pada grid;
+- skeleton mengikuti shape card final untuk mengurangi layout shift.
+
+### 3.7 Promotional surfaces
+
+Promo mengadopsi energi visual Astro/Shopee tetapi tetap PALUGADA.
+
+Jenis:
+
+- hero promo banner;
+- voucher card;
+- flash/deal strip;
+- free-delivery / local promo badge;
+- seller campaign card.
+
+Rules:
+
+- promo tidak boleh mengambil >40% viewport pertama terus-menerus;
+- satu hero banner utama per viewport;
+- CTA promo jelas;
+- countdown hanya jika benar-benar berasal dari waktu campaign server;
+- jangan membuat fake urgency.
+
+### 3.8 Empty, loading, and feedback states
+
+Mengikuti kualitas empty state Astro: jelas, ramah, dan selalu menawarkan next action.
+
+Pattern:
+
+```text
+[illustration / future PALUGADA mascot]
+Title
+Short explanation
+[Primary CTA]
+[Optional recommendations]
+```
+
+Contoh:
+
+```text
+Belum ada pesanan
+Mulai jelajahi produk, makanan, atau jasa di Banjarsari.
+[Mulai Jelajah]
+```
+
+Loading:
+
+- skeleton untuk grid/list;
+- spinner hanya untuk action pendek;
+- full-page blank loading dihindari.
+
+### 3.9 Iconography and imagery
+
+- gunakan Lucide React atau satu icon family konsisten;
+- default stroke 1.8–2px, 20–24px;
+- active bottom-nav icon boleh menggunakan filled/stronger visual treatment jika tersedia;
+- product photo memakai real seller image;
+- campaign illustration harus memiliki source/ownership yang jelas;
+- maskot PALUGADA belum diputuskan; jangan menjadikan referensi maskot sebelumnya sebagai asset final.
+
+### 3.10 Motion
+
+- micro-interaction 150–220ms;
+- bottom sheet 220–300ms;
+- add-to-cart boleh memiliki lightweight confirmation animation;
+- hindari parallax/large animation yang memperlambat device entry-level;
+- respect `prefers-reduced-motion`.
+
+### 3.11 UI interaction rules
 
 Setiap async action harus memiliki:
 
 - loading state;
-- success state bila perlu;
-- error message yang actionable;
+- success feedback bila relevan;
+- actionable error message;
 - disabled state untuk mencegah duplicate submission;
-- confirmation untuk destructive action.
+- confirmation untuk destructive action;
+- optimistic update hanya jika rollback aman;
+- sticky CTA tidak boleh menutupi konten terakhir (tambahkan safe-area/padding bawah).
 
 ---
 
@@ -134,6 +353,7 @@ Recommended route map:
 /
 /katalog
 /search
+/promo
 /bisnis
 /bisnis/[id]
 /produk/[id]
@@ -156,6 +376,18 @@ Recommended route map:
 ```
 
 Existing route naming tidak wajib langsung dirombak. Migration harus menjaga URL existing atau memberi redirect bila ada perubahan.
+
+Mobile bottom navigation maps to:
+
+```text
+Beranda   → /
+Promo     → /promo
+Keranjang → /cart
+Pesanan   → /orders (dengan akses booking dari tab/segment)
+Akun      → /profile
+```
+
+`/makanan`, `/jasa`, dan `/katalog` tetap menjadi vertical discovery utama dari Home/Search, bukan wajib menjadi bottom-nav item.
 
 ### 4.2 Seller
 
@@ -208,142 +440,526 @@ Admin CRUD katalog existing secara bertahap dipindahkan menjadi seller-owned wor
 
 ## 5. Key Screen Design
 
-## 5.1 Home
+### 5.0 Customer journey model
 
-Tujuan: mengarahkan user ke tiga layanan utama dan discovery lokal.
-
-Section yang direkomendasikan:
-
-1. Header/navigation.
-2. Search bar utama.
-3. Hero PALUGADA Banjarsari.
-4. Tiga primary service cards:
-   - Belanja Barang
-   - Pesan Makanan
-   - Cari Jasa
-5. Produk populer.
-6. Makanan/merchant populer.
-7. Jasa populer.
-8. UMKM lokal.
-9. Footer.
-
-Existing homepage tidak perlu dibuang; section baru dapat diintegrasikan bertahap.
-
-## 5.2 Product Detail
-
-Minimum content:
-
-- gallery;
-- product name;
-- price;
-- seller identity;
-- stock/availability;
-- variant bila ada;
-- quantity selector;
-- add to cart;
-- buy now;
-- WhatsApp seller secondary action;
-- description;
-- review.
-
-Mobile action bar:
+PALUGADA tidak membuat tiga aplikasi terpisah. Customer bergerak melalui satu shell aplikasi dengan tiga vertical:
 
 ```text
-[Chat WA] [Tambah Keranjang] [Beli]
+                     ┌──────────────┐
+                     │   BERANDA    │
+                     └──────┬───────┘
+                            │
+              ┌─────────────┼─────────────┐
+              ▼             ▼             ▼
+        Belanja Barang  Pesan Makanan   Cari Jasa
+              │             │             │
+              ▼             ▼             ▼
+          Product       Merchant/Menu   Service/Provider
+              │             │             │
+              └─────┬───────┘             │
+                    ▼                     ▼
+                  Cart                 Booking
+                    │                     │
+                 Checkout                 │
+                    │                     │
+                 Payment                  │
+                    │                     │
+                    └─────────┬───────────┘
+                              ▼
+                       Pesanan/Aktivitas
 ```
 
-## 5.3 Food Merchant
+Barang dan makanan dapat masuk cart. Jasa memakai booking flow karena jadwal/lokasi/negosiasi detail berbeda.
 
-Minimum content:
+### 5.1 Home — PALUGADA discovery hub
 
-- merchant info;
-- open/closed;
-- delivery context;
-- menu category tabs;
-- menu item cards;
-- floating/current cart summary.
+Inspirasi utama: **Astro home + Shopee discovery**, dengan warna PALUGADA.
 
-## 5.4 Service Detail
-
-Minimum content:
-
-- provider;
-- service description;
-- price type/range;
-- availability;
-- booking CTA;
-- WhatsApp CTA;
-- rating/review.
-
-Primary action sebaiknya `Booking`, sementara WhatsApp tetap terlihat jelas sebagai secondary/contact action.
-
-## 5.5 Cart
-
-Cart dikelompokkan per seller:
+Above-the-fold mobile:
 
 ```text
+┌─────────────────────────────────┐
+│ Dikirim ke                      │
+│ Desa/Kp... Banjarsari ▾      🔔 │
+│                                 │
+│ [ 🔍 Cari apa di Banjarsari? ] │
+├─────────────────────────────────┤
+│ [ Promo / campaign banner ]     │
+├─────────────────────────────────┤
+│  🛍 Barang   🍜 Makanan   🛠 Jasa │
+│  🏪 UMKM     🏷 Promo     ⋯      │
+└─────────────────────────────────┘
+```
+
+Urutan section default:
+
+1. address/delivery context;
+2. search bar;
+3. hero promo/banner;
+4. quick service/category grid;
+5. `Pilihan untukmu` product horizontal/grid;
+6. `Kuliner Banjarsari` merchant horizontal;
+7. `Jasa di sekitar` service list;
+8. `Promo hari ini`;
+9. `UMKM lokal`;
+10. recently viewed bila ada.
+
+Rules:
+
+- Home bukan landing page marketing panjang; ia adalah operational commerce screen.
+- Search + kategori harus terlihat tanpa scroll panjang.
+- Banner dapat swipe carousel, maksimum 3 campaign aktif.
+- Setiap section memiliki `Lihat Semua` bila punya listing penuh.
+- Personal greeting opsional, tetapi tidak boleh mengambil ruang lebih besar daripada search/discovery.
+
+### 5.2 Promo
+
+Inspirasi utama: **Astro Promo + Shopee campaign module**.
+
+Structure:
+
+```text
+[Header: Promo]
+[Hero promo]
+
+Promo Untukmu                     [Lihat semua]
+[Voucher] [Voucher] [Voucher]
+
+[Tabs: Semua | Barang | Makanan | Jasa]
+
+[Deal / campaign cards]
+[Discounted product grid]
+```
+
+Voucher card minimum:
+
+- title;
+- benefit;
+- minimum spend/terms ringkas;
+- expiry;
+- `Gunakan` CTA;
+- detail terms via drawer/modal.
+
+Promo eligibility dihitung dari server/domain rule pada implementasi produksi; UI tidak menentukan sendiri voucher valid.
+
+### 5.3 Product catalogue / search results
+
+Inspirasi utama: **Astro product grid + Shopee search/filter**.
+
+Header:
+
+```text
+[← optional] [ 🔍 pencarian........................ ] [filter]
+[Category chips horizontal]
+[Sort: Relevan ▾] [Area] [Harga] [Tersedia]
+```
+
+Grid mobile: 2 kolom.
+
+Product card wajib menampilkan:
+
+- image 1:1;
+- product name max 2 baris;
+- current price;
+- original price/discount hanya bila valid;
+- seller/UMKM name atau area dalam satu line kecil;
+- availability/delivery info bila diketahui;
+- quick add `+` jika produk langsung dapat ditambahkan.
+
+Tidak perlu meniru density Shopee secara penuh; readability untuk pengguna lokal lebih penting daripada memaksimalkan jumlah badge.
+
+### 5.4 Product detail
+
+Target structure:
+
+```text
+[←]                             [♡] [cart]
+[Product image carousel]
+
+Product name
+Rp price         [discount badge]
+Rating • Terjual • Stock
+
+[Toko / Seller card]                    [Lihat toko]
+
+Variant
+[chip] [chip] [chip]
+Quantity [-] 1 [+]
+
+Description
+Delivery estimate / pickup option
+Review preview
+
+-----------------------------------------
+[Chat WA] [Tambah Keranjang] [Beli Sekarang]
+```
+
+Rules:
+
+- `Beli Sekarang` primary;
+- `Tambah Keranjang` secondary-strong;
+- WhatsApp tertiary/contact action tetapi selalu discoverable;
+- CTA bottom bar sticky pada mobile;
+- stock/price selalu revalidated di server saat checkout;
+- review verified status harus jelas jika nanti tersedia.
+
+### 5.5 Food discovery
+
+Inspirasi utama: **ShopeeFood** dengan kebersihan visual Astro.
+
+Top:
+
+```text
+[←] [Alamat pengantaran ▾]                  [cart]
+[ 🔍 Cari makanan atau warung... ]
+
+[Category icons horizontally scrollable]
+[Promo food banner]
+```
+
+Recommended sections:
+
+- Dekat kamu / area Banjarsari;
+- Promo makan;
+- Populer;
+- Siap cepat;
+- Berdasarkan kategori: Nasi, Minuman, Jajanan, dll;
+- merchant list.
+
+Merchant card:
+
+```text
+[photo]
+Nama Warung
+★ 4.8 • Area • ~25 menit
+Rp delivery / Pickup tersedia
+[promo badge]
+```
+
+ETA tidak boleh ditampilkan sebagai angka pasti jika backend belum mampu menghitungnya. Gunakan label seperti `Estimasi belum tersedia` daripada data palsu.
+
+### 5.6 Food merchant / menu
+
+```text
+[Merchant cover]
+Nama merchant
+Status buka • area • delivery/pickup
+[Chat merchant]
+
+[🔍 Cari menu]
+[Menu category tabs sticky]
+
+Makanan
+[image] Nasi ...             Rp... [+]
+[image] Ayam ...             Rp... [+]
+
+Minuman
+...
+
+[Cart summary: 3 item • Rp... ] [Lihat Keranjang]
+```
+
+Rules:
+
+- category tabs menjadi sticky saat scroll;
+- add menu item menggunakan plus button cepat;
+- modifier/variant membuka bottom sheet;
+- sold-out item tetap boleh terlihat tetapi disabled dengan label `Habis`;
+- satu merchant card/menu tidak boleh mencampur produk retail kecuali business memang punya dua vertical dan UI menjelaskannya.
+
+### 5.7 Service discovery
+
+Inspirasi utama: **Gojek service entry** tetapi bukan clone transport app.
+
+Home jasa:
+
+```text
+[Alamat layanan aktif ▾]
+[ 🔍 Cari jasa... ]
+
+[Cleaning] [Servis] [Antar] [Lainnya]
+
+Jasa populer
+[Service cards]
+
+Penyedia dekat area kamu
+[Provider cards]
+```
+
+Service card menonjolkan `nama layanan`, `provider`, `harga mulai`, `area layanan`, dan `slot/availability` bila tersedia.
+
+### 5.8 Service detail / booking
+
+Inspirasi utama: **Gojek booking flow** — satu keputusan per langkah, CTA besar di bawah.
+
+```text
+[←] Jasa
+
+[Service image]
+Nama jasa
+Provider • rating
+Mulai dari Rp...
+
+Lokasi layanan
+[Alamat aktif] [Ubah]
+
+Jadwal
+[Tanggal] [Jam]
+
+Catatan
+[textarea]
+
+[Chat via WhatsApp]
+
+-----------------------------------
+[Booking Sekarang]
+```
+
+Booking dibuat di PALUGADA terlebih dahulu. Setelah booking ID tersedia, WhatsApp dapat membuka pesan dengan context booking tersebut.
+
+### 5.9 Location picker / delivery context
+
+Inspirasi utama: **Gojek set lokasi jemput/map flow**.
+
+Use cases:
+
+- alamat delivery product/food;
+- alamat jasa;
+- pickup/store location;
+- courier tracking di masa depan.
+
+Pattern:
+
+```text
+[×] Pilih lokasi
+[ 🔍 Cari alamat / nama tempat ]
+
+[Gunakan lokasi saat ini]
+[Pilih lewat peta]
+
+Alamat tersimpan
+[Rumah]
+[Kantor]
+[+ Tambah alamat]
+```
+
+Jika map dipakai:
+
+- map menjadi canvas utama;
+- pin center/selected point jelas;
+- bottom sheet berisi address confirmation;
+- CTA `Gunakan Lokasi Ini` sticky;
+- permission location diminta hanya saat relevan, bukan pada first app load.
+
+### 5.10 Cart
+
+Inspirasi utama: **Astro cart**, tetapi harus mendukung multi-seller.
+
+Empty state:
+
+```text
+[illustration]
+Belum ada barang
+Yuk pilih produk atau makanan yang kamu suka.
+[Mulai Jelajah]
+
+Mungkin kamu tertarik
+[recommended product grid]
+```
+
+Filled state:
+
+```text
+Keranjang
+
+[✓] Seller A
+    [✓] Product A   [-] 2 [+]   Rp...
+    [✓] Product B   [-] 1 [+]   Rp...
+    Catatan toko
+
+[✓] Seller B
+    [✓] Product C   [-] 1 [+]   Rp...
+
+-----------------------------------------
+[Select all]  Total Rp...      [Checkout]
+```
+
+Rules:
+
+- grouped by seller;
+- selection per item/per seller;
+- unavailable item dijelaskan, tidak silently removed;
+- quantity update memiliki optimistic UX tetapi revalidate server pada checkout;
+- recommendations boleh tampil setelah cart, bukan menyela antar-seller group.
+
+### 5.11 Checkout
+
+Checkout mengikuti prinsip **task-focused**, bukan discovery.
+
+```text
+[←] Checkout
+
+Alamat Pengiriman
+[Recipient, phone]
+[Address]                                      [Ubah]
+
 Seller A
-[✓] Product A x2
-[✓] Product B x1
-Subtotal
+[item summary]
+Pengiriman: [Diantar ▾]
+Catatan: [...]
 
 Seller B
-[✓] Product C x1
-Subtotal
+...
 
------------------
-Selected Total
-[Checkout]
+Voucher/Promo                               [Pilih]
+Pembayaran                                  [Pilih]
+
+Ringkasan
+Subtotal
+Ongkir
+Diskon
+Total
+
+-----------------------------------------
+Total Rp...                    [Buat Pesanan]
 ```
 
-Cart harus menjelaskan item yang unavailable/out-of-stock dan mencegah silent checkout.
+Rules:
 
-## 5.6 Checkout
+- tidak ada banner promo besar di checkout;
+- cost breakdown eksplisit;
+- one checkout can create multiple sub-order;
+- seller/delivery state dipisahkan setelah order dibuat;
+- `Buat Pesanan` disabled selama request berjalan;
+- payment proof tidak ditentukan dari browser redirect semata.
 
-Section:
+### 5.12 Orders / activity
 
-1. Address/customer contact.
-2. Group per seller.
-3. Item summary.
-4. Delivery/pickup option jika relevan.
-5. Seller notes.
-6. Payment method.
-7. Cost breakdown.
-8. Grand total.
-9. Place order CTA.
+Inspirasi utama: **Astro Riwayat Belanja + Shopee Pesanan Saya**.
 
-## 5.7 Seller Dashboard
+Default screen:
 
-Dashboard seller tidak hanya angka traffic.
+```text
+Pesanan
+[Semua] [Diproses] [Dikirim] [Selesai] [Batal]
+```
 
-Top cards:
+Empty state per tab mengikuti pattern illustration + CTA.
 
-- penjualan periode aktif;
-- order selesai;
-- order perlu diproses;
-- conversion indicator.
+Order card:
 
-Sections:
+```text
+Seller A                         [Diproses]
+[item thumbnail] Product ... x2
++1 item lain
+Total Rp...
+[Detail] [Hubungi Seller]
+```
 
-- sales trend;
-- top items;
-- order funnel;
-- recent orders;
-- stock/availability attention;
-- traffic & WhatsApp engagement.
+Untuk multi-seller checkout, `/orders/[checkoutId]` dapat menampilkan parent checkout dan status masing-masing sub-order.
 
-## 5.8 Admin Dashboard
+### 5.13 Order detail / delivery tracking
 
-Top cards:
+Order detail fokus pada timeline:
 
-- sellers active;
-- customers active;
-- order volume;
-- GMV;
-- active deliveries/bookings;
-- exception/dispute count.
+```text
+Status: Sedang diproses
+○ Pesanan dibuat
+● Pembayaran berhasil
+○ Diproses seller
+○ Siap diambil kurir
+○ Dalam perjalanan
+○ Selesai
+```
 
-Admin fokus pada ecosystem health, bukan seller day-to-day CRUD.
+Jika location tracking tersedia pada fase berikutnya, map dapat ditempatkan di bagian atas seperti pola Gojek, dengan bottom sheet order status. Jangan membuat live map palsu sebelum backend location stream tersedia.
+
+### 5.14 Profile / account
+
+Inspirasi utama: **Astro Profile**, disederhanakan untuk PALUGADA.
+
+```text
+Akun
+
+[avatar] Nama User
+         phone/email
+
+Pengaturan
+> Detail Akun
+> Alamat Tersimpan
+> Pembayaran
+> Produk Favorit
+> Notifikasi
+> Riwayat / Bantuan
+
+Jika role seller:
+[Masuk Dashboard Seller]
+
+[Logout]
+```
+
+Tidak perlu membuat wallet/coin/loyalty section sebelum fitur benar-benar ada.
+
+### 5.15 Seller dashboard
+
+Seller dashboard tetap data-driven tetapi customer-like simplicity dipertahankan pada mobile.
+
+Desktop layout:
+
+```text
+[sidebar] [top bar]
+
+Penjualan | Order Baru | Perlu Diproses | Conversion
+
+[Sales trend chart]
+
+Produk Terlaris              Stock Attention
+[table/list]                  [table/list]
+
+Order terbaru
+```
+
+Mobile seller:
+
+- card KPI horizontally scrollable atau 2×2;
+- quick action `Tambah Produk`, `Pesanan`, `Menu/Jasa`;
+- analytics detail dapat dibuka ke halaman terpisah;
+- jangan memaksa chart desktop menjadi kecil tidak terbaca.
+
+### 5.16 Admin dashboard
+
+Admin tetap monitoring, bukan katalog operator sehari-hari.
+
+Prioritas:
+
+- ecosystem KPI;
+- pending/failed transaction attention;
+- seller/courier status;
+- order and delivery exception;
+- analytics/forecasting;
+- moderation.
+
+Visual desktop boleh lebih padat daripada customer UI, tetapi tetap memakai shared token/radius/typography.
+
+### 5.17 Responsive behavior
+
+Breakpoints bersifat implementation detail, tetapi target behavior:
+
+- **mobile `<768px`**: fixed bottom nav, 2-column grid, sheets, sticky bottom CTA;
+- **tablet `768–1023px`**: 3-column grid, larger modal/sheet, content max width;
+- **desktop `≥1024px`**: customer top navigation, 4–6 column grid; seller/admin sidebar;
+- avoid simply stretching mobile card to full desktop width.
+
+### 5.18 Accessibility and usability
+
+- text input mobile minimum 16px untuk mencegah zoom browser;
+- tap target ≥44px;
+- focus state visible;
+- icon-only button wajib punya `aria-label`;
+- price/status tidak disampaikan lewat warna saja;
+- bottom navigation memperhitungkan safe-area inset;
+- form error berada dekat field;
+- loading state tidak menghapus context page.
 
 ---
 
@@ -1114,33 +1730,106 @@ Delivery domain menghasilkan delivery status event. Mapping ke order completion 
 
 ## 23. UI Component Boundaries
 
-Recommended reusable components:
+Komponen reusable harus mengikuti reference-driven system pada Bagian 3–5.
+
+### 23.1 Foundation components
 
 ```text
 Button
+IconButton
 Input
+SearchInput
 Select
+Textarea
+Checkbox
+Radio
+Chip
+Badge
+Divider
+Tabs
+SegmentedControl
 Modal
 Drawer
-Badge
+BottomSheet
 Toast/Alert
+Skeleton
 EmptyState
 LoadingState
 ErrorState
+```
+
+### 23.2 Navigation and shell
+
+```text
+CustomerHeader
+ContextAddressBar
+BottomNavigation
+DesktopCustomerNav
+SellerSidebar
+AdminSidebar
+PageHeader
+StickyBottomAction
+```
+
+### 23.3 Commerce components
+
+```text
+PromoBanner
+VoucherCard
+CategoryShortcut
 ProductCard
+ProductGrid
 MerchantCard
+MenuItemCard
 ServiceCard
+ProviderCard
 PriceDisplay
+DiscountDisplay
 QuantitySelector
+SellerIdentityCard
 CartSellerGroup
+CheckoutSellerGroup
+CostBreakdown
+RecommendationRail
+```
+
+### 23.4 Transaction components
+
+```text
+OrderCard
+OrderTimeline
 OrderStatusBadge
 PaymentStatusBadge
 DeliveryStatusBadge
-MetricCard
-ChartContainer
+BookingStatusBadge
+AddressCard
+LocationPickerSheet
+PaymentMethodCard
+DeliveryOptionCard
+WhatsAppAction
 ```
 
-Shared component modification tidak boleh merusak page milik developer lain. Gunakan props backward-compatible atau coordinate breaking change.
+### 23.5 Analytics components
+
+```text
+MetricCard
+ChartContainer
+InsightCard
+DataTable
+FilterBar
+ExportAction
+ForecastCard
+```
+
+### 23.6 Component rules
+
+- shared component tidak boleh hardcode business state yang dimiliki Theo/Lukas/Zikri;
+- style variant harus token-based, bukan copy-paste CSS per page;
+- props baru sebisa mungkin backward-compatible;
+- breaking shared change membutuhkan koordinasi lintas owner;
+- `ProductCard`, `MerchantCard`, dan `ServiceCard` harus memiliki skeleton counterpart;
+- bottom sheet/modal harus trap focus dan dapat ditutup dengan mekanisme yang accessible;
+- UI component tidak langsung memanggil Firestore/payment provider kecuali adapter/presentation boundary yang memang disetujui.
 
 ---
 
@@ -1330,7 +2019,18 @@ Sebelum implementation besar, status baseline harus diselesaikan dan disepakati.
 
 ## 32. Design Principle Summary
 
-> **UI dibuat familiar dan mobile-first; state transaksi authoritative di server/service layer; data ownership mengikuti seller/customer/courier; analytics membaca fakta transaksi tanpa mengendalikan business process; dan arsitektur disusun agar Firebase dapat diganti kemudian tanpa menulis ulang keseluruhan aplikasi.**
+> **PALUGADA harus terasa seperti aplikasi commerce Indonesia yang familiar: search-first dan rapi seperti Astro, discovery marketplace yang kaya seperti Shopee/ShopeeFood, serta location/booking flow yang fokus seperti Gojek — tetapi seluruh warna, konten, merchant, bahasa, dan identitasnya tetap PALUGADA Banjarsari.**
+
+Core rules:
+
+1. Customer experience adalah **mobile app-like web experience**, bukan landing page panjang.
+2. Bottom navigation customer menggunakan **Beranda / Promo / Keranjang / Pesanan / Akun**.
+3. Home mengutamakan **alamat + search + tiga vertical utama + promo/discovery**.
+4. Product/food menggunakan card/grid yang cepat dipindai; service menggunakan flow booking yang lebih fokus.
+5. Empty/loading/error state harus diperlakukan sebagai bagian desain utama.
+6. Checkout, payment, order, delivery, dan booking tetap authoritative di server/service layer.
+7. Visual redesign tidak mengubah ownership domain Lukas/Zikri/Theo.
+8. Referensi eksternal digunakan sebagai pola UX, bukan untuk menyalin identitas visual atau asset proprietary.
 
 ---
 
@@ -1475,9 +2175,9 @@ dan review terverifikasi transaksi. Tidak ada migration database pada perubahan 
 
 ---
 
-## 34. Marketplace, transaksi demo, analisis, dan LAN (v1.2)
+## 34. Marketplace, transaksi demo, analisis, dan LAN — implementation snapshot v1.2
 
-Bagian ini menggantikan batas implementasi tahap pertama pada bagian 33. Rancangan produksi bagian 2–32 tetap menjadi target. User secara eksplisit meminta perbaikan customer/admin, fungsi demo, forecasting, akses HP, dan push branch lukas; scope lint/security juga diperluas untuk audit.
+Bagian ini menggantikan batas implementasi tahap pertama pada bagian 33 dan merekam kondisi implementasi sebelum visual redesign v1.3. Rancangan produksi bagian 2–32 adalah target terbaru; perubahan UI pada Bagian 3–5 belum boleh dianggap sudah selesai hanya karena tercantum di dokumen. User secara eksplisit meminta perbaikan customer/admin, fungsi demo, forecasting, akses HP, dan push branch lukas; scope lint/security juga diperluas untuk audit.
 
 ### 34.1 Struktur layar dan identitas visual
 
@@ -1539,3 +2239,132 @@ VS Code: .vscode/tasks.json menyediakan task dev:lan dan firewall Administrator;
 ### 34.5 Audit dan dependensi
 
 Lihat AUDIT.md untuk matriks perbaikan, pengujian, keterbatasan, dan referensi. Next.js serta eslint-config-next diperbarui ke 16.3.6; SheetJS ke 0.20.3 dari distribusi resmi; dependency transitif kompatibel diperbarui sampai npm audit melaporkan 0 vulnerabilities. Font/palette dan stack utama tetap dipertahankan.
+
+---
+
+## 35. Visual Redesign Migration Plan — v1.3
+
+Bagian ini adalah urutan implementasi UI berdasarkan referensi yang diberikan. Tidak mengubah business rule transaksi.
+
+### 35.1 Phase UI-1 — foundation
+
+Owner utama: **Zikri / ESD**, dengan review lintas tim bila menyentuh shared component.
+
+1. Update token warna, typography, radius, spacing.
+2. Jadikan Plus Jakarta Sans default customer font.
+3. Implement `CustomerHeader`, `BottomNavigation`, `SearchInput`, `BottomSheet`, `EmptyState`, `Skeleton`.
+4. Pastikan existing green PALUGADA tetap dominan.
+5. Tambahkan `/promo` shell meskipun promo engine production belum tersedia; konten demo harus diberi label bila fixture.
+
+Acceptance:
+
+- 390px mobile tidak overflow horizontal;
+- bottom nav tidak menutupi konten;
+- active state jelas;
+- keyboard/focus state bekerja;
+- desktop tetap usable.
+
+### 35.2 Phase UI-2 — commerce discovery
+
+1. Redesign Home.
+2. Redesign `/katalog` menjadi 2-column mobile product grid.
+3. Buat product card quick-add.
+4. Redesign `/makanan` dan merchant/menu page.
+5. Redesign `/jasa` dengan service cards.
+6. Tambahkan promo/voucher visual module tanpa membuat logic promo palsu.
+
+### 35.3 Phase UI-3 — cart, order, profile
+
+1. Cart empty/filled state mengikuti pattern Bagian 5.10.
+2. Multi-seller grouping terlihat eksplisit.
+3. `/orders` menggunakan status tabs dan order cards.
+4. `/profile` diubah menjadi settings-style list seperti referensi Astro, tanpa menambahkan wallet/coin yang belum ada.
+5. Favorite dan address masuk ke account settings hierarchy.
+
+### 35.4 Phase UI-4 — location, booking, delivery
+
+Owner business logic tetap **Theo / ERP**; Zikri hanya presentation/integration.
+
+1. Location picker untuk alamat customer.
+2. Booking service flow satu langkah per decision.
+3. Delivery option card pada checkout.
+4. Map hanya ditambahkan bila data lokasi nyata tersedia.
+5. Live tracking tidak boleh disimulasikan sebagai production feature.
+
+### 35.5 Phase UI-5 — seller/admin consistency
+
+1. Seller dashboard menggunakan token visual yang sama.
+2. Admin tetap information-dense dan monitoring-focused.
+3. Chart/table tidak mengikuti mobile customer card secara paksa.
+4. Existing analytics/forecasting Lukas dipertahankan dan hanya presentation layer yang disejajarkan.
+
+### 35.6 Screenshot comparison checklist
+
+Saat implementasi setiap screen, bandingkan terhadap tujuan referensi berikut:
+
+| PALUGADA screen | Reference behavior | Hal yang harus terlihat |
+|---|---|---|
+| Home | Astro + Shopee | address/search kuat, kategori cepat, promo, commerce section |
+| Promo | Astro | voucher mudah dipahami, tabs/category, discounted products |
+| Product listing | Astro + Shopee | 2-column mobile, price hierarchy, quick add/filter |
+| Food | ShopeeFood | merchant/category/promo, search + delivery context |
+| Service booking | Gojek | location first, step-by-step, sticky primary CTA |
+| Cart | Astro | empty state kuat + recommendations; filled cart tetap sederhana |
+| Orders | Astro + Shopee | status tabs, clear empty state, actionable order card |
+| Profile | Astro | settings list, address/payment/favorite/notification grouping |
+| Location | Gojek | searchable address, map optional, confirmation bottom sheet |
+
+### 35.7 Explicit non-goals
+
+- tidak menyalin warna brand Shopee/Astro/Gojek sebagai brand PALUGADA;
+- tidak menyalin logo/illustration/campaign asset;
+- tidak membuat wallet/coin/live shopping/games hanya karena ada pada referensi;
+- tidak membuat GoRide/transport penumpang karena bukan scope PALUGADA;
+- tidak membuat fake ETA, fake rating, fake sold count, atau fake urgency di production;
+- tidak mengubah order/payment/delivery rules hanya untuk menyesuaikan tampilan.
+
+
+## 36. Implementasi redesign marketplace — v1.4
+
+Tanggal: 29 September 2026. Bagian ini mencatat hasil implementasi terhadap arah desain bagian 35 dan lima referensi mobile pengguna. Bagian 35 tetap menjadi target; fitur yang belum memiliki backend tidak dianggap selesai hanya karena shell UI tersedia.
+
+### 36.1 Tampilan yang tersedia
+
+- Shell customer: header hijau dengan lokasi belanja, pencarian, kabar pesanan, navigasi desktop, dan bottom navigation **Beranda / Promo / Keranjang / Pesanan / Akun**. Checkout menyembunyikan bottom navigation dan memakai CTA transaksi tersendiri.
+- Beranda: banner ilustrasi orisinal, tiga pintasan Belanja/Makanan/Jasa, kategori ringkas, katalog bergambar, jasa, serta dukungan UMKM. Layout dua kolom pada HP, tiga pada tablet, empat pada desktop.
+- Promo (`/promo`): banner, tiga kartu informasi voucher/pengantaran/penawaran toko, dan pilihan katalog. Semua status menyatakan belum aktif; tidak ada nominal diskon, flash sale, countdown, atau tombol klaim palsu.
+- Katalog dan favorit: foto seller bila tersedia, gambar ilustrasi khusus demo, nama, harga, wilayah, favorit, pencarian/filter/sort, dan tambah cepat. Stok dicek saat tambah cepat dan divalidasi lagi oleh server saat checkout.
+- Toko: pencarian usaha, kartu toko, halaman toko dengan filter produk/menu/jasa. Peta hanya muncul bila koordinat tersedia di mode Firebase; peta dan kontak demo tidak dijadikan lokasi/kontak nyata.
+- Keranjang: pilihan semua/per toko/per barang, subtotal terpilih, konfirmasi hapus, pembatasan stok, rekomendasi produk lain, serta ringkasan checkout tetap terlihat pada HP. Checkout mengirim hanya barang terpilih; barang lain tetap tersimpan sesudah transaksi berhasil.
+- Pesanan: tab Berlangsung/Selesai/Dibatalkan dengan jumlah aktual, kartu toko, thumbnail transaksi, status, rincian pembayaran/pengambilan, dan konfirmasi pembatalan yang masih diizinkan. Booking jasa memiliki daftar jadwal sendiri.
+- Akun: identitas pengguna, pintasan pesanan/favorit/admin, daftar pengaturan, alamat lokal tersimpan per akun/browser, informasi pembayaran/notifikasi, bantuan, dan logout. Tidak ada saldo atau poin fiktif. Editor profil Firebase dipertahankan di `/profile/details`.
+- Jasa: booking tiga langkah Lokasi → Jadwal → Konfirmasi, dengan validasi jadwal sampai 90 hari. Harga tetap estimasi dan menunggu konfirmasi penyedia.
+- Autentikasi: kartu putih membulat dan header hijau untuk HP; ilustrasi split layout pada desktop. Form Firebase tetap dipertahankan; demo menggunakan kredensial development.
+- Admin: sidebar, heading, KPI, insight, chart, tabel, dan forecasting memakai token visual yang konsisten. Rumus analisis/forecasting, filter, impor CSV, dan otorisasi tidak diganti.
+
+### 36.2 Struktur kode
+
+| Lokasi | Tanggung jawab |
+|---|---|
+| `app/(storefront)` | Customer, katalog, toko, pesanan, profil |
+| `app/(auth)` | Login dan registrasi |
+| `app/(workspace)/admin` | Monitoring, forecasting, pengelolaan Firebase |
+| `components/commerce` | Shell, banner, kartu, transaksi, akun, booking |
+| `components/monitoring` | Dashboard, analisis penjualan, forecasting |
+| `components/shared` | Footer, peta, ulasan, ikon yang masih dipakai |
+| `styles/legacy` | CSS pendukung halaman Firebase existing |
+| `app/globals.css` | Impor CSS dan token visual bersama |
+| `public/illustrations` | Aset demo orisinal beserta provenance dan prompt |
+| `AGENTS.md` | Satu-satunya panduan agent di proyek |
+
+Route group berganti nama tanpa mengubah URL publik existing. Panduan `agent.md`, `app/agent.md`, dan `CLAUDE.md` dihapus setelah dikonsolidasikan. Komponen navigasi/katalog lama yang tidak lagi diimpor juga dihapus. Next.js `agentRules: false` mencegah pembuatan kembali panduan duplikat. Perubahan existing pada arsip `UI Katalog v1` tidak termasuk redesign ini.
+
+### 36.3 Aset dan batas implementasi
+
+Ilustrasi dibuat melalui built-in imagegen, bukan menyalin aset aplikasi referensi. [Daftar file dan prompt lengkap](public/illustrations/README.md). Ilustrasi banner bukan foto lokasi sebenarnya; atlas produk hanya untuk demo. Foto asli seller tetap didahulukan.
+
+Location sheet saat ini mengonfirmasi satu wilayah katalog, Banjarsari; belum geocoding, pencarian alamat nasional, atau GPS. Alamat lokal dipakai sebagai catatan checkout, bukan perhitungan ongkir. Promo, pengantaran, notifikasi push, pembayaran online, wallet/poin, dan sinkronisasi alamat lintas perangkat belum aktif. Dashboard seller/kurir tetap target PRD, bukan fitur baru pada redesign ini. Batas produksi bagian 34 dan AUDIT.md tetap berlaku.
+
+### 36.4 Verifikasi
+
+Build production dan 11 tes domain lulus. Browser telah memverifikasi navigasi customer/admin pada viewport 320/390/768/1440, login, tambah cepat, checkout barang terpilih, retensi barang tidak terpilih, pembatalan, alamat tersimpan, modal lokasi, dan forecasting tanpa horizontal overflow halaman atau error hydration. API session/RBAC/ownership tetap lulus. Artefak screenshot dan runner browser berada di `.local/` dan diabaikan Git. Pengujian ini tidak menyatakan integrasi Firebase/payment production atau akses HP fisik sudah terverifikasi.

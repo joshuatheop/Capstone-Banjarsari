@@ -15,7 +15,7 @@ npm run dev:lan
 
 setup:local hanya untuk instalasi pertama dan tidak menimpa .env.local existing. setup:lan memperbarui alamat jaringan, mengatur password demo, dan merotasi secret sesi. Bila .env.local sudah ada, pastikan NEXT_PUBLIC_LOCAL_PREVIEW=true sebelum melanjutkan; jangan pakai konfigurasi produksi untuk demo.
 
-Buka [localhost:3000](http://localhost:3000). Dari HP pada Wi-Fi yang sama, gunakan IP Wi-Fi laptop yang ditampilkan setup:lan. Saat verifikasi: [192.168.0.103:3000](http://192.168.0.103:3000). Laptop/server harus tetap menyala. Jika IP berubah, jalankan setup:lan dan restart dev:lan.
+Buka [localhost:3000](http://localhost:3000). Dari HP pada Wi-Fi yang sama, gunakan IP Wi-Fi laptop yang ditampilkan setup:lan. Saat verifikasi: [192.168.0.109:3000](http://192.168.0.109:3000). Laptop/server harus tetap menyala. Jika IP berubah, jalankan setup:lan dan restart dev:lan.
 
 | Akun | Username | Password demo | Halaman |
 |---|---|---|---|
@@ -53,3 +53,11 @@ npm run test:commerce
 Dua pemeriksaan API memerlukan dev:lan/dev:local yang aktif dan .local/accounts.json. Test commerce membuat pesanan berlabel uji, membatalkannya, dan meninggalkan booking uji. Pengujian browser/screenshot lokal berada di .local/ dan tidak ikut Git.
 
 Next.js 16.3.6, React 19, TypeScript, Firebase, CSS Modules. SheetJS memakai tarball 0.20.3 dari [distribusi resmi](https://docs.sheetjs.com/docs/getting-started/installation/nodejs/) karena versi npm lama memiliki advisori keamanan. npm ci memerlukan akses registry npm dan cdn.sheetjs.com.
+
+## Struktur dan desain saat ini
+
+Customer berada di `app/(storefront)`, autentikasi di `app/(auth)`, dan admin di `app/(workspace)/admin`. URL existing tetap sama. Panduan pengembangan tunggal adalah [AGENTS.md](AGENTS.md); referensi tampilan dan batas fitur terbaru ada pada [Design.md bagian 36](Design.md#36-implementasi-redesign-marketplace--v14).
+
+Halaman baru `/promo` menampilkan status penawaran yang belum aktif secara jujur. Keranjang mendukung pilihan per barang/toko; hanya barang terpilih yang dikirim saat checkout. Akun menyediakan alamat tersimpan khusus browser yang diisi otomatis pada checkout. Booking jasa disajikan dalam tiga langkah tanpa mengubah aturan transaksi. [Ilustrasi demo dan prompt](public/illustrations/README.md) dibuat dengan built-in imagegen.
+
+Setelah berpindah dari struktur route group lama, hentikan dev server dan hapus cache generated `.next` bila TypeScript masih mereferensikan `(davy)`/`(theo)`, lalu jalankan kembali. Jangan hapus `.local` karena menyimpan transaksi demo.

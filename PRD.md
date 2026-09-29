@@ -18,7 +18,7 @@ Urutan acuan saat terjadi konflik:
 1. Instruksi user/pemilik produk yang paling baru dan eksplisit.
 2. `PRD.md` untuk kebutuhan produk dan business requirement.
 3. `design.md` untuk arsitektur, data flow, UI/UX, contract, dan keputusan teknis.
-4. `agent.md` untuk coding convention dan design system existing, selama tidak bertentangan dengan PRD/design terbaru.
+4. `AGENTS.md` untuk coding convention dan design system existing, selama tidak bertentangan dengan PRD/design terbaru.
 5. Implementasi existing sebagai baseline yang harus dipertahankan sampai ada perubahan requirement yang sah.
 
 Perubahan requirement yang berdampak pada lebih dari satu domain wajib dibahas sebelum diimplementasikan.

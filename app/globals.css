@@ -1,5 +1,11 @@
-@import './globalstheo.css';
-@import './globalsdavy.css';
+@import '../styles/legacy/workspace.css';
+@import '../styles/legacy/storefront.css';
 
 .preview-banner { background: var(--color-accent); color: var(--color-dark); padding: 8px 16px; text-align: center; font-size: 12px; font-weight: 600; }
 *:focus-visible { outline: 3px solid var(--color-aqua); outline-offset: 4px; }
+
+/* Shared tokens take precedence over the retained Firebase page styles. */
+.workspace-theme,.storefront-theme{--bg:#f6f7f5;--surface:#fff;--surface-2:#edf5ed;--text-primary:#161a17;--text-secondary:#69716b;--text-muted:#69716b;--border:#e5e9e6;--border-strong:#ced8d0;--font-heading:'Plus Jakarta Sans',system-ui,sans-serif;--font-display:'Plus Jakarta Sans',system-ui,sans-serif;--shadow:0 5px 24px #05472b0a;--radius:12px;--radius-lg:18px;color:var(--text-primary)}
+.preview-banner{background:#eaf5e7;color:#315740;font-size:10px;padding:6px 16px;line-height:1.5}
+body{margin:0}button:disabled{cursor:not-allowed}input[type=checkbox]{accent-color:#087344}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}html{scroll-padding-bottom:150px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}

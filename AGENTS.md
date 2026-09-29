@@ -1,9 +1,37 @@
-<!-- BEGIN:nextjs-agent-rules -->
+# PALUGADA development guide
 
-# This is NOT the Next.js you know
+This is the single project guide for coding agents. Do not create duplicate agent.md, app/agent.md, or CLAUDE.md files. Next.js automatic agent-file generation is disabled with agentRules: false.
 
-This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+## Sources of truth
 
-This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+- Read PRD.md for product scope and Design.md for the current UI contract. Current user instructions take precedence over older documents.
+- Read the relevant bundled framework guide in node_modules/next/dist/docs before changing Next.js APIs or routing; this project uses Next.js 16.3.6.
+- README.md explains local setup, credentials, networking, and checks. AUDIT.md records limitations; never represent demo features as production services.
+- Existing product, service, user, and business schemas are in lib/firestore/types.ts. Clarify actions, authorization, and fields before adding an unspecified Firebase collection or changing a production schema. Do not ask again for already authorized work.
 
-<!-- END:nextjs-agent-rules -->
+## Structure
+
+- app/(storefront): customer pages and commerce navigation, including profile and settings.
+- app/(auth): login and registration.
+- app/(workspace)/admin: admin monitoring, forecasting, and existing Firebase management pages.
+- app/api/local: development-only authenticated APIs. Keep host/origin validation, role checks, ownership checks, and idempotency.
+- components/commerce: reusable customer views; components/monitoring: admin views; components/shared: shared maps, reviews, icons, footer.
+- lib/commerce and lib/server: local transaction validation/storage; lib/monitoring: metrics; lib/monitoring/forecast*: forecasting.
+- context: authentication, favorites, cart. Cart selection and browser address preferences are presentation state, not new Firestore fields.
+- styles/legacy: retained styles required by Firebase management/detail pages. New views use CSS Modules and the shared tokens in app/globals.css.
+- public/illustrations: original generated demo assets and provenance. Do not depict them as actual seller photography.
+- scripts: reproducible checks and local setup. .local: ignored runtime data and browser verification artifacts.
+
+## Implementation rules
+
+Use TypeScript and CSS Modules; do not add Tailwind or dependencies without explaining and documenting why. Follow Design.md tokens: Plus Jakarta Sans for customer headings/body, green primary, semantic colors for statuses, restrained orange for promotions. Keep mobile touch targets and keyboard focus visible. Do not fabricate discounts, ratings, urgency, balances, ETAs, or tracking.
+
+Keep Firebase configuration and all secrets in ignored environment files. Preserve production Firebase behavior and existing collections. Local demo data must remain development-only; no real payment or messaging side effects. Do not weaken Firestore rules or allow users to grant themselves admin roles.
+
+Run npm run lint and npm run build for code/route changes; npm test for domain logic. When transaction behavior changes, verify local API tests and the browser checkout flow. Check mobile and desktop layouts, errors, empty states, and keyboard navigation. Update Design.md and AUDIT.md when behavior or limitations change.
+
+Git: inspect existing changes before editing. Do not overwrite unrelated work. Push only when requested, to the requested branch, with the requested author identity.
+
+## Stack log
+
+2026-09-29: Next.js 16.3.6, React 19.2.4, TypeScript, Firebase, lucide-react, CSS Modules; SheetJS 0.20.3 from the official distribution. Current redesign adds no runtime dependencies. Route groups now describe product responsibilities instead of contributor names.

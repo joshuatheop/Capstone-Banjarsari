@@ -42,8 +42,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="id">
-      <body className="theo-theme">
+    <html lang="id" data-scroll-behavior="smooth">
+      <body className="workspace-theme">
         <AuthProvider><CartProvider>{LOCAL_PREVIEW && <div className="preview-banner">Mode demo · Pesanan uji tersimpan lokal · Tidak ada pembayaran nyata</div>}{children}</CartProvider></AuthProvider>
       </body>
     </html>

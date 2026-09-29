@@ -44,3 +44,15 @@ Scope: marketplace customer, monitoring/analisis admin, forecasting, transaksi d
 - [Distribusi NodeJS resmi SheetJS](https://docs.sheetjs.com/docs/getting-started/installation/nodejs/).
 - [Time series cross-validation](https://otexts.com/fpp3/tscv.html): validasi memakai data sebelum hari yang diuji.
 - [VS Code port forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding): private forwarding memerlukan autentikasi pemilik.
+
+## Redesign dan konsolidasi — 29 September 2026
+
+- Customer shell, beranda, promo, katalog, toko, detail, keranjang, checkout, pesanan, booking, akun, serta login diselaraskan dengan Design v1.4 dan referensi mobile. Admin menggunakan bahasa visual yang sama tanpa mengubah perhitungan insight/forecast.
+- Struktur route group menjadi storefront/auth/workspace; URL publik tetap. Satu panduan root AGENTS.md menggantikan tiga panduan duplikat. Komponen katalog/navigasi yang tidak lagi dipakai dihapus; CSS Firebase existing dikelompokkan dalam styles/legacy.
+- Pemeriksaan browser: 320, 390, 768, dan 1440 piksel; tidak ditemukan overflow halaman atau runtime/hydration error pada jalur yang diuji. Login HP menampilkan tombol Masuk dalam viewport. Modal lokasi/pengaturan memakai native dialog dan dapat ditutup lewat Escape.
+- Transaksi browser: tambah cepat memeriksa stok, pilih item/toko, hanya checkout item terpilih, item tidak terpilih tetap ada, konfirmasi pembatalan, alamat browser terisi otomatis. Booking tiga langkah diuji sampai tersimpan; kembali ke langkah sebelumnya mempertahankan jadwal.
+- npm run lint, npm run build, 11 unit/domain tests, test:local-api, dan test:commerce lulus. API memeriksa role/origin, kepemilikan, harga server, stok, idempotency serentak, pemisahan toko, pembatalan/pengembalian stok, booking, dan akses forecasting.
+- Ditemukan 127.0.0.1 belum tercakup allowedDevOrigins Next.js; diperbaiki dengan allowlist loopback eksplisit serta hostname LAN. Tidak menambahkan wildcard.
+- Aset raster orisinal dibuat dengan built-in imagegen; daftar/prompt di public/illustrations/README.md. Atlas tidak dipakai untuk katalog Firebase production. Tidak ada diskon, timer, saldo, poin, ETA, atau kontak toko demo yang dianggap nyata.
+- IP Wi-Fi terbaru 192.168.0.109; setup:lan memperbarui allowlist lokal dan kredensial development. Setelah restart server, login customer, hidrasi tombol katalog, dan dialog akun melalui alamat LAN berhasil diuji di browser mesin server. Keterbatasan firewall/akses HP fisik/VS Code forwarding pada bagian sebelumnya tetap berlaku.
+- Pesanan sisa verifikasi redesign yang belum selesai dibatalkan melalui API untuk mengembalikan stok. Riwayat pesanan batal dan booking berlabel pengujian tetap ada dalam data demo lokal.
