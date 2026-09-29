@@ -61,3 +61,10 @@ Customer berada di `app/(storefront)`, autentikasi di `app/(auth)`, dan admin di
 Halaman baru `/promo` menampilkan status penawaran yang belum aktif secara jujur. Keranjang mendukung pilihan per barang/toko; hanya barang terpilih yang dikirim saat checkout. Akun menyediakan alamat tersimpan khusus browser yang diisi otomatis pada checkout. Booking jasa disajikan dalam tiga langkah tanpa mengubah aturan transaksi. [Ilustrasi demo dan prompt](public/illustrations/README.md) dibuat dengan built-in imagegen.
 
 Setelah berpindah dari struktur route group lama, hentikan dev server dan hapus cache generated `.next` bila TypeScript masih mereferensikan `(davy)`/`(theo)`, lalu jalankan kembali. Jangan hapus `.local` karena menyimpan transaksi demo.
+## Pembaruan alur customer dan perencanaan admin — v1.5
+
+Customer kini dapat memakai **Beli Sekarang** untuk checkout satu produk tanpa mengubah keranjang, atau checkout barang terpilih dari Keranjang. Simpan alamat/HP melalui **Akun → Alamat tersimpan**; checkout menampilkan kontak tersebut otomatis. Setelah konfirmasi langsung masuk Pesanan. Buka rincian untuk tombol WhatsApp seller (draft dengan konteks pesanan, nomor toko demo belum terverifikasi).
+
+Beranda mempunyai empat vertical termasuk **Ojek**. Ojek masih halaman informasi layanan yang belum beroperasi. Pada Firebase, register/profil menggunakan field alamat/noTelepon existing; registrasi lokal tetap menggunakan akun demo yang disediakan.
+
+Admin menyediakan **Forecasting stok** dengan demand/stok/persiapan besok, risiko, alasan, dan confidence indikatif. **Financial Projection** menjadi halaman tersendiri: ubah asumsi pertumbuhan, fee, biaya, dan horizon untuk melihat GMV, pendapatan, biaya, serta selisih. Forecast adalah estimasi; proyeksi keuangan adalah skenario, bukan laporan laba aktual. Kontrak lengkap: [Design.md bagian 37](Design.md#37-checkout-empat-vertical-dan-perencanaan-admin--v15).

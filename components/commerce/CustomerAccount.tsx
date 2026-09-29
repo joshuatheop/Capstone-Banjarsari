@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { UserRound, MapPin, CreditCard, Bell, Heart, CircleHelp, LogOut, ChevronRight, Leaf, ShoppingBag, ShieldCheck, X } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { readCustomerContact, saveCustomerContact } from '@/lib/customer-contact';
+import ContactFields from './ContactFields';
 import styles from './marketplace.module.css';
 import account from './customer.module.css';
 type Panel = 'detail' | 'address' | 'payment' | 'notifications' | 'help';
@@ -12,14 +14,28 @@ export default function CustomerAccount() {
   const { user, role, loading, logout } = useAuth(); const router = useRouter();
   const dialog = useRef<HTMLDialogElement>(null);
   const [panel, setPanel] = useState<Panel>('detail'), [address, setAddress] = useState(''), [phone, setPhone] = useState(''), [message, setMessage] = useState(''), [pending, setPending] = useState(false);
+  const [contactLoading, setContactLoading] = useState(false);
   const labels = { detail: 'Detail akun', address: 'Alamat tersimpan', payment: 'Pembayaran', notifications: 'Kabar pesanan', help: 'Bantuan & informasi' };
-  function open(next: Panel) {
-    setPanel(next); setMessage('');
-    if (next === 'address') { try { const data = JSON.parse(localStorage.getItem(`palugada-address:${user?.uid}`) || '{}'); setAddress(data.address || ''); setPhone(data.phone || ''); } catch { setAddress(''); setPhone(''); } }
-    dialog.current?.showModal();
+  async function open(next: Panel) {
+    setPanel(next); setMessage(''); dialog.current?.showModal();
+    if (next === 'address' && user) {
+      setContactLoading(true);
+      try { const saved = await readCustomerContact(user.uid); setAddress(saved.address); setPhone(saved.phone); }
+      catch { setMessage('Profil belum dapat dimuat. Coba lagi.'); }
+      finally { setContactLoading(false); }
+    }
   }
-  useEffect(() => { if (!user) return; const timer = setTimeout(() => { if (new URLSearchParams(window.location.search).get('panel') === 'address') { setPanel('address'); try { const saved = JSON.parse(localStorage.getItem(`palugada-address:${user.uid}`) || '{}'); setAddress(saved.address || ''); setPhone(saved.phone || ''); } catch { /* Empty preference. */ } dialog.current?.showModal(); } }, 0); return () => clearTimeout(timer); }, [user]);
-  return <main className={`${styles.marketPage} ${account.accountPage}`}>
+  useEffect(() => {
+    if (!user) return; let active = true;
+    const timer = setTimeout(() => {
+      if (new URLSearchParams(window.location.search).get('panel') !== 'address') return;
+      setPanel('address'); setContactLoading(true); dialog.current?.showModal();
+      readCustomerContact(user.uid).then(saved => { if (active) { setAddress(saved.address); setPhone(saved.phone); } })
+        .catch(() => { if (active) setMessage('Profil belum dapat dimuat. Coba lagi.'); })
+        .finally(() => { if (active) setContactLoading(false); });
+    }, 0);
+    return () => { active = false; clearTimeout(timer); };
+  }, [user]);  return <main className={`${styles.marketPage} ${account.accountPage}`}>
     {loading ? <p role="status">Memuat akun…</p> : !user ? <section className={styles.emptyState}><UserRound size={48}/><h1>Selamat datang di Palugada</h1><p>Masuk untuk berbelanja dan memantau pesananmu.</p><Link href="/login?next=/profile" className={styles.mainButton}>Masuk ke akun</Link></section> : <>
       <section className={account.profileCard}><div className={account.avatar}><UserRound size={55}/></div><div><h1>{user.displayName || 'Warga Banjarsari'}</h1><span className={account.member}><Leaf size={15}/>{role === 'admin' ? 'Administrator' : 'Member Palugada'}</span><p><MapPin size={16}/> Banjarsari, Garut</p><small>{user.email}</small></div><button aria-label="Lihat detail akun" onClick={() => open('detail')}><ChevronRight/></button><div className={account.accountShortcuts}><Link href="/orders"><ShoppingBag size={22}/><span>Pesanan saya<small>Pantau status belanja</small></span><ChevronRight size={17}/></Link><Link href={role === 'admin' ? '/admin' : '/favorites'}>{role === 'admin' ? <ShieldCheck size={22}/> : <Heart size={22}/>}<span>{role === 'admin' ? 'Dashboard admin' : 'Favorit saya'}<small>{role === 'admin' ? 'Kelola & pantau usaha' : 'Pilihan yang disimpan'}</small></span><ChevronRight size={17}/></Link></div></section>
       <section className={account.accountBanner}><div><h2>Belanja lokal,<br/>manfaatnya dekat.</h2><p>Dukung usaha warga Banjarsari.</p><Link className={styles.outlineButton} href="/promo">Lihat promo <ChevronRight size={16}/></Link></div><Leaf size={94} strokeWidth={1}/></section>
@@ -27,10 +43,9 @@ export default function CustomerAccount() {
       {message && <p role="status" className={styles.feedback}>{message}</p>}
       <dialog ref={dialog} className={styles.sheet}><div className={styles.sheetHeading}><h2>{labels[panel]}</h2><button aria-label="Tutup pengaturan" onClick={() => dialog.current?.close()}><X/></button></div>
         {panel === 'detail' && <><p>Nama: <strong>{user.displayName}</strong><br/>Username / email: <strong>{user.email}</strong><br/>Peran: {role === 'admin' ? 'Admin' : 'Customer'}</p>{LOCAL_PREVIEW ? <p className={styles.feedback}>Akun uji disiapkan oleh pengelola lokal. Detail identitas akun demo tidak dapat diubah.</p> : <Link className={styles.mainButton} href="/profile/details">Edit profil</Link>}</>}
-        {panel === 'address' && <form onSubmit={e => { e.preventDefault(); try { localStorage.setItem(`palugada-address:${user.uid}`, JSON.stringify({ address, phone })); setMessage('Alamat tersimpan di browser ini.'); } catch { setMessage('Penyimpanan browser tidak tersedia.'); } }}><p className={styles.feedback}>Alamat ini tersimpan khusus akunmu di browser ini dan diisi otomatis saat checkout demo.</p><label>Alamat lengkap<textarea required minLength={10} maxLength={500} autoComplete="street-address" value={address} onChange={e => setAddress(e.target.value)}/></label><label>Nomor HP<input required type="tel" inputMode="tel" pattern="0[0-9]{8,14}" autoComplete="tel" value={phone} onChange={e => setPhone(e.target.value)}/></label><button className={styles.mainButton}>Simpan alamat</button></form>}
-        {panel === 'payment' && <><p>Checkout demo menggunakan tunai saat pengambilan di toko. Tidak ada tagihan atau pembayaran nyata.</p><p className={styles.feedback}>Dompet, poin, kartu tersimpan, QRIS, dan transfer belum terhubung.</p><Link href="/orders" className={styles.mainButton}>Lihat status pembayaran</Link></>}
+        {panel === 'address' && <form onSubmit={async event => { event.preventDefault(); setPending(true); setMessage(''); try { const saved = await saveCustomerContact(user.uid, { address, phone }); setAddress(saved.address); setPhone(saved.phone); setMessage(LOCAL_PREVIEW ? 'Alamat dan nomor HP tersimpan di browser ini.' : 'Alamat dan nomor HP tersimpan di profil.'); } catch (reason) { setMessage(reason instanceof Error ? reason.message : 'Profil gagal disimpan.'); } finally { setPending(false); } }}><p className={styles.feedback}>{LOCAL_PREVIEW ? 'Profil demo disimpan khusus akunmu di browser ini.' : 'Alamat dan nomor HP disimpan ke profil akunmu.'} Checkout mengambil data ini secara otomatis.</p>{contactLoading ? <p role="status">Memuat profil…</p> : <ContactFields value={{ address, phone }} onChange={value => { setAddress(value.address); setPhone(value.phone); }} disabled={pending}/>}<button className={styles.mainButton} disabled={pending || contactLoading}>{pending ? 'Menyimpan…' : 'Simpan alamat'}</button></form>}        {panel === 'payment' && <><p>Checkout demo menggunakan tunai saat pengambilan di toko. Tidak ada tagihan atau pembayaran nyata.</p><p className={styles.feedback}>Dompet, poin, kartu tersimpan, QRIS, dan transfer belum terhubung.</p><Link href="/orders" className={styles.mainButton}>Lihat status pembayaran</Link></>}
         {panel === 'notifications' && <><p>Kabar pesanan tersedia di halaman Pesanan. Notifikasi push, SMS, dan email otomatis belum aktif.</p><Link href="/orders" className={styles.mainButton}>Lihat kabar pesanan</Link></>}
-        {panel === 'help' && <><p>Pilih produk → masukkan ke keranjang → pilih barang → lengkapi alamat → buat pesanan uji. Pesanan dipisah per toko.</p><p className={styles.feedback}>Pesanan uji dapat dibatalkan sebelum toko mengonfirmasi. Untuk jasa, ajukan jadwal melalui halaman layanan dan pantau di Booking jasa.</p><Link href="/bookings" className={styles.mainButton}>Booking jasa saya</Link></>}
+        {panel === 'help' && <><p>Pilih produk, tambah ke keranjang atau Beli Sekarang, lalu konfirmasi pesanan. Alamat diambil dari profil. Pesanan dipisah per toko.</p><p className={styles.feedback}>Pesanan uji dapat dibatalkan sebelum toko mengonfirmasi. Untuk jasa, ajukan jadwal melalui halaman layanan dan pantau di Booking jasa.</p><Link href="/bookings" className={styles.mainButton}>Booking jasa saya</Link></>}
         {message && <p role="status" className={styles.feedback}>{message}</p>}
       </dialog>
     </>}

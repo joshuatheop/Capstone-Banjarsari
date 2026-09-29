@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowLeft as BackIcon } from 'lucide-react';
 import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import { getKategoriById, updateKategori } from '@/lib/firestore/kategori';
@@ -104,7 +105,7 @@ export default function EditKategoriPage({ params }: { params: Promise<{ id: str
         <div className={styles.notFoundIcon}>🔍</div>
         <p className={styles.notFoundTitle}>Kategori tidak ditemukan</p>
         <button className={styles.btnSecondary} onClick={() => router.push('/admin/kategori')}>
-          ← Kembali
+          <BackIcon size={16} aria-hidden="true"/> Kembali
         </button>
       </div>
     );

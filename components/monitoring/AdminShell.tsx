@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { LayoutDashboard, ShoppingBag, Wallet, Truck, CalendarDays, Users, Store, Home, LogOut, Menu, X, Leaf, BarChart3 } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Wallet, Truck, CalendarDays, Users, Store, Home, LogOut, Menu, X, Leaf, BarChart3, Calculator } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { LOCAL_PREVIEW } from '@/lib/local-preview';
 import styles from './monitoring.module.css';
@@ -10,6 +10,7 @@ import styles from './monitoring.module.css';
 const links = [
   { href: '/admin', label: 'Ringkasan', icon: LayoutDashboard },
   { href: '/admin/forecast', label: 'Forecasting stok', icon: BarChart3 },
+  { href: '/admin/financial-projection', label: 'Financial Projection', icon: Calculator },
   { href: '/admin/orders', label: 'Pesanan', icon: ShoppingBag },
   { href: '/admin/payments', label: 'Pembayaran', icon: Wallet },
   { href: '/admin/deliveries', label: 'Pengantaran', icon: Truck },

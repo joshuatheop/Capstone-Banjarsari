@@ -1,5 +1,6 @@
 'use client';
 
+import { LogOut as ExitIcon } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -11,6 +12,7 @@ import { compressToWebPBase64 } from '@/lib/imageUtils';
 import styles from './profile.module.css';
 import { LOCAL_PREVIEW } from '@/lib/local-preview';
 import CustomerAccount from '@/components/commerce/CustomerAccount';
+import { contactIsValid, normalizeContact } from '@/lib/commerce/contact';
 
 export default function ProfilePage() {
   return LOCAL_PREVIEW ? <CustomerAccount /> : <FirebaseProfilePage />;
@@ -134,14 +136,20 @@ function FirebaseProfilePage() {
     }
 
     try {
+      const contact = normalizeContact({ address: alamat, phone: noTelepon });
+      if ((alamat || noTelepon) && !contactIsValid(contact)) {
+        setError('Lengkapi alamat minimal 10 karakter dan nomor HP Indonesia yang valid.');
+        return;
+      }
       // 1. Simpan langsung ke Firestore dokumen users/{uid} sebagai teks Base64 WebP (tanpa Storage)
       await updateUserDocument(auth.currentUser.uid, {
         displayName,
         photoURL,
-        alamat,
+        alamat: contact.address,
         kewarganegaraan,
-        noTelepon,
+        noTelepon: contact.phone,
       });
+      setAlamat(contact.address); setNoTelepon(contact.phone);
 
       // 2. Sinkronkan ke Firebase Auth Profile jika URL bukan Base64 panjang (misal URL Google), atau displayName
       try {
@@ -237,7 +245,7 @@ function FirebaseProfilePage() {
               onClick={handleLogout}
               className={styles.logoutBtn}
             >
-              Keluar Akun ↗
+              Keluar Akun <ExitIcon size={16} aria-hidden="true"/>
             </button>
           </div>
 

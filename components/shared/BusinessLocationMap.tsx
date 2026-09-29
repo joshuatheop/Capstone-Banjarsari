@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowUpRight as LinkOutIcon } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import type { LeafletMap } from '@/lib/leaflet-types';
 import { Icons } from './Icons';
@@ -116,7 +117,7 @@ export default function BusinessLocationMap({
             textDecoration: 'underline',
           }}
         >
-          Buka Peta Penuh ↗
+          Buka Peta Penuh <LinkOutIcon size={16} aria-hidden="true"/>
         </a>
       </div>
 

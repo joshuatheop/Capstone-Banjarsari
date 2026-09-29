@@ -1,4 +1,5 @@
 'use client';
+import { ArrowLeft as BackIcon } from 'lucide-react';
 import Image from 'next/image';
 
 import { useState, useEffect, use, useRef } from 'react';
@@ -207,7 +208,7 @@ export default function EditJasaPage({ params }: { params: Promise<{ id: string 
         <div className={styles.notFoundIcon}>🔍</div>
         <p className={styles.notFoundTitle}>Layanan jasa tidak ditemukan</p>
         <button className={styles.btnSecondary} onClick={() => router.push('/admin/jasa')}>
-          ← Kembali
+          <BackIcon size={16} aria-hidden="true"/> Kembali
         </button>
       </div>
     );

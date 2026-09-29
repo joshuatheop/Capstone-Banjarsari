@@ -1,5 +1,6 @@
 'use client';
 
+import { ArrowRight as NextIcon } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import type { ServiceItem, Business } from '@/lib/firestore/types';
 import { getServicePriceDisplay } from '@/lib/firestore/types';
@@ -263,7 +264,7 @@ export default function ServiceDetailClient({ service, business }: ServiceDetail
                         PENYEDIA JASA
                       </span>
                       <span style={{ fontSize: 11, color: 'var(--primary)', fontWeight: 700 }}>
-                        • Kunjungi Profil &rarr;
+                        Kunjungi Profil <NextIcon size={16} aria-hidden="true"/>
                       </span>
                     </div>
                     <h4 style={{ margin: '2px 0 4px', fontSize: 16, fontWeight: 700, color: 'var(--primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>

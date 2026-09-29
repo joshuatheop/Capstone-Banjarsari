@@ -2,7 +2,7 @@
 
 **Document Type:** Product Design + System Design
 **Project:** PALUGADA Banjarsari
-**Version:** 1.4
+**Version:** 1.5
 **Last Updated:** 29 September 2026
 
 ---
@@ -11,7 +11,7 @@
 
 **Status implementasi terbaru:** pembaruan UI customer dan monitoring admin dengan akun uji lokal.
 Bagian 2–32 tetap menjadi rancangan target, bukan klaim bahwa seluruh PRD sudah diimplementasikan.
-Lihat bagian 36 untuk hasil redesign terbaru; bagian 34 menjelaskan forecasting, transaksi demo, dan akses LAN. Bagian 33 merupakan catatan tahap pertama dan digantikan oleh bagian 34 jika berbeda.
+Lihat bagian 37 untuk kontrak UI terbaru, bagian 36 untuk fondasi redesign, dan bagian 34 untuk transaksi demo serta akses LAN. Bagian terbaru menggantikan bagian sebelumnya bila berbeda.
 
 Dokumen ini menerjemahkan `PRD.md` menjadi rancangan UI/UX, system architecture, data model, route, state machine, integration boundary, dan developer ownership.
 
@@ -2319,7 +2319,7 @@ Saat implementasi setiap screen, bandingkan terhadap tujuan referensi berikut:
 - tidak menyalin warna brand Shopee/Astro/Gojek sebagai brand PALUGADA;
 - tidak menyalin logo/illustration/campaign asset;
 - tidak membuat wallet/coin/live shopping/games hanya karena ada pada referensi;
-- tidak membuat GoRide/transport penumpang karena bukan scope PALUGADA;
+- pemesanan transport penumpang belum memiliki backend; permintaan terbaru menambahkan vertical Ojek dan halaman informasi (bagian 37), bukan layanan perjalanan aktif;
 - tidak membuat fake ETA, fake rating, fake sold count, atau fake urgency di production;
 - tidak mengubah order/payment/delivery rules hanya untuk menyesuaikan tampilan.
 
@@ -2368,3 +2368,39 @@ Location sheet saat ini mengonfirmasi satu wilayah katalog, Banjarsari; belum ge
 ### 36.4 Verifikasi
 
 Build production dan 11 tes domain lulus. Browser telah memverifikasi navigasi customer/admin pada viewport 320/390/768/1440, login, tambah cepat, checkout barang terpilih, retensi barang tidak terpilih, pembatalan, alamat tersimpan, modal lokasi, dan forecasting tanpa horizontal overflow halaman atau error hydration. API session/RBAC/ownership tetap lulus. Artefak screenshot dan runner browser berada di `.local/` dan diabaikan Git. Pengujian ini tidak menyatakan integrasi Firebase/payment production atau akses HP fisik sudah terverifikasi.
+
+## 37. Checkout, empat vertical, dan perencanaan admin — v1.5
+
+Tanggal: 29 September 2026. Scope mengikuti permintaan terbaru di branch `lukas`. Perubahan ini mempertahankan domain transaksi, pembayaran, stok, booking, forecasting inti, dan koleksi Firebase existing.
+
+### 37.1 Kontrak customer
+
+- Beranda menyediakan **Belanja / Makanan / Jasa / Ojek** pada empat kartu responsif. `/ojek` menjelaskan status belum beroperasi; belum ada pemesanan perjalanan, pengemudi, tarif, atau ETA. Ini menggantikan tiga vertical pada bagian 36.
+- Detail produk demo mempertahankan tambah keranjang dan menambahkan **Beli Sekarang**. `/checkout?buy=<productId>` memesan satu unit langsung tanpa mengubah isi/pilihan keranjang. ID invalid atau stok tidak cukup memblokir konfirmasi; backend tetap memeriksa harga dan stok.
+- Checkout biasa hanya memakai barang terpilih. Setelah sukses, pengguna otomatis menuju `/orders?checkout=<checkoutId>`; rincian pesanan yang baru dibuat terbuka dan notifikasi sukses tampil. Barang yang tidak dipilih tetap berada di keranjang.
+- Satu UI alamat/nomor HP dipakai pada register Firebase, pengaturan akun, dan checkout. Data produksi memakai field existing `users/{uid}.alamat` dan `noTelepon`; tidak membuat koleksi atau peran baru. Nomor +62/62 dinormalisasi menjadi 0 untuk kontrak checkout existing. Registrasi Google tanpa kontak lengkap diarahkan ke pengaturan alamat. Jika akun email berhasil dibuat tetapi simpan profil gagal, tampil jalan pemulihan ke profil tanpa mengulangi pembuatan akun.
+- Demo tidak membuka registrasi; alamat demo disimpan per UID/browser. Checkout membaca profil, menampilkan kartu kontak dan tombol ubah, sehingga pengguna tidak mengisi ulang tiap pesanan. Profil demo tidak tersinkron lintas perangkat. Informasi alamat adalah catatan kontak; fulfillment tetap ambil di toko.
+- Rincian Pesanan memiliki tombol **WhatsApp seller**: `wa.me` dengan draft nama toko, ID pesanan, item/jumlah, total, dan status. Tidak menyertakan alamat/nomor HP customer. Nomor toko diambil dari direktori usaha existing; karena snapshot order hanya menyimpan nama seller, pencocokan wajib unik. Nomor invalid/tidak tersedia/nama ambigu menonaktifkan tombol. Nomor demo diberi label data contoh; tombol membuka draft, tanpa mengirim otomatis.
+- Ikon kembali, panah tautan, tambah/kurangi, dan keluar menggunakan Lucide/SVG proper. Cart/checkout mempunyai grid yang menahan nama panjang, tombol minimal 44px, serta CTA tetap di HP; checkout tidak menampilkan bottom navigation customer.
+
+### 37.2 Monitoring dan forecasting
+
+- `/admin` berfokus pada KPI GMV/pesanan/seller/customer, insight deskriptif, tren, performa seller, dan tabel pesanan. Kartu operasi menautkan pesanan, seller, pengantaran, booking, dan kurir. Label periode terpilih dibedakan dari snapshot seluruh platform.
+- Sidebar, heading, kartu, warna status, radius, tipografi, dan ukuran kontrol konsisten dengan customer. Tabel monitoring/keuangan boleh digeser dalam kontainernya, bukan menyebabkan overflow seluruh halaman.
+- `/admin/forecast` menampilkan demand besok, stok layak jual, tambahan produksi/persiapan besok, kebutuhan periode, risk, alasan, dan confidence. Tabel desktop berubah menjadi kartu pada HP; detail produk mengikuti filter jenis.
+- **Tambahan besok = max(0, ceil(demand besok − stok layak jual))**. Incoming belum dikurangi karena tanggal tiba besok tidak tersedia. Seller harus mengonfirmasi stok yang masih layak besok. Perhitungan periode existing tetap mempertimbangkan incoming, lead time, buffer, dan umur simpan; tidak diganti dengan angka persiapan besok.
+- Confidence adalah indikator UI dari validasi existing: tinggi bila histori ≥42 hari dan WAPE ≤20%; sedang bila WAPE ≤40%; selain itu rendah. WAPE null → terbatas; histori tidak eligible → belum tersedia. Ambang ini heuristik, bukan probabilitas, interval keyakinan, atau jaminan. Pemilihan model dan evaluasi memakai validasi yang sama; belum ada uji independen. Forecast selalu **estimasi, bukan kepastian**.
+
+### 37.3 Financial Projection
+
+Halaman terpisah `/admin/financial-projection`, ditautkan dari sidebar dan forecast stok. Dasar skenario berasal dari pesanan terbayar nonbatal pada 7/28 hari kalender WIB, memakai fungsi metrik existing. Data awal tetap fixture dan transaksi uji; biaya/fee bukan keuangan aktual.
+
+Asumsi yang dapat diubah: pertumbuhan bulanan −50–100%, fee platform 0–100%, biaya tetap, biaya variabel per pesanan, dan horizon 1/3/6/12 bulan. Asumsi awal 0% pertumbuhan, fee 5%, biaya tetap Rp500.000, biaya variabel Rp1.000 hanyalah contoh. Semua bulan memakai 30 hari; pertumbuhan dimulai pada bulan pertama.
+
+Volume bulan ke-m = round(rata-rata pesanan terbayar harian × 30 × (1 + growth)^m). GMV = volume × nilai rata-rata pesanan; pendapatan = GMV × fee; biaya = biaya tetap + volume × biaya variabel; selisih = pendapatan − biaya. Semua nominal dibulatkan rupiah. Input kosong/invalid/di luar angka aman memblokir hasil; tanpa pesanan terbayar tampil empty state.
+
+Ini simulasi skenario, bukan model prediksi terlatih, laba seller, arus kas, atau laporan akuntansi. Pajak, musim, perubahan harga, refund masa depan, diskon, dan biaya payment belum dimodelkan. Confidence statistik tidak tersedia. Rumus disimpan terpisah dari forecasting demand existing.
+
+### 37.4 Batas dan verifikasi
+
+Tidak ada dependensi runtime baru, perubahan Firestore rules, migrasi schema, atau perubahan logic Theo/Zikri. Transaksi customer dan monitoring tetap demo development; detail Firebase production mempertahankan jalur WhatsApp/marketplace existing. Registrasi serta penyimpanan profil Firebase belum diuji terhadap layanan live. Hasil pemeriksaan terbaru dicatat di AUDIT.md; runner/screenshot browser berada di `.local/` yang tidak ikut Git.

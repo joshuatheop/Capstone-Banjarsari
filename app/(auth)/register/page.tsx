@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -10,6 +10,9 @@ import { useAuth } from '@/context/AuthContext';
 import styles from './register.module.css';
 import { LOCAL_PREVIEW } from '@/lib/local-preview';
 import LocalAccount from '@/components/commerce/LocalAccount';
+import ContactFields from '@/components/commerce/ContactFields';
+import { contactIsValid, emptyContact } from '@/lib/commerce/contact';
+import { saveCustomerContact } from '@/lib/customer-contact';
 
 export default function RegisterPage() {
   return LOCAL_PREVIEW ? <LocalAccount register /> : <FirebaseRegisterPage />;
@@ -19,16 +22,19 @@ function FirebaseRegisterPage() {
   const router = useRouter();
   const { user, loading } = useAuth();
 
+  const [contact, setContact] = useState(emptyContact);
+  const registrationStarted = useRef(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
+  const [accountCreated, setAccountCreated] = useState(false);
 
   // Jika sudah login, redirect ke beranda
   useEffect(() => {
-    if (!loading && user) {
-      router.replace('/');
+    if (!loading && user && !registrationStarted.current) {
+      router.replace('/profile?panel=address');
     }
   }, [user, loading, router]);
 
@@ -41,6 +47,8 @@ function FirebaseRegisterPage() {
       return;
     }
 
+    if (!contactIsValid(contact)) { setError('Isi alamat minimal 10 karakter dan nomor HP Indonesia yang valid.'); return; }
+
     if (password !== confirmPassword) {
       setError('Kata sandi dan konfirmasi kata sandi tidak cocok.');
       return;
@@ -51,16 +59,21 @@ function FirebaseRegisterPage() {
       return;
     }
 
-    setPending(true);
+    registrationStarted.current = true; setPending(true);
 
+    let created = false;
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
+      created = true; setAccountCreated(true);
       // Buat dokumen user di Firestore dengan role 'pelanggan'
       await createUserDocument(cred.user.uid, email, 'pelanggan');
+      await saveCustomerContact(cred.user.uid, contact);
       router.replace('/');
     } catch (err: unknown) {
       const code = (err as { code?: string }).code;
-      if (code === 'auth/email-already-in-use') {
+      if (created) {
+        setError('Akun sudah dibuat, tetapi profil belum berhasil disimpan. Lanjutkan ke profil untuk melengkapi alamat dan nomor HP.');
+      } else if (code === 'auth/email-already-in-use') {
         setError('Email ini sudah terdaftar. Silakan masuk.');
       } else if (code === 'auth/invalid-email') {
         setError('Format email tidak valid.');
@@ -77,7 +90,7 @@ function FirebaseRegisterPage() {
 
   const handleGoogleSignUp = async () => {
     setError('');
-    setPending(true);
+    registrationStarted.current = true; setPending(true);
 
     try {
       const provider = new GoogleAuthProvider();
@@ -88,8 +101,9 @@ function FirebaseRegisterPage() {
 
       if (user.email) {
         await createUserDocument(user.uid, user.email, 'pelanggan', user.displayName, user.photoURL);
+        if (contactIsValid(contact)) await saveCustomerContact(user.uid, contact);
       }
-      router.replace('/');
+      router.replace('/profile?panel=address');
     } catch (err: unknown) {
       const code = (err as { code?: string }).code;
       if (code === 'auth/popup-closed-by-user') {
@@ -181,7 +195,7 @@ function FirebaseRegisterPage() {
               <p className={styles.subGreeting}>Silakan lengkapi formulir pendaftaran</p>
             </div>
 
-            <form id="register-form" onSubmit={handleSubmit} className={styles.form} noValidate>
+            <form id="register-form" onSubmit={handleSubmit} className={styles.form} noValidate><ContactFields value={contact} onChange={setContact} disabled={pending}/>
               <div className={styles.field}>
                 <label htmlFor="register-email" className={styles.label}>Alamat Email</label>
                 <div className={styles.inputWrapper}>
@@ -250,7 +264,7 @@ function FirebaseRegisterPage() {
                 id="register-submit"
                 type="submit"
                 className={styles.submitBtn}
-                disabled={pending}
+                disabled={pending || accountCreated}
               >
                 {pending ? (
                   <div className={styles.buttonSpinner}>
@@ -265,6 +279,7 @@ function FirebaseRegisterPage() {
                 )}
               </button>
             </form>
+            {accountCreated && error && <Link className={styles.loginLink} href="/profile?panel=address">Lengkapi profil akun</Link>}
 
             <div className={styles.divider}>atau</div>
 
