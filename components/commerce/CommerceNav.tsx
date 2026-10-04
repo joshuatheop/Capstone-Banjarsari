@@ -1,4 +1,5 @@
 'use client';
+import AccountMenu from '@/components/accounts/AccountMenu';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useRef } from 'react';
@@ -20,7 +21,7 @@ export default function CommerceNav() {
       <div className={styles.navMain}>
         <Link className={styles.brand} href="/"><Leaf size={32} /><span>Palugada<small>BELANJA LOKAL, PENUH MAKNA</small></span></Link>
         <button className={styles.locationButton} onClick={() => dialog.current?.showModal()}><MapPin size={26} /><span>Lokasi belanja<strong>Banjarsari, Garut <ChevronDown size={15} /></strong></span></button>
-        <div className={styles.navTools}><Link href="/orders" aria-label="Lihat kabar pesanan"><Bell size={23} /></Link><Link className={styles.desktopOnly} href="/cart" aria-label={`Keranjang, ${cart.count} produk`}><ShoppingCart size={23} />{cart.count > 0 && <b className={styles.cartCount}>{cart.count}</b>}</Link><Link className={styles.desktopOnly} href={account}><UserRound size={23} /><span>{user ? 'Akun saya' : 'Masuk'}</span></Link></div>
+        <div className={styles.navTools}><Link href="/orders" aria-label="Lihat kabar pesanan"><Bell size={23} /></Link><Link className={styles.desktopOnly} href="/cart" aria-label={`Keranjang, ${cart.count} produk`}><ShoppingCart size={23} />{cart.count > 0 && <b className={styles.cartCount}>{cart.count}</b>}</Link><AccountMenu/></div>
         {titles[pathname] && <div className={styles.mobileTitle}><Link href={checkout ? '/cart' : '/'} aria-label="Kembali"><ChevronLeft size={23}/></Link><strong>{titles[pathname]}</strong></div>}
         <form action="/katalog" className={`${styles.search} ${titles[pathname] ? styles.transactionSearch : ''}`} role="search"><Search size={21} /><input name="q" aria-label="Cari produk, makanan, atau jasa" placeholder="Cari produk, makanan, atau jasa" /><button aria-label="Cari"><ChevronLeft size={20} style={{ transform: 'rotate(180deg)' }} /></button></form>
       </div>

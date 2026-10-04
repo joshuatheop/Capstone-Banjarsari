@@ -19,7 +19,7 @@ Buka [localhost:3000](http://localhost:3000). Dari HP pada Wi-Fi yang sama, guna
 
 | Akun | Username | Password demo | Halaman |
 |---|---|---|---|
-| Admin | admin | Admin123! | /admin |
+| Super Admin | admin | Admin123! | /super-admin |
 | Customer | user | User123! | / |
 
 Alias email admin@palugada.local dan user@palugada.local juga diterima. Kredensial sederhana ini hanya untuk development; secret sesi acak, environment, dan data transaksi berada di file yang diabaikan Git.
@@ -65,6 +65,39 @@ Setelah berpindah dari struktur route group lama, hentikan dev server dan hapus 
 
 Customer dapat memakai **Beli Sekarang** untuk checkout satu produk dengan jumlah pilihan tanpa mengubah keranjang, atau checkout barang terpilih dari Keranjang. Profil belum lengkap diarahkan ke onboarding. Kelola alamat lewat **Akun → Alamat tersimpan**; checkout hanya menampilkan kontak dan selector **Ubah**. Nama/HP/alamat utama production memakai field Firebase existing; metadata dan alamat tambahan masih per browser. Setelah konfirmasi langsung masuk Pesanan. Buka rincian untuk tombol **WhatsApp Penjual** per toko; nomor demo belum terverifikasi.
 
-Beranda mempunyai empat vertical dalam grid **2×2 di HP**. **Ojek** adalah direktori kontak dengan data contoh berlabel demo, avatar, dan status rating belum tersedia. Tidak ada booking internal. Search/filter dapat dibuka saat dibutuhkan. Voucher lokal: **DEMOHEMAT10** (10%, min. Rp50.000, maks. Rp15.000) atau **DEMOLOKAL5** (Rp5.000, min. Rp25.000). Diskon server dibagi per toko; belum merupakan promo production. Registrasi lokal tetap menggunakan akun demo yang disediakan.
+Beranda mempunyai empat vertical dalam grid **2×2 di HP**. **Ojek** adalah direktori kontak dengan data contoh berlabel demo, avatar, dan status rating belum tersedia. Tidak ada booking internal. Search/filter dapat dibuka saat dibutuhkan. Voucher lokal: **DEMOHEMAT10** (10%, min. Rp50.000, maks. Rp15.000) atau **DEMOLOKAL5** (Rp5.000, min. Rp25.000). Diskon server dibagi per toko; belum merupakan promo production. Registrasi lokal kini tersedia pada pembaruan arsitektur akun v1.7 di bawah.
 
 Admin mobile memakai drawer melalui tombol Menu. Pembayaran menyediakan filter metode COD/Transfer/QRIS terpisah dari status. **Forecasting stok** menonjolkan **Siapkan Besok**, demand/stok/incoming, risiko, alasan, dan High/Medium/Low Confidence; metrik teknis tersedia di **Lihat Analisis**. Besok mengikuti tanggal akhir dataset. **Financial Projection** menyajikan grafik tren GMV, aktual vs skenario, volume order, komposisi pembayaran, dan kontribusi seller. Buka **Ubah asumsi skenario** untuk pertumbuhan, fee, biaya, dan horizon. Forecast adalah estimasi; GMV bukan pendapatan fee platform dan proyeksi bukan laporan laba aktual. Kontrak lengkap: [Design.md bagian 38](Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16).
+
+## Akun dan workspace — v1.7
+
+Semua registrasi baru menjadi **CUSTOMER**. Demo kini mendukung registrasi email/password lokal; setelah login lengkapi profil seperti biasa. Login masuk ke pengalaman customer. Tombol avatar kanan atas menyediakan profil, alamat, pesanan, favorit, settings, pengajuan toko, dan logout.
+
+Untuk mencoba seller:
+
+1. Login customer atau daftar melalui `/register`.
+2. Buka **Mulai Berjualan** / `/profile/seller-application`; simpan draft atau kirim data usaha dan logo/foto.
+3. Login akun operator `admin` di browser/profil browser lain, lalu buka `/super-admin/seller-applications`.
+4. Pilih Review → Approve, atau Reject dengan alasan. Customer dapat memperbaiki pengajuan yang ditolak.
+5. Pada akun customer pilih **Cek status** atau buka ulang menu akun. **Seller Dashboard** tersedia pada UID yang sama, tanpa login ulang.
+6. Kelola produk/menu/jasa/settings lewat `/seller`. Suspend/reactivate ada di `/super-admin/sellers`. Akun seller tetap bisa berbelanja sebagai customer.
+
+`/admin` mengarah ke `/super-admin`; route operasional produk/jasa/UMKM lama mengarah ke `/seller`. Source legacy dipertahankan. Data seller dibatasi businessId pemilik pada server. Transaksi historis tanpa ownership key tidak diklaim berdasarkan nama.
+
+```powershell
+npm run test:accounts
+```
+
+Tes membuat akun/pengajuan/katalog berlabel uji yang tetap tersimpan lokal. Password registrasi demo di-hash dengan scrypt; jangan gunakan kredensial pribadi. Katalog seller demo belum terhubung ke katalog transaksi customer, dan catatan stok seller belum menggantikan reservasi inventory. Dashboard transaksi seller baru menampilkan empty state. Ini dijelaskan juga pada UI, [Design v1.7](Design.md#39-satu-akun-pembeli-seller-capability-dan-governance--v17), dan AUDIT.md.
+
+### Mengaktifkan adapter Firebase production
+
+Adapter role/approval/katalog disiapkan tetapi **belum diaktifkan atau diuji live**. Sebelum mengaktifkan, operator perlu memverifikasi project Firebase/ADC, menguji dan menerapkan `config/firestore.account-architecture.rules` terhadap koleksi existing, serta menyiapkan custom claim SUPER_ADMIN. Jangan mempertahankan catch-all allow dari rules lama karena dapat membuka koleksi private. File rules adalah kandidat deployment, bukan bukti bahwa rules live sudah berubah.
+
+- `GOOGLE_APPLICATION_CREDENTIALS` atau Application Default Credentials memberi Firebase Admin akses ke project yang benar. Simpan credential di luar Git.
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID` dan `NEXT_PUBLIC_SITE_URL` harus menunjuk project/origin aplikasi yang benar.
+- Provision UID operator terverifikasi dengan `node scripts/provision-super-admin.mjs <uid>`, kemudian login ulang. Script tidak membuat akun baru dan tidak otomatis mempromosikan `users.role=admin` lama. Saat mencabut hak operator, hapus claim dan revoke refresh tokens/sesi melalui Admin SDK.
+- Setelah verifikasi rules/credential selesai, set `PALUGADA_ACCOUNT_SERVER_ENABLED=true` pada environment server. Nonaktifkan mode preview untuk deployment production.
+- Role authority dan application disimpan di koleksi private `palugada_workspaces`; Business/katalog dimirror secara atomik ke `bisnis`/`produk`/`jasa`. Jangan memberi client akses tulis ke workspace ini.
+
+Tidak ada deployment rules, provisioning operator, atau migrasi toko legacy yang dijalankan dalam implementasi ini. Monitoring transaksi production tetap memerlukan integrasi domain transaksi existing.

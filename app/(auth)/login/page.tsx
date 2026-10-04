@@ -6,7 +6,7 @@ import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/firebase';
-import { getUserRole, createUserDocument } from '@/lib/auth';
+import { createUserDocument } from '@/lib/auth';
 import { LOCAL_PREVIEW } from '@/lib/local-preview';
 import LocalAccount from '@/components/commerce/LocalAccount';
 import { useAuth } from '@/context/AuthContext';
@@ -20,7 +20,7 @@ export default function LoginPage() {
 
 function FirebaseLoginPage() {
   const router = useRouter();
-  const { user, role, loading } = useAuth();
+  const { user, loading } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -64,10 +64,9 @@ function FirebaseLoginPage() {
   // Kalau sudah login, redirect sesuai role
   useEffect(() => {
     if (!loading && user) {
-      if (role === 'admin') router.replace('/admin');
-      else router.replace('/');
+      router.replace('/');
     }
-  }, [user, role, loading, router]);
+  }, [user, loading, router]);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,13 +76,8 @@ function FirebaseLoginPage() {
 
     try {
       const cred = await signInWithEmailAndPassword(auth, email, password);
-      const userRole = await getUserRole(cred.user.uid);
-
-      if (userRole === 'admin') {
-        router.replace('/admin');
-      } else {
-        router.replace('/');
-      }
+      await createUserDocument(cred.user.uid, cred.user.email ?? email);
+      router.replace('/');
     } catch (err: unknown) {
       const code = (err as { code?: string }).code;
       if (code === 'auth/invalid-credential' || code === 'auth/wrong-password' || code === 'auth/user-not-found') {
@@ -117,12 +111,7 @@ function FirebaseLoginPage() {
         await createUserDocument(user.uid, user.email, 'pelanggan', user.displayName, user.photoURL);
       }
 
-      const userRole = await getUserRole(user.uid);
-      if (userRole === 'admin') {
-        router.replace('/admin');
-      } else {
-        router.replace('/');
-      }
+      router.replace('/');
     } catch (err: unknown) {
       const code = (err as { code?: string }).code;
       if (code === 'auth/popup-closed-by-user') {

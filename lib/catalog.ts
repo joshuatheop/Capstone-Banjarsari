@@ -15,7 +15,7 @@ export const loadCatalog = async () => {
     ...products.map((item): CatalogEntry => {
       const category = categoryMap.get(item.category_id);
       // Existing catalogue taxonomy only; not a food fulfillment rule.
-      const food = ['makanan', 'makanan-minuman', 'food', 'camilan'].includes(category?.slug ?? '');
+      const food = item.vertical === 'FOOD' || ['makanan', 'makanan-minuman', 'food', 'camilan'].includes(category?.slug ?? '');
       return { id: item.product_id, name: item.product_name, description: item.product_description ?? '', price: item.product_price,
         priceLabel: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.product_price),
         kind: food ? 'food' : 'product', category: category?.category_name ?? 'Produk lokal', business: businessMap.get(item.business_id)?.business_name ?? 'UMKM Banjarsari',

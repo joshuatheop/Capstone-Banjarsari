@@ -1,3 +1,4 @@
+import { AccountAccessProvider } from '@/context/AccountAccessContext';
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
@@ -44,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" data-scroll-behavior="smooth">
       <body className="workspace-theme">
-        <AuthProvider><CartProvider>{LOCAL_PREVIEW && <div className="preview-banner">Mode demo · Pesanan uji tersimpan lokal · Tidak ada pembayaran nyata</div>}{children}</CartProvider></AuthProvider>
+        <AuthProvider><AccountAccessProvider><CartProvider>{LOCAL_PREVIEW && <div className="preview-banner">Mode demo · Pesanan uji tersimpan lokal · Tidak ada pembayaran nyata</div>}{children}</CartProvider></AccountAccessProvider></AuthProvider>
       </body>
     </html>
   );

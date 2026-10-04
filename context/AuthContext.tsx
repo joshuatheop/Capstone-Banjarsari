@@ -52,16 +52,16 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
         unsubsDoc = onSnapshot(userDocRef, (snap) => {
           if (snap.exists()) {
             const data = snap.data();
-            setRole((data.role as Role) || 'pelanggan');
+            setRole('customer');
             if (data.photoURL) setPhotoURL(data.photoURL);
             if (data.displayName) setDisplayName(data.displayName);
           } else {
-            setRole('pelanggan');
+            setRole('customer');
           }
           setLoading(false);
         }, (err) => {
           console.error('[AuthContext] Error listening to user doc:', err);
-          setRole('pelanggan');
+          setRole('customer');
           setLoading(false);
         });
       } else {
@@ -80,6 +80,8 @@ function FirebaseAuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = async () => {
+    const response = await fetch('/api/account/session', { method: 'DELETE' });
+    if (!response.ok) throw new Error('Sesi server belum dapat ditutup. Coba logout kembali.');
     await signOut(auth);
     setUser(null);
     setRole(null);

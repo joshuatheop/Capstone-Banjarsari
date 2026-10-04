@@ -1,15 +1,16 @@
+import type { UserRole } from '@/lib/firestore/types';
 import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
 /**
  * Ambil role user dari Firestore.
- * Mengembalikan 'admin' | 'pelanggan' | null jika tidak ditemukan.
+ * Role profil legacy untuk kompatibilitas tampilan saja, bukan sumber otorisasi.
  */
-export async function getUserRole(uid: string): Promise<'admin' | 'pelanggan' | null> {
+export async function getUserRole(uid: string): Promise<UserRole | null> {
   try {
     const snap = await getDoc(doc(db, 'users', uid));
     if (snap.exists()) {
-      return snap.data().role as 'admin' | 'pelanggan';
+      return snap.data().role as UserRole;
     }
     return null;
   } catch (error) {
@@ -24,13 +25,13 @@ export async function getUserRole(uid: string): Promise<'admin' | 'pelanggan' | 
 export async function createUserDocument(
   uid: string,
   email: string,
-  role: 'admin' | 'pelanggan' = 'pelanggan',
+  _legacyRole: 'admin' | 'pelanggan' | 'CUSTOMER' = 'CUSTOMER',
   displayName?: string | null,
   photoURL?: string | null
 ) {
+  void _legacyRole; // Retained call signature; callers cannot choose privileges.
   const data: Record<string, unknown> = {
     email,
-    role,
     updatedAt: serverTimestamp(),
   };
 
@@ -44,6 +45,7 @@ export async function createUserDocument(
 
   if (!snap.exists()) {
     data.createdAt = serverTimestamp();
+    data.role = 'CUSTOMER';
   }
 
   await setDoc(userRef, data, { merge: true });

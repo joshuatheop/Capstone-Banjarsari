@@ -34,6 +34,7 @@ function toDate(val: unknown): Date {
 function toProdukItem(id: string, data: Record<string, unknown>): ProdukItem {
   return {
     product_id:         id,
+    vertical: data.vertical === 'FOOD' ? 'FOOD' : data.vertical === 'RETAIL' ? 'RETAIL' : undefined,
     business_id:        (data.business_id as string) || '',
     category_id:        (data.category_id as string) || '',
     product_name:       (data.product_name as string) || '',

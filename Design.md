@@ -2,8 +2,8 @@
 
 **Document Type:** Product Design + System Design
 **Project:** PALUGADA Banjarsari
-**Version:** 1.6
-**Last Updated:** 29 September 2026
+**Version:** 1.7
+**Last Updated:** 4 Oktober 2026
 
 ---
 
@@ -11,7 +11,7 @@
 
 **Status implementasi terbaru:** pembaruan UI customer dan monitoring admin dengan akun uji lokal.
 Bagian 2–32 tetap menjadi rancangan target, bukan klaim bahwa seluruh PRD sudah diimplementasikan.
-Lihat bagian 38 untuk kontrak UI terbaru, bagian 36 untuk fondasi redesign, dan bagian 34 untuk transaksi demo serta akses LAN. Bagian terbaru menggantikan bagian sebelumnya bila berbeda.
+Lihat bagian 39 untuk arsitektur akun/role terbaru, bagian 38 untuk kontrak commerce, bagian 36 untuk fondasi redesign, dan bagian 34 untuk transaksi demo serta akses LAN. Bagian terbaru menggantikan bagian sebelumnya bila berbeda.
 
 Dokumen ini menerjemahkan `PRD.md` menjadi rancangan UI/UX, system architecture, data model, route, state machine, integration boundary, dan developer ownership.
 
@@ -2451,3 +2451,80 @@ Tanggal: 29 September 2026. Developer: Asricky, branch `lukas`. Bagian ini mengg
 ### 38.6 Verifikasi dan batas
 
 Viewport wajib 390/768/1440, dengan overflow halaman, modal, keyboard, drawer, grafik, checkout, dan error/empty state diperiksa. Unit test meliputi profil, jumlah buy-now, voucher, WhatsApp/Ojek, filter pembayaran, serta rekomendasi forecast. API test memverifikasi diskon server, pembagian seller, retry, dan stok. Hasil akhir tercatat di AUDIT.md. Tidak ada dependensi baru, migrasi produksi, perubahan rules/payment provider/courier/booking lifecycle, refactor folder besar, atau perubahan arsip `UI Katalog v1` dalam commit ini.
+
+## 39. Satu akun pembeli, seller capability, dan governance — v1.7
+
+Tanggal: 4 Oktober 2026. Developer Asricky, branch `lukas`. Keputusan ini menggantikan pemisahan admin/customer pada UI versi sebelumnya. Domain order, booking, payment, dan courier tidak ditulis ulang.
+
+### 39.1 Role dan identitas
+
+- Registrasi email/Google maupun registrasi demo selalu membentuk **CUSTOMER**. Tidak ada pilihan role atau pendaftaran seller terpisah. Login menuju pengalaman customer secara default; login tidak menghapus capability seller yang telah disetujui. Return path internal existing tetap tersedia pada login demo.
+- Role target: `CUSTOMER`, `SELLER`, `COURIER`, `SUPER_ADMIN`. `UserRole` menerima alias legacy secara backward-compatible. Alias `admin` demo dipetakan ke SUPER_ADMIN pada otorisasi server; string role pada dokumen profil Firebase tidak digunakan untuk memberi hak istimewa.
+- Semua workspace mempunyai CUSTOMER sebagai role dasar. Approval menambah SELLER pada UID yang sama. Suspend menonaktifkan akses operasional seller, tanpa menghapus akun/riwayat atau hak pembeli. Akun admin demo existing tetap akun operator khusus pada API transaksi legacy.
+- Login Google tidak lagi menimpa role dokumen existing. `createUserDocument` mempertahankan signature lama tetapi mengabaikan pilihan role dari caller; dokumen baru memakai CUSTOMER. Client-side `seedAdmin` dinonaktifkan.
+- Avatar/menu akun kanan atas tersedia di customer dan workspace: Profile, Alamat, Pesanan, Favorit, Settings, Mulai Berjualan; Seller Dashboard hanya untuk seller aktif, Status toko untuk seller suspended. SUPER_ADMIN mendapat shortcut governance. Tidak perlu login ulang untuk berpindah aktivitas.
+
+### 39.2 Pengajuan seller
+
+Route `/profile/seller-application`: nama usaha, nama pemilik, WhatsApp Indonesia, alamat, kategori RETAIL/FOOD/SERVICE, deskripsi, dan logo/foto. URL gambar wajib HTTPS, atau upload PNG/JPEG/WebP maksimal 100 KB; SVG/data executable ditolak. Draft boleh belum lengkap; submit memvalidasi semua field wajib.
+
+```mermaid
+stateDiagram-v2
+    [*] --> DRAFT
+    DRAFT --> SUBMITTED
+    SUBMITTED --> UNDER_REVIEW
+    SUBMITTED --> APPROVED
+    SUBMITTED --> REJECTED
+    UNDER_REVIEW --> APPROVED
+    UNDER_REVIEW --> REJECTED
+    REJECTED --> DRAFT
+    REJECTED --> SUBMITTED
+    APPROVED --> [*]
+```
+
+- User hanya dapat membaca/menulis pengajuannya sendiri. SUBMITTED/UNDER_REVIEW dikunci dari edit applicant. REJECTED dapat diperbaiki dan dikirim ulang; alasan sebelumnya tetap terbaca sampai review baru dan tersimpan dalam history.
+- Hanya SUPER_ADMIN dapat review/approve/reject. Reject wajib alasan 5–1.000 karakter. `revision` mencegah keputusan terhadap snapshot lama; keputusan ganda setelah approved/rejected ditolak. History menyimpan actor, waktu, status, dan alasan.
+- Approval atomik membuat Business dengan ID deterministik dari UID, menautkan owner dan businessId, serta mengaktifkan `CUSTOMER + SELLER`. Satu toko per akun pada fase ini. Tidak mengklaim toko legacy berdasarkan kesamaan nama, email, atau nomor WA. Toko legacy memerlukan pemetaan UID terverifikasi oleh operator; tidak ada backfill otomatis.
+
+### 39.3 Kontrak penyimpanan dan API
+
+`lib/accounts/types.ts` mendefinisikan AccountAccess, SellerApplication, OwnedBusiness, SellerListing, dan AccountWorkspace. SellerApplication berisi field form, applicantId/email, status, created/updated/submitted/reviewed timestamps, reviewedBy, rejectionReason, revision, dan history.
+
+- Local development: registrasi tersimpan di `.local/registered-customers.json` dengan salt dan hash scrypt; tidak menyimpan password plaintext. Workspace per UID berada di `.local/account-workspaces/`, memakai exclusive lock dan atomic rename. Tetap dibatasi environment development serta Host/Origin allowlist existing.
+- Production adapter: koleksi private **`palugada_workspaces/{encodedUid}`** menyimpan access + application + business + listings sebagai aggregate transaksi. Client Firestore tidak boleh membaca/menulis koleksi ini. Maksimum 100 listing per toko dan gambar listing berupa URL agar ukuran dokumen terkendali. Daftar pengajuan memakai seluruh workspace; pagination review diperlukan sebelum skala besar.
+- Firebase approval/settings/listing memakai transaksi Admin SDK. Business dimirror ke koleksi existing `bisnis` dengan field tambahan `owner_user_id` dan `seller_status`. Produk/jasa milik seller dimirror ke `produk`/`jasa` dengan business_id; `vertical` opsional menjaga klasifikasi FOOD tanpa mengganti kategori lama. Field stok seller adalah catatan persiapan, belum sumber reservasi inventory production.
+- Endpoint `/api/account` mengembalikan akses terverifikasi; `/api/account/seller-application` menangani draft/submit milik sendiri. `/api/seller` menangani katalog/settings milik sendiri dan monitoring terfilter. `/api/seller/forecast` hanya menerima ID produk milik toko. `/api/super-admin/seller-applications` menangani review/suspend/reactivate; `/api/super-admin/users` membaca direktori akun (production dipaginasi 100 akun), `/api/super-admin/monitoring` mempertahankan sumber monitoring demo existing.
+- Order/booking snapshot lokal mendapat `businessId?` backward-compatible. Seller hanya menerima record dengan businessId yang cocok. Transaksi lama tanpa businessId tidak dibuka berdasarkan nama seller. Tidak mengubah transition order/booking, harga transaksi, payment provider, refund, atau assignment kurir.
+
+### 39.4 Otorisasi server
+
+- Layout `/seller` dan `/super-admin` memverifikasi sesi di server sebelum merender workspace. Setiap endpoint juga mengulangi pemeriksaan role/ownership; menu tersembunyi bukan kontrol keamanan. Seller tidak mempunyai akses SUPER_ADMIN, termasuk endpoint monitoring platform dan daftar pengajuan.
+- Seller GET dan mutation memakai business milik UID autentikasi, bukan UID/role yang dikirim client. ID business/listing milik akun lain ditolak. Mutation membaca status seller di dalam lock/transaction, sehingga suspend berlaku pada operasi selanjutnya dengan cookie yang sama.
+- Production memakai Firebase Admin `verifyIdToken(..., true)` untuk bearer dan session cookie HttpOnly/SameSite Strict untuk halaman server. SUPER_ADMIN hanya berasal dari custom claim terpercaya (`role: SUPER_ADMIN` atau `super_admin: true`); legacy `users.role=admin` tidak otomatis menjadi privilege. COURIER dapat dipetakan dari custom claim COURIER tanpa workflow baru.
+- Mutation wajib Origin sama dengan `NEXT_PUBLIC_SITE_URL` production. Local memakai validasi Host/Origin existing. Response akun memakai no-store; frontend memperbarui akses saat focus, setiap 30 detik, cek status, atau menu dibuka. Akses server tidak menunggu polling frontend.
+- Backend production fail-closed sampai `PALUGADA_ACCOUNT_SERVER_ENABLED=true`, ADC/Firebase Admin credentials tersedia, rules sudah diterapkan, dan operator SUPER_ADMIN diprovision. `config/firestore.account-architecture.rules` adalah kandidat rules untuk koleksi existing/new dan harus diuji terhadap project/emulator sebelum deployment. Belum diterapkan ke layanan live. Jangan menggabungkannya dengan catch-all allow existing karena rules allow bersifat gabungan.
+- `scripts/provision-super-admin.mjs <uid>` adalah utilitas operator memakai Admin SDK/ADC; tidak diimpor atau dijalankan browser, tidak dijalankan otomatis, dan tidak memakai password hardcoded.
+
+### 39.5 Workspace dan migrasi route
+
+| Tanggung jawab | Route baru | Route lama / perilaku |
+|---|---|---|
+| Katalog produk seller | `/seller/products` | `/admin/produk/*` redirect; legacy edit ID diteruskan sebagai informasi, tidak memberi ownership |
+| Menu makanan | `/seller/food` | Dipisahkan dari produk pada navigasi seller |
+| Jasa seller | `/seller/services` | `/admin/jasa/*` redirect |
+| Profil usaha | `/seller/settings` | `/admin/umkm/*` redirect |
+| Order, booking, stok, pembayaran | `/seller/orders`, `/seller/bookings`, `/seller/stock`, `/seller/payments` | Data hanya toko pemilik; lifecycle lama tidak ditulis ulang |
+| Analisis seller | `/seller/analytics`, `/seller/forecast`, `/seller/financial-projection` | Tidak memakai fixture platform/toko lain |
+| Monitoring/governance | `/super-admin/*` | `/admin` dan route monitoring lama redirect lewat `proxy.ts` |
+| Review seller | `/super-admin/seller-applications` | List applicant/business/category/date/location/status + detail keputusan |
+| Seller & user | `/super-admin/sellers`, `/super-admin/users` | Suspend/reactivate seller; direktori akun terpisah |
+| Kesehatan ekosistem | `/super-admin/ecosystem-health` | Antrean review, seller aktif/suspended, tautan tindak lanjut |
+| Pengelolaan platform legacy | `/super-admin/kategori`, `/super-admin/seo`, `/super-admin/ulasan`, `/super-admin/engagement` | Implementasi existing tetap dipakai di bawah server SUPER_ADMIN gate |
+
+Sidebar desktop dan drawer mobile konsisten dengan PALUGADA. Dashboard seller memiliki empty/loading/error state; analytics/forecast tidak mengambil angka global untuk mengisi kekosongan. Financial Projection tetap skenario, bukan kepastian. Source route legacy tetap tersimpan untuk migrasi; bulk import lama tidak diberikan langsung ke seller karena belum memiliki kontrak ownership per baris.
+
+### 39.6 Batas integrasi dan verifikasi
+
+Katalog seller demo tersimpan terpisah dan belum dipublikasikan ke katalog transaksi demo existing; daftar order/booking seller baru kosong sampai ada sumber transaksi dengan businessId terkait. Catatan stok seller bukan pengganti reservasi inventory. Monitoring transaksi production tetap belum terhubung, sementara adapter pengajuan/approval/katalog production tersedia namun belum diuji live. Registrasi demo kini aktif; ini menggantikan batas registrasi pada versi sebelumnya.
+
+Validasi mencakup default CUSTOMER, akses halaman/API yang ditolak, draft/submit/review/approve, revision conflict, reject reason/resubmit, isolasi dua seller, suspend/reactivate, seller tetap dapat membeli dengan UID sama, serta regresi checkout dan browser 390/768/1440. Hasil final dicatat di AUDIT.md. Tidak ada dependency baru atau deployment/migrasi data production otomatis.

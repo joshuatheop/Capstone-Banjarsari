@@ -1,5 +1,6 @@
 export type OrderStatus = 'AWAITING_SELLER' | 'PENDING_PAYMENT' | 'PROCESSING' | 'ON_DELIVERY' | 'COMPLETED' | 'CANCELLED';
 export interface MonitorOrder {
+  businessId?: string;
   id: string;
   customerId: string;
   customer: string;
@@ -25,6 +26,7 @@ export interface MonitorOrder {
   voucherCode?: string;
 }
 export interface MonitorBooking {
+  businessId?: string;
   id: string;
   customerId: string;
   customer: string;

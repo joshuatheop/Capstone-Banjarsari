@@ -1,3 +1,4 @@
+import { registeredCustomers, authenticateCustomer } from './preview-identities';
 import 'server-only';
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { cookies } from 'next/headers';
@@ -26,11 +27,11 @@ const equal = (a: string, b: string) => {
   return left.length === right.length && timingSafeEqual(left, right);
 };
 
-export const authenticatePreview = (email: string, password: string) => {
+export const authenticatePreview = async (email: string, password: string) => {
   const identifier = email.trim().toLowerCase();
   const account = accounts().find((user) => user.email === identifier || (identifier === 'admin' && user.role === 'admin') || (identifier === 'user' && user.role === 'customer'));
   const expected = account?.role === 'admin' ? process.env.LOCAL_ADMIN_PASSWORD : process.env.LOCAL_CUSTOMER_PASSWORD;
-  return account && expected && equal(password, expected) ? account : null;
+  return account ? expected && equal(password, expected) ? account : null : authenticateCustomer(identifier, password);
 };
 
 const signature = (body: string) => {
@@ -53,6 +54,6 @@ export const readPreviewSession = async (): Promise<PreviewUser | null> => {
     if (extra || !body || !sig || !equal(signature(body), sig)) return null;
     const payload = JSON.parse(Buffer.from(body, 'base64url').toString());
     if (typeof payload.expires !== 'number' || payload.expires <= Date.now()) return null;
-    return accounts().find((user) => user.uid === payload.uid) ?? null;
+    return [...accounts(), ...await registeredCustomers()].find((user) => user.uid === payload.uid) ?? null;
   } catch { return null; }
 };

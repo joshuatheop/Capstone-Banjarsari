@@ -24,7 +24,7 @@ export const POST = async (request: Request) => {
     const previous = attempts.get(key);
     const attempt = previous && previous.resetAt > Date.now() ? previous : { count: 0, resetAt: Date.now() + 60000 };
     if (attempt.count >= 20) return reply({ error: 'Terlalu banyak percobaan. Tunggu satu menit lalu coba lagi.' }, 429);
-    const user = authenticatePreview(email, password);
+    const user = await authenticatePreview(email, password);
     if (!user) { attempt.count++; attempts.set(key, attempt); return reply({ error: 'Username atau kata sandi salah.' }, 401); }
     attempts.delete(key);
     const response = reply({ user });

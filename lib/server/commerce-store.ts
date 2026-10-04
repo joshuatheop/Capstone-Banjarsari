@@ -62,7 +62,7 @@ export const createCheckout = async (user: PreviewUser, input: CheckoutInput) =>
   if (input.voucherCode && !discount) throw new Error('Voucher tidak tersedia atau minimum belanja belum terpenuhi.');
   const discounts = allocateDiscount(subtotals, discount);
   const orders: MonitorOrder[] = [...groups].map(([businessId, items], index) => ({
-    id: `${checkoutId}-${index + 1}`, checkoutId, customerId: user.uid, customer: input.customerName?.trim() || user.displayName,
+    id: `${checkoutId}-${index + 1}`, checkoutId, businessId, customerId: user.uid, customer: input.customerName?.trim() || user.displayName,
     seller: mockBusinesses.find((b) => b.business_id === businessId)?.business_name ?? businessId,
     vertical: items.some((item) => ['1','3'].includes(previewProducts.find((p) => p.product_id === item.productId)?.category_id ?? '')) ? 'FOOD' : 'RETAIL',
     total: subtotals[index] - discounts[index], subtotal: subtotals[index], discount: discounts[index], ...(discount ? { voucherCode: input.voucherCode } : {}), recipientName: input.recipientName?.trim() || user.displayName,
@@ -91,7 +91,7 @@ export const createLocalBooking = async (user: PreviewUser, input: { serviceId: 
   if (store.requests[key]) return store.bookings.find((b) => b.id === store.requests[key][0])!;
   const service = mockServices.find((s) => s.service_id === input.serviceId && s.is_active && s.availability_type !== 'TEMPORARILY_UNAVAILABLE');
   if (!service || !Number.isFinite(Date.parse(input.schedule)) || Date.parse(input.schedule) <= Date.now() || Date.parse(input.schedule) > Date.now() + 90 * 86400000 || typeof input.address !== 'string' || input.address.trim().length < 10 || input.address.length > 500 || typeof input.notes !== 'string' || input.notes.length > 500) throw new Error('Pilih layanan, jadwal 1–90 hari ke depan, dan alamat lengkap.');
-  const booking: MonitorBooking & { address: string; notes: string } = { id: `BKG-DEMO-${randomUUID().slice(0, 8).toUpperCase()}`, customerId: user.uid, customer: user.displayName,
+  const booking: MonitorBooking & { address: string; notes: string } = { id: `BKG-DEMO-${randomUUID().slice(0, 8).toUpperCase()}`, customerId: user.uid, businessId: service.business_id, customer: user.displayName,
     service: service.service_name, provider: mockBusinesses.find((b) => b.business_id === service.business_id)?.business_name ?? '', schedule: input.schedule,
     status: 'REQUESTED', estimate: service.minimum_price ?? 0, address: input.address.trim(), notes: input.notes.trim() };
   store.bookings.unshift(booking); store.requests[key] = [booking.id]; return booking;

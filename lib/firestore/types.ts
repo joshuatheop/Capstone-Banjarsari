@@ -1,3 +1,5 @@
+import type { AccountRole, LegacyRole } from '@/lib/accounts/types';
+export type { SellerApplication } from '@/lib/accounts/types';
 // ============================================================
 // Type Definitions — PALUGADA Data Models (v2)
 // ============================================================
@@ -10,7 +12,7 @@ export type AvailabilityType =
   | 'BY_SCHEDULE'
   | 'BY_REQUEST'
   | 'TEMPORARILY_UNAVAILABLE';
-export type UserRole = 'admin' | 'pelanggan';
+export type UserRole = AccountRole | LegacyRole;
 export type EventType =
   | 'BUSINESS_VIEW'
   | 'PRODUCT_VIEW'
@@ -22,6 +24,7 @@ export type EventType =
 
 // ---- A. Produk ----
 export interface ProdukItem {
+  vertical?: 'RETAIL' | 'FOOD';
   product_id: string;           // UUID / Firestore doc ID
   business_id: string;          // FK → businesses
   category_id: string;          // FK → categories
@@ -43,6 +46,8 @@ export interface ProdukItem {
 
 // ---- B. Bisnis ----
 export interface Business {
+  owner_user_id?: string;
+  seller_status?: 'ACTIVE' | 'SUSPENDED';
   business_id: string;          // UUID / Firestore doc ID
   business_logo_url: string | null;
   business_name: string;

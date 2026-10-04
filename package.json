@@ -14,7 +14,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "node --experimental-strip-types --test scripts/*.test.mjs",
-    "test:commerce": "node scripts/check-commerce-api.mjs"
+    "test:commerce": "node scripts/check-commerce-api.mjs",
+    "test:accounts": "node scripts/check-accounts-api.mjs"
   },
   "dependencies": {
     "firebase": "^12.15.0",

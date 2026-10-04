@@ -13,7 +13,8 @@ This is the single project guide for coding agents. Do not create duplicate agen
 
 - app/(storefront): customer pages and commerce navigation, including profile and settings.
 - app/(auth): login and registration.
-- app/(workspace)/admin: admin monitoring, forecasting, and existing Firebase management pages.
+- app/(workspace)/seller and super-admin: owner-scoped operations and platform governance. app/(workspace)/admin retains migration sources; proxy.ts redirects old URLs.
+- app/api/account, seller, super-admin: server-verified role/ownership APIs; lib/accounts holds contracts/policy and lib/server/account-* holds persistence/auth. Client profile role is never authority.
 - app/api/local: development-only authenticated APIs. Keep host/origin validation, role checks, ownership checks, and idempotency.
 - components/commerce: reusable customer views; components/monitoring: admin views; components/shared: shared maps, reviews, icons, footer.
 - lib/commerce and lib/server: local transaction validation/storage; lib/monitoring: metrics; lib/monitoring/forecast*: forecasting.

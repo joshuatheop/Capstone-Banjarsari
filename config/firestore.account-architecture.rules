@@ -1,0 +1,52 @@
+﻿rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function superAdmin() {
+      return signedIn() && (request.auth.token.get('role', '') == 'SUPER_ADMIN' || request.auth.token.get('super_admin', false) == true);
+    }
+    // All approval, role, ownership and seller mutations go through Firebase Admin SDK on the server.
+    match /palugada_workspaces/{uid} { allow read, write: if false; }
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || superAdmin());
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.role == 'CUSTOMER'
+        && request.resource.data.keys().hasOnly(['email','role','displayName','photoURL','alamat','noTelepon','kewarganegaraan','createdAt','updatedAt']);
+      allow update: if signedIn() && request.auth.uid == uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['email','displayName','photoURL','alamat','noTelepon','kewarganegaraan','updatedAt']);
+    }
+    function counterOnly() {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['clickCount','like_count'])
+        && request.resource.data.get('clickCount', 0) is int
+        && request.resource.data.get('clickCount', 0) >= resource.data.get('clickCount', 0)
+        && request.resource.data.get('clickCount', 0) <= resource.data.get('clickCount', 0) + 1
+        && request.resource.data.get('like_count', 0) is int
+        && request.resource.data.get('like_count', 0) >= 0
+        && request.resource.data.get('like_count', 0) >= resource.data.get('like_count', 0) - 1
+        && request.resource.data.get('like_count', 0) <= resource.data.get('like_count', 0) + 1;
+    }
+    match /produk/{id} { allow read: if true; allow create, delete: if superAdmin(); allow update: if superAdmin() || counterOnly(); }
+    match /jasa/{id} { allow read: if true; allow create, delete: if superAdmin(); allow update: if superAdmin() || counterOnly(); }
+    match /bisnis/{id} { allow read: if true; allow write: if superAdmin(); }
+    match /kategori/{id} { allow read: if true; allow write: if superAdmin(); }
+    match /ulasan/{id} {
+      allow read: if true;
+      allow create: if signedIn() && request.resource.data.user_id == request.auth.uid
+        && request.resource.data.keys().hasOnly(['item_id','item_type','user_id','user_name','user_photo','rating','comment','createdAt'])
+        && request.resource.data.item_type in ['product','service']
+        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.comment is string && request.resource.data.comment.size() <= 2000;
+      allow update: if signedIn() && resource.data.user_id == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['rating','comment','updatedAt'])
+        && request.resource.data.rating is int && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.comment is string && request.resource.data.comment.size() <= 2000;
+      allow delete: if superAdmin();
+    }
+    match /analytics_events/{id} {
+      allow read: if superAdmin();
+      allow create: if request.resource.data.keys().hasOnly(['session_id','visitor_id','user_id','business_id','product_id','service_id','event_type','destination_url','createdAt','itemName','businessName'])
+        && request.resource.data.event_type in ['BUSINESS_VIEW','PRODUCT_VIEW','SERVICE_VIEW','WHATSAPP_CLICK','MARKETPLACE_CLICK','SHARE_CLICK','PAGE_VIEW'];
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}
