@@ -1,6 +1,6 @@
 # PALUGADA Banjarsari
 
-Marketplace warga: Belanja, Makanan, Jasa, dan direktori kontak Ojek; monitoring admin dan rekomendasi stok. Status implementasi dan batas demo dijelaskan di [Design.md](Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16) dan [AUDIT.md](AUDIT.md).
+Marketplace warga: Belanja, Makanan, Jasa, dan direktori kontak Ojek; monitoring admin dan rekomendasi stok. Status implementasi dan batas demo dijelaskan di [Design.md](docs/Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16) dan [AUDIT.md](docs/AUDIT.md).
 
 ## Menjalankan demo lokal
 
@@ -56,7 +56,7 @@ Next.js 16.3.6, React 19, TypeScript, Firebase, CSS Modules. SheetJS memakai tar
 
 ## Struktur dan desain saat ini
 
-Customer berada di `app/(storefront)`, autentikasi di `app/(auth)`, dan admin di `app/(workspace)/admin`. URL existing tetap sama. Panduan pengembangan tunggal adalah [AGENTS.md](AGENTS.md); referensi tampilan dan batas fitur terbaru ada pada [Design.md bagian 36](Design.md#36-implementasi-redesign-marketplace--v14).
+Customer berada di `app/(storefront)`, autentikasi di `app/(auth)`, dan admin di `app/(workspace)/admin`. URL existing tetap sama. Panduan pengembangan tunggal adalah [AGENTS.md](AGENTS.md); referensi tampilan dan batas fitur terbaru ada pada [Design.md bagian 36](docs/Design.md#36-implementasi-redesign-marketplace--v14).
 
 Halaman baru `/promo` menampilkan status penawaran yang belum aktif secara jujur. Keranjang mendukung pilihan per barang/toko; hanya barang terpilih yang dikirim saat checkout. Akun menyediakan alamat tersimpan khusus browser yang diisi otomatis pada checkout. Booking jasa disajikan dalam tiga langkah tanpa mengubah aturan transaksi. [Ilustrasi demo dan prompt](public/illustrations/README.md) dibuat dengan built-in imagegen.
 
@@ -67,7 +67,7 @@ Customer dapat memakai **Beli Sekarang** untuk checkout satu produk dengan jumla
 
 Beranda mempunyai empat vertical dalam grid **2×2 di HP**. **Ojek** adalah direktori kontak dengan data contoh berlabel demo, avatar, dan status rating belum tersedia. Tidak ada booking internal. Search/filter dapat dibuka saat dibutuhkan. Voucher lokal: **DEMOHEMAT10** (10%, min. Rp50.000, maks. Rp15.000) atau **DEMOLOKAL5** (Rp5.000, min. Rp25.000). Diskon server dibagi per toko; belum merupakan promo production. Registrasi lokal kini tersedia pada pembaruan arsitektur akun v1.7 di bawah.
 
-Admin mobile memakai drawer melalui tombol Menu. Pembayaran menyediakan filter metode COD/Transfer/QRIS terpisah dari status. **Forecasting stok** menonjolkan **Siapkan Besok**, demand/stok/incoming, risiko, alasan, dan High/Medium/Low Confidence; metrik teknis tersedia di **Lihat Analisis**. Besok mengikuti tanggal akhir dataset. **Financial Projection** menyajikan grafik tren GMV, aktual vs skenario, volume order, komposisi pembayaran, dan kontribusi seller. Buka **Ubah asumsi skenario** untuk pertumbuhan, fee, biaya, dan horizon. Forecast adalah estimasi; GMV bukan pendapatan fee platform dan proyeksi bukan laporan laba aktual. Kontrak lengkap: [Design.md bagian 38](Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16).
+Admin mobile memakai drawer melalui tombol Menu. Pembayaran menyediakan filter metode COD/Transfer/QRIS terpisah dari status. **Forecasting stok** menonjolkan **Siapkan Besok**, demand/stok/incoming, risiko, alasan, dan High/Medium/Low Confidence; metrik teknis tersedia di **Lihat Analisis**. Besok mengikuti tanggal akhir dataset. **Financial Projection** menyajikan grafik tren GMV, aktual vs skenario, volume order, komposisi pembayaran, dan kontribusi seller. Buka **Ubah asumsi skenario** untuk pertumbuhan, fee, biaya, dan horizon. Forecast adalah estimasi; GMV bukan pendapatan fee platform dan proyeksi bukan laporan laba aktual. Kontrak lengkap: [Design.md bagian 38](docs/Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16).
 
 ## Akun dan workspace — v1.7
 
@@ -88,7 +88,7 @@ Untuk mencoba seller:
 npm run test:accounts
 ```
 
-Tes membuat akun/pengajuan/katalog berlabel uji yang tetap tersimpan lokal. Password registrasi demo di-hash dengan scrypt; jangan gunakan kredensial pribadi. Katalog seller demo belum terhubung ke katalog transaksi customer, dan catatan stok seller belum menggantikan reservasi inventory. Dashboard transaksi seller baru menampilkan empty state. Ini dijelaskan juga pada UI, [Design v1.7](Design.md#39-satu-akun-pembeli-seller-capability-dan-governance--v17), dan AUDIT.md.
+Tes membuat akun/pengajuan/katalog berlabel uji yang tetap tersimpan lokal. Password registrasi demo di-hash dengan scrypt; jangan gunakan kredensial pribadi. Katalog seller demo belum terhubung ke katalog transaksi customer, dan catatan stok seller belum menggantikan reservasi inventory. Dashboard transaksi seller baru menampilkan empty state. Ini dijelaskan juga pada UI, [Design v1.7](docs/Design.md#39-satu-akun-pembeli-seller-capability-dan-governance--v17), dan AUDIT.md.
 
 ### Mengaktifkan adapter Firebase production
 
@@ -101,3 +101,10 @@ Adapter role/approval/katalog disiapkan tetapi **belum diaktifkan atau diuji liv
 - Role authority dan application disimpan di koleksi private `palugada_workspaces`; Business/katalog dimirror secara atomik ke `bisnis`/`produk`/`jasa`. Jangan memberi client akses tulis ke workspace ini.
 
 Tidak ada deployment rules, provisioning operator, atau migrasi toko legacy yang dijalankan dalam implementasi ini. Monitoring transaksi production tetap memerlukan integrasi domain transaksi existing.
+
+
+## Dokumentasi dan catatan developer
+
+Semua acuan aktif berada di [docs/](docs/README.md): [PRD](docs/PRD.md), [Design](docs/Design.md), dan [AUDIT](docs/AUDIT.md). Catatan per developer: [Lukas Update](<docs/Lukas Update.md>), [Zik Update](<docs/Zik Update.md>), dan [Theo Update](<docs/Theo Update.md>).
+
+Sebelum setiap push pekerjaan baru, tambahkan entri di log developer terkait. Sebelum revisi dokumen acuan, arsipkan versi sebelumnya ke folder history baru; jangan menghapus entri atau menimpa arsip lama. Versi terbaru, template, dan prosedur lengkap tersedia di [panduan docs](docs/README.md). File dokumen di root dipertahankan sebagai pengarah.
