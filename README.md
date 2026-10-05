@@ -103,6 +103,30 @@ Adapter role/approval/katalog disiapkan tetapi **belum diaktifkan atau diuji liv
 Tidak ada deployment rules, provisioning operator, atau migrasi toko legacy yang dijalankan dalam implementasi ini. Monitoring transaksi production tetap memerlukan integrasi domain transaksi existing.
 
 
+## Database non-prod (Supabase)
+
+Environment non-prod memakai database Supabase yang **terpisah dari production**. Production tetap Firestore. Pilihan backend ada di environment (`.env.local`, diabaikan Git):
+
+| Variabel | Nilai | Fungsi |
+|---|---|---|
+| `NEXT_PUBLIC_DATA_BACKEND` | `firestore` (default) atau `supabase` | Memilih adapter di `lib/data/` |
+| `NEXT_PUBLIC_APP_ENV` | `production`, `nonprod`, `development` | Pengaman; build production otomatis `production`, staging harus mengisi `nonprod` |
+| `NEXT_PUBLIC_SUPABASE_URL` | URL project Supabase **non-prod** | Koneksi DB |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key project non-prod | Kunci klien; akses dibatasi RLS |
+
+Pengaman: `supabase` ditolak bila `APP_ENV=production`, dan `firestore` di luar production hanya diizinkan dengan `NEXT_PUBLIC_LOCAL_PREVIEW=true`. Jangan mengisi variabel Supabase dengan project production atau menyimpan service key di `NEXT_PUBLIC_*`.
+
+Setup singkat (rincian di [supabase/README.md](supabase/README.md)):
+
+1. Buat project Supabase non-prod, lalu jalankan `supabase/migrations/*.sql` berurutan di SQL Editor.
+2. Buat seed anonim dari ekspor Firestore: `node scripts/firexport-to-supabase-seed.mjs <folder-csv>`, lalu jalankan `supabase/seed.sql`. Email, telepon, nama, alamat, dan foto dianonimkan; ekspor mentah dan hasil seed tidak boleh di-commit.
+3. Salin `supabase/accounts.example.sql` menjadi `supabase/accounts.sql`, ganti placeholder password, lalu jalankan di SQL Editor untuk membuat akun demo admin/user (password disimpan sebagai hash bcrypt, bukan teks polos). `accounts.sql` memuat password demo sehingga diabaikan Git.
+4. Isi variabel di atas dan jalankan ulang `npm run dev:local`.
+
+Dengan backend Supabase, login `admin` dan `user` diperiksa terhadap DB (bukan password di `.env.local`), sehingga password pada tabel akun demo di atas tidak berlaku. Akun yang mendaftar lewat form tetap disimpan lokal.
+
+Batas saat ini: baca katalog, detail, dan penghitung klik sudah memakai lapisan data. Stok/checkout tetap memakai store lokal sehingga produk seed tampil stok 0, ulasan, favorit, jalur tulis admin/seller, dan analytics klien belum dipindahkan, dan login Supabase baru tersedia pada mode preview development. Lihat [Design bagian 41](docs/Design.md#41-database-non-prod-supabase-dan-lapisan-data--v19) dan [AUDIT](docs/AUDIT.md#database-non-prod-supabase--v19-5-oktober-2026).
+
 ## Dokumentasi dan catatan developer
 
 Semua acuan aktif berada di [docs/](docs/README.md): [PRD](docs/PRD.md), [Design](docs/Design.md), dan [AUDIT](docs/AUDIT.md). Catatan per developer: [Lukas Update](<docs/Lukas Update.md>), [Zik Update](<docs/Zik Update.md>), dan [Theo Update](<docs/Theo Update.md>).

@@ -2,8 +2,8 @@
 
 **Document Type:** Product Design + System Design
 **Project:** PALUGADA Banjarsari
-**Version:** 1.9
-**Last Updated:** 5 Oktober 2026
+**Version:** 1.8
+**Last Updated:** 4 Oktober 2026
 
 ---
 
@@ -2357,7 +2357,7 @@ Tanggal: 29 September 2026. Bagian ini mencatat hasil implementasi terhadap arah
 | `public/illustrations` | Aset demo orisinal beserta provenance dan prompt |
 | `AGENTS.md` | Satu-satunya panduan agent di proyek |
 
-Route group berganti nama tanpa mengubah URL publik existing. Panduan `agent.md`, `app/agent.md`, dan `CLAUDE.md` dihapus setelah dikonsolidasikan. Komponen navigasi/katalog lama yang tidak lagi diimpor juga dihapus. Next.js `agentRules: false` mencegah pembuatan kembali panduan duplikat. Perubahan existing pada arsip `UI Katalog v1` tidak termasuk redesign ini.
+Route group berganti nama tanpa mengubah URL publik existing. Panduan `agent.md` dan `app/agent.md` dihapus setelah dikonsolidasikan. Komponen navigasi/katalog lama yang tidak lagi diimpor juga dihapus. Next.js `agentRules: false` mencegah pembuatan kembali panduan duplikat. Perubahan existing pada arsip `UI Katalog v1` tidak termasuk redesign ini.
 
 ### 36.3 Aset dan batas implementasi
 
@@ -2542,27 +2542,3 @@ Keputusan 4 Oktober 2026: dokumen aktif PRD, Design, dan AUDIT berada di `docs/`
 - Tidak menambahkan hook otomatis, mengubah domain aplikasi, atau mengubah kebijakan branch. Branch tujuan selalu mengikuti instruksi user yang berlaku.
 
 Indeks versi, tata cara arsip, dan template update tersedia di [README dokumentasi](README.md).
-
-## 41. Database non-prod Supabase dan lapisan data — v1.9
-
-Keputusan 5 Oktober 2026: environment non-prod memakai database Supabase (Postgres) yang terpisah dari production. Production tetap Firestore dan tidak disentuh oleh pekerjaan ini. PRD tetap 1.0; kontrak UI/akun v1.7 dan keputusan dokumentasi v1.8 dipertahankan.
-
-### 41.1 Lapisan data dan pemilihan backend
-
-- `lib/data/` menyediakan satu antarmuka katalog (produk, jasa, bisnis, kategori, detail, dan penghitung klik) dengan dua adapter: `firestore.ts` (logika lama, tanpa perubahan perilaku) dan `supabase.ts` (baru). `lib/firestore/data-loader.ts` hanya meneruskan ekspor agar import lama tetap berlaku. Adapter dimuat dinamis, sehingga adapter yang tidak dipilih tidak diinisialisasi.
-- Pilihan lewat environment: `NEXT_PUBLIC_DATA_BACKEND` (`firestore` default atau `supabase`) dan `NEXT_PUBLIC_APP_ENV` (`production`, `nonprod`, `development`). Bila `APP_ENV` tidak diisi, build production dianggap `production`; staging harus mengisinya eksplisit sebagai `nonprod`.
-- Pengaman: `supabase` ditolak saat `APP_ENV=production`; `firestore` di luar production hanya diizinkan dengan `NEXT_PUBLIC_LOCAL_PREVIEW=true` (project placeholder), sehingga non-prod tidak dapat menyentuh Firestore production. Adapter Supabase tidak jatuh ke data mock: DB kosong atau policy salah harus terlihat.
-- `/bisnis/[id]` kini membaca lewat lapisan data. Halaman admin lama, jalur tulis, ulasan, favorit, dan event analytics klien masih memanggil `lib/firestore/*` langsung dan belum dipindahkan.
-
-### 41.2 Skema, keamanan, dan seed
-
-- Migrasi di `supabase/migrations/`: baseline tujuh tabel (`kategori`, `bisnis`, `produk`, `jasa`, `users`, `ulasan`, `analytics_events`, kolom snake_case dan `timestamptz`), policy baca publik untuk katalog dan ulasan, serta fungsi penghitung klik (`security definer`). RLS aktif; `users` dan `analytics_events` tidak dapat dibaca klien publik. Kolom baru ditambahkan lewat migrasi baru, bukan dengan mengubah baseline.
-- Seed dibuat oleh `scripts/firexport-to-supabase-seed.mjs` dari ekspor Firestore. Email, telepon, nama pemilik/pengguna, alamat, dan foto dianonimkan; gambar base64 dibuang kecuali `--keep-images`; CSV analytics format lama dilewati. Hasil `supabase/seed.sql` dan ekspor mentah diabaikan Git.
-- Akun demo `admin` dan `user` disimpan di tabel `users` dengan hash bcrypt (`pgcrypto`) pada `password_hash`. Login memakai fungsi `login_user`, dan sesi divalidasi lewat `get_user_public`; hash tidak pernah dikirim ke klien dan tidak memerlukan service key. Untuk kedua akun ini, DB adalah satu-satunya penentu (tanpa fallback ke password environment). Akun yang mendaftar lewat form tetap memakai store lokal. `supabase/accounts.sql` memuat password demo, sehingga diabaikan Git.
-- Server Node memprioritaskan IPv4 (`instrumentation.ts`) dan memberi batas 3 detik dengan ulang maksimal tiga kali pada koneksi Supabase, karena koneksi pertama dapat menggantung 10 detik di jaringan tertentu.
-
-### 41.3 Batas dan verifikasi
-
-- Login Supabase berjalan melalui jalur preview (`NODE_ENV=development` dan `LOCAL_PREVIEW`); belum ada login non-prod untuk build production. Stok dan checkout tetap memakai store transaksi lokal, sehingga produk seed Supabase menampilkan stok 0 dan belum dapat dibeli. Ulasan di Supabase belum ditampilkan karena komponen ulasan masih membaca Firestore. Fungsi login belum memiliki pembatasan percobaan; jangan dipakai di production.
-- Konfigurasi lint mengecualikan `UI Katalog v1/` (prototipe desain statis). Dua script ad hoc yang menargetkan project Firebase production dihapus dari repository.
-- Hasil verifikasi dan batas lengkap ada di [AUDIT](AUDIT.md#database-non-prod-supabase--v19-5-oktober-2026). Tidak ada deployment, perubahan rules, atau perubahan data production.
