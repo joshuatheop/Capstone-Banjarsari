@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getBisnisById } from '@/lib/firestore/bisnis';
+import { getBusiness } from '@/lib/data';
 import { loadCatalog } from '@/lib/catalog';
 
 import BusinessDetailClient from './BusinessDetailClient';
@@ -13,7 +13,7 @@ interface BusinessPageProps {
 
 export async function generateMetadata({ params }: BusinessPageProps): Promise<Metadata> {
   const { id } = await params;
-  const business = await getBisnisById(id);
+  const business = await getBusiness(id);
   if (!business) return {};
 
   const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://palugada.banjarsarigarut.id';
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: BusinessPageProps): Promise<M
 
 export default async function BusinessDetailPage({ params }: BusinessPageProps) {
   const { id } = await params;
-  const [business, { entries }] = await Promise.all([getBisnisById(id), loadCatalog()]);
+  const [business, { entries }] = await Promise.all([getBusiness(id), loadCatalog()]);
   if (!business) notFound();
   return <BusinessDetailClient business={business} entries={entries.filter(item => item.businessId === id)} />;
 }

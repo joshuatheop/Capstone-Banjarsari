@@ -18,6 +18,8 @@
     "test:accounts": "node scripts/check-accounts-api.mjs"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.2",
     "firebase": "^12.15.0",
     "firebase-admin": "^14.1.0",
     "lucide-react": "^1.28.0",

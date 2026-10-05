@@ -13,6 +13,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Prototipe desain statis (referensi UI), bukan bagian aplikasi.
+    "UI Katalog v1/**",
   ]),
 ]);
 
