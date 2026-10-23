@@ -119,3 +119,8 @@ export async function incrementServiceClicks(id: string): Promise<void> {
   const { error } = await createClient().rpc('increment_service_clicks', { p_id: id });
   if (error) console.error('Supabase increment_service_clicks:', error.message);
 }
+
+export async function adjustLikes(kind: 'product' | 'service', id: string, delta: 1 | -1): Promise<void> {
+  const { error } = await createClient().rpc('adjust_likes', { p_kind: kind, p_id: id, p_delta: delta });
+  if (error) console.error('Supabase adjust_likes:', error.message);
+}

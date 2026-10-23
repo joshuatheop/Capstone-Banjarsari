@@ -1,3 +1,4 @@
+import { NONPROD } from '@/lib/nonprod';
 import {
   collection,
   query,
@@ -385,7 +386,7 @@ export async function trackClickEvent(
     businessId?: string;
   }
 ): Promise<void> {
-  if (process.env.NEXT_PUBLIC_LOCAL_PREVIEW === 'true') return;
+  if (NONPROD) return;
   try {
     const col = collection(db, ANALYTICS_COL);
     const sessionId = getOrCreateSessionId();

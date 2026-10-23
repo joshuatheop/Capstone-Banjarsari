@@ -4,7 +4,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, signOut, User } from 'firebase/auth';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '@/lib/firebase';
-import { LOCAL_PREVIEW, type PreviewUser } from '@/lib/local-preview';
+import { NONPROD, type SessionUser } from '@/lib/nonprod';
 
 type Role = 'admin' | 'customer' | 'seller' | 'courier' | 'pelanggan' | null;
 
@@ -100,12 +100,12 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-function LocalAuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<PreviewUser | null>(null);
+function NonprodAuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<SessionUser | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     let active = true;
-    fetch('/api/local/session', { cache: 'no-store' })
+    fetch('/api/nonprod/session', { cache: 'no-store' })
       .then((response) => response.json())
       .then((data) => { if (active) setUser(data.user ?? null); })
       .catch(() => { if (active) setUser(null); })
@@ -113,7 +113,7 @@ function LocalAuthProvider({ children }: { children: React.ReactNode }) {
     return () => { active = false; };
   }, []);
   const logout = async () => {
-    const response = await fetch('/api/local/session', { method: 'DELETE' });
+    const response = await fetch('/api/nonprod/session', { method: 'DELETE' });
     if (!response.ok) throw new Error('Gagal keluar. Coba lagi.');
     setUser(null);
   };
@@ -121,5 +121,5 @@ function LocalAuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  return LOCAL_PREVIEW ? <LocalAuthProvider>{children}</LocalAuthProvider> : <FirebaseAuthProvider>{children}</FirebaseAuthProvider>;
+  return NONPROD ? <NonprodAuthProvider>{children}</NonprodAuthProvider> : <FirebaseAuthProvider>{children}</FirebaseAuthProvider>;
 }

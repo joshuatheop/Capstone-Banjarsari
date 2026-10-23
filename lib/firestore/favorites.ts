@@ -1,3 +1,4 @@
+import { NONPROD } from '@/lib/nonprod';
 import { doc, updateDoc, increment, getDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -75,7 +76,10 @@ export async function toggleProductFavoriteInFirestore(productId: string, userId
 
   setFavoriteProductIds(newFavs, userId);
 
-  if (process.env.NEXT_PUBLIC_LOCAL_PREVIEW === 'true') return { isFavorited: !isFavorited, delta };
+  if (NONPROD) {
+    await (await import('@/lib/data/supabase')).adjustLikes('product', productId, delta as 1 | -1);
+    return { isFavorited: !isFavorited, delta };
+  }
   // Sync to Firestore
   try {
     const ref = doc(db, 'produk', productId);
@@ -115,7 +119,10 @@ export async function toggleServiceFavoriteInFirestore(serviceId: string, userId
 
   setFavoriteServiceIds(newFavs, userId);
 
-  if (process.env.NEXT_PUBLIC_LOCAL_PREVIEW === 'true') return { isFavorited: !isFavorited, delta };
+  if (NONPROD) {
+    await (await import('@/lib/data/supabase')).adjustLikes('service', serviceId, delta as 1 | -1);
+    return { isFavorited: !isFavorited, delta };
+  }
   // Sync to Firestore
   try {
     const ref = doc(db, 'jasa', serviceId);

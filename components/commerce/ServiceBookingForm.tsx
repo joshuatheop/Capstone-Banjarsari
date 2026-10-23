@@ -13,7 +13,7 @@ export default function ServiceBookingForm({ item }: { item: CatalogEntry }) {
     if (step === 2) { const time = new Date(schedule).getTime(); if (!Number.isFinite(time) || time <= Date.now() || time > Date.now() + 90 * 86400000) { setError('Pilih jadwal di masa depan, maksimal 90 hari dari sekarang.'); return; } }
     if (step < 3) { setStep(step + 1); return; }
     setPending(true);
-    try { const response = await fetch('/api/local/commerce', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'booking', serviceId: item.id, schedule: new Date(schedule).toISOString(), address, notes, idempotencyKey: key }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error); setBooked(true); }
+    try { const response = await fetch('/api/nonprod/commerce', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'booking', serviceId: item.id, schedule: new Date(schedule).toISOString(), address, notes, idempotencyKey: key }) }); const data = await response.json(); if (!response.ok) throw new Error(data.error); setBooked(true); }
     catch (reason) { setError(reason instanceof Error ? reason.message : 'Booking gagal. Coba lagi.'); } finally { setPending(false); }
   }
   if (booked) return <div className={styles.feedback} role="status"><CheckCircle2/><p>Booking uji berhasil dicatat. Penyedia belum mengonfirmasi jadwal.</p><Link href="/bookings" className={styles.mainButton}>Lihat booking saya</Link></div>;

@@ -1,12 +1,11 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
-const base=process.env.TEST_BASE_URL||'http://127.0.0.1:3000';
-const credentials=JSON.parse(readFileSync('.local/accounts.json','utf8'));
+import { base, accounts as credentials, catalogFixtures } from './nonprod-test-env.mjs';
+const { p1 } = await catalogFixtures();
 async function call(path,cookie='',body,expected=200){const response=await fetch(base+path,{method:body?'POST':'GET',headers:{Origin:base,...(cookie?{Cookie:cookie}:{}),...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{})});const result=await response.json();assert.equal(response.status,expected,`${path}: ${JSON.stringify(result)}`);return {result,cookie:response.headers.get('set-cookie')?.split(';')[0]||cookie};}
 const suffix=Date.now();
-const a=await call('/api/local/register','',{name:'Account Test A',email:`account-a-${suffix}@example.test`,password:'TestOnly123!',role:'SUPER_ADMIN',roles:['SELLER']},201);
-const b=await call('/api/local/register','',{name:'Account Test B',email:`account-b-${suffix}@example.test`,password:'TestOnly123!'},201);
-const admin=await call('/api/local/session','',credentials.admin);
+const a=await call('/api/nonprod/register','',{name:'Account Test A',email:`account-a-${suffix}@example.test`,password:'TestOnly123!',role:'SUPER_ADMIN',roles:['SELLER']},201);
+const b=await call('/api/nonprod/register','',{name:'Account Test B',email:`account-b-${suffix}@example.test`,password:'TestOnly123!'},201);
+const admin=await call('/api/nonprod/session','',credentials.admin);
 assert.equal(a.result.user.role,'customer');assert.deepEqual((await call('/api/account',a.cookie)).result.access.roles,['CUSTOMER']);
 await call('/api/seller',a.cookie,undefined,403);await call('/api/super-admin/seller-applications',a.cookie,undefined,403);await call('/api/seller','',undefined,401);
 const form={businessName:'Toko API '+suffix,ownerName:'Account Test A',whatsapp:'081234567890',address:'Jl. Pengujian Banjarsari No. 12',category:'RETAIL',description:'Usaha pengujian arsitektur akun.',logo:'https://example.test/logo.png'};
@@ -44,8 +43,8 @@ await call('/api/super-admin/users',a.cookie,undefined,403);
 assert.ok((await call('/api/super-admin/users',admin.cookie)).result.users.some(user=>user.uid===a.result.user.uid));
 const evil=await fetch(base+'/api/super-admin/seller-applications',{method:'POST',headers:{Origin:'https://evil.example',Cookie:admin.cookie,'Content-Type':'application/json'},body:JSON.stringify({action:'suspend',applicantId:a.result.user.uid})});assert.equal(evil.status,403);
 // Seller remains the same buyer; existing local order lifecycle and cancellation remain usable.
-const checkout=(await call('/api/local/commerce',a.cookie,{action:'checkout',items:[{productId:'p1',quantity:1}],address:'Jl. Pengujian Banjarsari No 12',phone:'081234567890',note:'Account architecture test',idempotencyKey:`accounts-${suffix}-checkout`},201)).result;
-assert.equal(checkout.orders[0].customerId,a.result.user.uid);await call('/api/local/commerce',a.cookie,{action:'cancel',orderId:checkout.orders[0].id});
+const checkout=(await call('/api/nonprod/commerce',a.cookie,{action:'checkout',items:[{productId:p1,quantity:1}],address:'Jl. Pengujian Banjarsari No 12',phone:'081234567890',note:'Account architecture test',idempotencyKey:`accounts-${suffix}-checkout`},201)).result;
+assert.equal(checkout.orders[0].customerId,a.result.user.uid);await call('/api/nonprod/commerce',a.cookie,{action:'cancel',orderId:checkout.orders[0].id});
 const logoutResponse=await fetch(base+'/api/account/session',{method:'DELETE',headers:{Origin:base}});assert.equal(logoutResponse.status,200);assert.ok(logoutResponse.headers.get('set-cookie').includes('palugada_account='));
 const badLogout=await fetch(base+'/api/account/session',{method:'DELETE',headers:{Origin:'https://evil.example'}});assert.equal(badLogout.status,403);
 console.log('PASS account API: register CUSTOMER, server role guards, draft/submit/review/approve, stale revision, reject reason/resubmit, same UID, cross-seller isolation, suspension/reactivation, CSRF, seller remains buyer. Test accounts/workspaces retained locally.');

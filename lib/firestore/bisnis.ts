@@ -12,8 +12,7 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
-import { mockBusinesses } from './mock-data';
+import { NONPROD } from '@/lib/nonprod';
 import type { Business } from './types';
 import { generateSlug } from './types';
 
@@ -49,7 +48,7 @@ function toBusiness(id: string, data: Record<string, unknown>): Business {
 // ============================================================
 
 export async function getAllBisnis(): Promise<Business[]> {
-  if (LOCAL_PREVIEW) return mockBusinesses.map((business) => ({ ...business, business_phone: null }));
+  if (NONPROD) return (await import('@/lib/data/supabase')).getBusinesses();
   try {
     const q = query(collection(db, COLLECTION), orderBy('createdAt', 'desc'));
     const snap = await getDocs(q);
@@ -65,10 +64,7 @@ export async function getAllBisnis(): Promise<Business[]> {
 // ============================================================
 
 export async function getBisnisById(id: string): Promise<Business | null> {
-  if (LOCAL_PREVIEW) {
-    const business = mockBusinesses.find((item) => item.business_id === id);
-    return business ? { ...business, business_phone: null } : null;
-  }
+  if (NONPROD) return (await import('@/lib/data/supabase')).getBusiness(id);
   try {
     const ref = doc(db, COLLECTION, id);
     const snap = await getDoc(ref);

@@ -9,14 +9,14 @@ import { auth } from '@/lib/firebase';
 import { createUserDocument } from '@/lib/auth';
 import { useAuth } from '@/context/AuthContext';
 import styles from './register.module.css';
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
-import LocalAccount from '@/components/commerce/LocalAccount';
+import { NONPROD } from '@/lib/nonprod';
+import NonprodAccount from '@/components/commerce/NonprodAccount';
 import ContactFields from '@/components/commerce/ContactFields';
 import { contactIsValid, emptyContact } from '@/lib/commerce/contact';
 import { saveCustomerContact } from '@/lib/customer-contact';
 
 export default function RegisterPage() {
-  return LOCAL_PREVIEW ? <LocalAccount register /> : <FirebaseRegisterPage />;
+  return NONPROD ? <NonprodAccount register /> : <FirebaseRegisterPage />;
 }
 
 function FirebaseRegisterPage() {
