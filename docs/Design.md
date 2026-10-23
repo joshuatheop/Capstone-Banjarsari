@@ -2,8 +2,8 @@
 
 **Document Type:** Product Design + System Design
 **Project:** PALUGADA Banjarsari
-**Version:** 1.9
-**Last Updated:** 5 Oktober 2026
+**Version:** 2.0
+**Last Updated:** 23 Oktober 2026
 
 ---
 
@@ -2566,3 +2566,34 @@ Keputusan 5 Oktober 2026: environment non-prod memakai database Supabase (Postgr
 - Login Supabase berjalan melalui jalur preview (`NODE_ENV=development` dan `LOCAL_PREVIEW`); belum ada login non-prod untuk build production. Stok dan checkout tetap memakai store transaksi lokal, sehingga produk seed Supabase menampilkan stok 0 dan belum dapat dibeli. Ulasan di Supabase belum ditampilkan karena komponen ulasan masih membaca Firestore. Fungsi login belum memiliki pembatasan percobaan; jangan dipakai di production.
 - Konfigurasi lint mengecualikan `UI Katalog v1/` (prototipe desain statis). Dua script ad hoc yang menargetkan project Firebase production dihapus dari repository.
 - Hasil verifikasi dan batas lengkap ada di [AUDIT](AUDIT.md#database-non-prod-supabase--v19-5-oktober-2026). Tidak ada deployment, perubahan rules, atau perubahan data production.
+
+## 42. Transaksi non-prod di Supabase dan penghapusan mode demo Firebase — v2.0
+
+Keputusan 23 Oktober 2026: semua yang tidak berhubungan dengan production memakai Supabase non-prod. Mode `LOCAL_PREVIEW` (project Firebase placeholder `demo-palugada`, store file `.local/*`, password dari `.env.local`) dihapus. Production tetap Firestore/Firebase Auth dan tidak disentuh. PRD tetap 1.0; kontrak UI/akun v1.7 dipertahankan. Bagian 41 tetap berlaku untuk lapisan data; pernyataannya tentang store lokal, login lewat jalur preview, dan `LOCAL_PREVIEW` digantikan bagian ini.
+
+### 42.1 Penanda non-prod dan sesi
+
+- `lib/nonprod.ts` mengekspor `NONPROD` (`NEXT_PUBLIC_DATA_BACKEND === 'supabase'`) dan tipe `SessionUser`; menggantikan `lib/local-preview.ts`. `NEXT_PUBLIC_LOCAL_PREVIEW` tidak dipakai lagi. Percabangan `NONPROD` di UI memilih penyedia auth non-prod dan menampilkan banner **Lingkungan non-prod**.
+- `resolveBackend()`: `supabase` ditolak saat `APP_ENV=production`; `firestore` hanya diizinkan saat `APP_ENV=production`. Tidak ada lagi jalur Firestore dengan project placeholder.
+- API non-prod pindah dari `/api/local/*` ke `/api/nonprod/*` (session, register, commerce, activity, monitoring, forecast). Sesi non-prod tetap hanya aktif pada `next dev` dengan host yang diizinkan (`NONPROD_HOSTS`), cookie HMAC `palugada_session`, secret `NONPROD_SESSION_SECRET`. Login dan registrasi hanya lewat DB; fallback password environment dan akun hardcoded dihapus.
+- `lib/firebase.ts` memberi konfigurasi kosong yang tidak dipakai saat `NONPROD` karena SDK Firebase masih ter-import di bundle klien dan menolak inisialisasi tanpa `apiKey`. Non-prod tidak menghubungi Firebase.
+
+### 42.2 Skema dan keamanan (migrasi `20261023000000_nonprod_commerce.sql`)
+
+- `produk.stock_on_hand` (nama sama dengan field mirror Firestore; produk aktif diberi stok awal 20 sebagai data uji), tabel `orders`, `bookings`, `request_log` (idempotensi), `account_workspaces` (satu dokumen JSON per akun dengan `revision` untuk optimistic lock), dan `server_secret`.
+- Semua tabel baru RLS tanpa policy. Akses lewat fungsi `security definer` yang memanggil `assert_server(secret)`; secret dibandingkan dengan hash bcrypt di `server_secret` dan ditolak bila kosong atau salah. `NONPROD_DB_SECRET` hanya ada di environment server. Ini mencegah pemegang publishable key membaca alamat/telepon pesanan atau memalsukan transaksi; ini bukan pengganti otorisasi per pengguna, yang tetap diperiksa di route (sesi, role, kepemilikan).
+- `checkout_commit` memverifikasi ulang harga dan stok di dalam transaksi (`stock:<id>` bila gagal, seluruh checkout dibatalkan), menurunkan stok, memasukkan pesanan per toko, dan mencatat kunci idempotensi dengan advisory lock. `order_cancel` hanya untuk pemilik dan status `AWAITING_SELLER`, mengembalikan stok sekali, dan idempoten. `booking_commit`, `register_user`, `users_list`, `orders_list`, `bookings_list`, `workspace_get/list/save`, `catalog_publish`, dan `adjust_likes` melengkapi fungsi.
+- `catalog_publish` menggantikan mirror Firestore di non-prod: toko dan listing seller masuk ke `bisnis`/`produk`/`jasa` (kategori `seller-*` dibuat bila belum ada). Stok hanya diatur ulang untuk item yang diubah seller; menyimpan ulang workspace tidak menimpa stok yang sudah berkurang karena pesanan. Bisnis atau produk milik akun lain tidak dapat ditimpa (`business_owned`).
+
+### 42.3 Server dan data yang dihapus
+
+- `lib/server/commerce-store.ts` memvalidasi input, membaca harga/stok/nama toko dari katalog Supabase, lalu memanggil RPC. `nonprod-db.ts` (pemanggil RPC), `nonprod-identities.ts` (registrasi), `nonprod-accounts.ts` (daftar akun monitoring), dan `account-store.ts` (workspace) memakai DB.
+- Dihapus: store file `.local/commerce.json`, `registered-customers.json`, `account-workspaces/`; `lib/commerce/catalog.ts` (`previewProducts`, `initialStock`); `lib/monitoring/fixtures.ts` (pesanan, booking, dan akun fiktif); cabang `NONPROD` yang mengembalikan data mock di `lib/data/firestore.ts` dan `lib/firestore/bisnis.ts`. Fallback mock pada jalur production tidak diubah.
+- Monitoring, aktivitas customer, dan data seller kini hanya berisi transaksi nyata di DB non-prod, sehingga kosong sampai ada pesanan. Dataset forecast (`forecast-data.ts`), kontak ojek contoh, ilustrasi produk `p1`–`p8`, dan voucher `DEMO*` tetap dan masih berlabel contoh.
+
+### 42.4 Batas
+
+- Ulasan belum dipindahkan: ulasan terverifikasi memerlukan pesanan selesai, dan alur status pesanan oleh seller belum ada. Daftar favorit tetap di browser (sama seperti production); hanya `like_count` yang disinkronkan.
+- Halaman admin katalog lama dan analytics klien masih Firebase dan tidak tersedia di non-prod. Sesi non-prod tidak tersedia pada build production. `login_user` belum membatasi percobaan.
+- Angka stok di dashboard seller adalah nilai workspace dan tidak ikut berkurang oleh pesanan.
+- Hasil verifikasi lengkap dan yang belum diuji ada di [AUDIT](AUDIT.md#transaksi-non-prod-supabase--v20-23-oktober-2026).

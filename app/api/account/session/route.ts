@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
 import { accountFailure, accountIdentity } from '@/lib/server/account-auth';
 import { adminServices } from '@/lib/server/account-store';
-import { previewEnabled, sameOrigin } from '@/lib/server/preview-session';
+import { nonprodEnabled, sameOrigin } from '@/lib/server/nonprod-session';
 import { AccountError } from '@/lib/accounts/policy';
 export async function POST(request: Request) {
   try {
-    if (previewEnabled()) throw new AccountError('Gunakan sesi lokal.', 404);
+    if (nonprodEnabled()) throw new AccountError('Gunakan sesi lokal.', 404);
     await accountIdentity(request);
     const token = request.headers.get('authorization');
     if (!token?.startsWith('Bearer ')) throw new AccountError('Token login diperlukan.', 401);

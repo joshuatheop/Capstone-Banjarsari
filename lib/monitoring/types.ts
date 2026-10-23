@@ -38,7 +38,7 @@ export interface MonitorBooking {
 }
 export interface MonitorAccount { id: string; name: string; role: 'seller' | 'customer' | 'courier'; active: boolean; business?: string }
 export interface MonitoringData {
-  source: 'preview';
+  source: 'nonprod';
   asOf: string;
   orders: MonitorOrder[];
   bookings: MonitorBooking[];

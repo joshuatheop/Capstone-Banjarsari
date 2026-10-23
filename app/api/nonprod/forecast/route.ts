@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { isLocalRequest, readPreviewSession, sameOrigin } from '@/lib/server/preview-session';
+import { isLocalRequest, readSession, sameOrigin } from '@/lib/server/nonprod-session';
 import { forecastStock } from '@/lib/monitoring/forecast';
 import { forecastSamples, FORECAST_AS_OF } from '@/lib/monitoring/forecast-data';
 import { parseForecastCsv } from '@/lib/monitoring/forecast-csv';
@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 const reply = (body: unknown, status = 200) => NextResponse.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 const guard = async (request: Request) => {
   if (!isLocalRequest(request)) return reply({ error: 'Tidak tersedia.' }, 404);
-  const user = await readPreviewSession();
+  const user = await readSession();
   if (!user) return reply({ error: 'Silakan masuk.' }, 401);
   if (user.role !== 'admin') return reply({ error: 'Akses khusus admin.' }, 403);
   return null;

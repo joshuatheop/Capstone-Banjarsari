@@ -1,5 +1,3 @@
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
-
 export type DataBackend = 'firestore' | 'supabase';
 export type AppEnv = 'production' | 'nonprod' | 'development';
 
@@ -15,7 +13,7 @@ export const APP_ENV = appEnv;
 /**
  * Pengaman agar DB production tidak tersentuh dari lingkungan non-prod, dan sebaliknya:
  * - supabase (non-prod) ditolak saat APP_ENV=production.
- * - firestore hanya boleh saat APP_ENV=production, atau LOCAL_PREVIEW (project placeholder demo-palugada).
+ * - firestore (production) hanya boleh saat APP_ENV=production.
  */
 export function resolveBackend(): DataBackend {
   if (requested === 'supabase') {
@@ -24,10 +22,8 @@ export function resolveBackend(): DataBackend {
     }
     return 'supabase';
   }
-  if (appEnv !== 'production' && !LOCAL_PREVIEW) {
-    throw new Error(
-      'Firestore (production) tidak boleh dipakai di non-prod. Set NEXT_PUBLIC_DATA_BACKEND=supabase atau NEXT_PUBLIC_LOCAL_PREVIEW=true.',
-    );
+  if (appEnv !== 'production') {
+    throw new Error('Firestore (production) tidak boleh dipakai di non-prod. Set NEXT_PUBLIC_DATA_BACKEND=supabase.');
   }
   return 'firestore';
 }

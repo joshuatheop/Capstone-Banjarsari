@@ -10,12 +10,12 @@ import { useAuth } from '@/context/AuthContext';
 import { getUserDocument, updateUserDocument } from '@/lib/auth';
 import { compressToWebPBase64 } from '@/lib/imageUtils';
 import styles from './profile.module.css';
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { NONPROD } from '@/lib/nonprod';
 import CustomerAccount from '@/components/commerce/CustomerAccount';
 import { contactIsValid, normalizeContact } from '@/lib/commerce/contact';
 
 export default function ProfilePage() {
-  return LOCAL_PREVIEW ? <CustomerAccount /> : <FirebaseProfilePage />;
+  return NONPROD ? <CustomerAccount /> : <FirebaseProfilePage />;
 }
 
 function FirebaseProfilePage() {

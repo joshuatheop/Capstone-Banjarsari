@@ -3,7 +3,7 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { useAuth } from './AuthContext';
 import { accountFetch } from '@/lib/account-client';
 import { customerAccess, type AccountAccess } from '@/lib/accounts/types';
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { NONPROD } from '@/lib/nonprod';
 const Context = createContext<{ access: AccountAccess | null; loading: boolean; error: string; refresh: () => Promise<void> }>({ access: null, loading: true, error: '', refresh: async () => {} });
 export function AccountAccessProvider({ children }: { children: React.ReactNode }) {
   const { user, loading: authLoading } = useAuth();
@@ -26,7 +26,7 @@ export function AccountAccessProvider({ children }: { children: React.ReactNode 
     const invalidatePending = () => { requestVersion.current++; };
     const reload = () => { if (active) void refresh(); };
     const timer = setTimeout(async () => {
-      if (uid && !LOCAL_PREVIEW) { try { await accountFetch('/api/account/session', { method: 'POST' }); } catch {} }
+      if (uid && !NONPROD) { try { await accountFetch('/api/account/session', { method: 'POST' }); } catch {} }
       reload();
     }, 0);
     window.addEventListener('focus', reload);

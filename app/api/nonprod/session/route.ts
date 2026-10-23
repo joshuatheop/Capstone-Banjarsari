@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { authenticatePreview, createPreviewSession, isLocalRequest, readPreviewSession, sameOrigin, SESSION_AGE, SESSION_COOKIE } from '@/lib/server/preview-session';
+import { authenticateNonprod, createSession, isLocalRequest, readSession, sameOrigin, SESSION_AGE, SESSION_COOKIE } from '@/lib/server/nonprod-session';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -8,7 +8,7 @@ const attempts = new Map<string, { count: number; resetAt: number }>();
 
 export const GET = async (request: Request) => {
   if (!isLocalRequest(request)) return reply({ error: 'Tidak tersedia.' }, 404);
-  return reply({ user: await readPreviewSession() });
+  return reply({ user: await readSession() });
 };
 
 export const POST = async (request: Request) => {
@@ -24,11 +24,11 @@ export const POST = async (request: Request) => {
     const previous = attempts.get(key);
     const attempt = previous && previous.resetAt > Date.now() ? previous : { count: 0, resetAt: Date.now() + 60000 };
     if (attempt.count >= 20) return reply({ error: 'Terlalu banyak percobaan. Tunggu satu menit lalu coba lagi.' }, 429);
-    const user = await authenticatePreview(email, password);
+    const user = await authenticateNonprod(email, password);
     if (!user) { attempt.count++; attempts.set(key, attempt); return reply({ error: 'Username atau kata sandi salah.' }, 401); }
     attempts.delete(key);
     const response = reply({ user });
-    response.cookies.set(SESSION_COOKIE, createPreviewSession(user), { httpOnly: true, sameSite: 'strict', path: '/', maxAge: SESSION_AGE });
+    response.cookies.set(SESSION_COOKIE, createSession(user), { httpOnly: true, sameSite: 'strict', path: '/', maxAge: SESSION_AGE });
     return response;
   } catch { return reply({ error: 'Login lokal gagal. Periksa konfigurasi lokal.' }, 400); }
 };
