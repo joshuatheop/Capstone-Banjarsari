@@ -7,15 +7,15 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { auth } from '@/lib/firebase';
 import { createUserDocument } from '@/lib/auth';
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
-import LocalAccount from '@/components/commerce/LocalAccount';
+import { NONPROD } from '@/lib/nonprod';
+import NonprodAccount from '@/components/commerce/NonprodAccount';
 import { useAuth } from '@/context/AuthContext';
 import { getAllBisnis } from '@/lib/firestore/bisnis';
 import { getAllKategori } from '@/lib/firestore/kategori';
 import styles from './login.module.css';
 
 export default function LoginPage() {
-  return LOCAL_PREVIEW ? <LocalAccount /> : <FirebaseLoginPage />;
+  return NONPROD ? <NonprodAccount /> : <FirebaseLoginPage />;
 }
 
 function FirebaseLoginPage() {

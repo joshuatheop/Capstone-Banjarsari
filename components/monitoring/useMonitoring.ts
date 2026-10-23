@@ -2,7 +2,7 @@
 import { usePathname } from 'next/navigation';
 import { accountFetch } from '@/lib/account-client';
 import { useCallback, useEffect, useState } from 'react';
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { NONPROD } from '@/lib/nonprod';
 import type { MonitoringData } from '@/lib/monitoring/types';
 
 export const useMonitoring = (customer = false) => {
@@ -12,9 +12,9 @@ export const useMonitoring = (customer = false) => {
   const [loading, setLoading] = useState(true);
   const load = useCallback(async (signal?: AbortSignal) => {
     setLoading(true); setError('');
-    if (!LOCAL_PREVIEW && customer) { setError('Sumber data transaksi belum terhubung. Aktifkan pratinjau lokal untuk melihat contoh tampilan.'); setLoading(false); return; }
+    if (!NONPROD && customer) { setError('Sumber data transaksi production belum terhubung.'); setLoading(false); return; }
     try {
-      const response = await accountFetch(customer ? '/api/local/activity' : seller ? '/api/seller' : '/api/super-admin/monitoring', { cache: 'no-store', signal });
+      const response = await accountFetch(customer ? '/api/nonprod/activity' : seller ? '/api/seller' : '/api/super-admin/monitoring', { cache: 'no-store', signal });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error || 'Data gagal dimuat.');
       setData(body.data);

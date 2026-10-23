@@ -1,28 +1,27 @@
 # PALUGADA Banjarsari
 
-Marketplace warga: Belanja, Makanan, Jasa, dan direktori kontak Ojek; monitoring admin dan rekomendasi stok. Status implementasi dan batas demo dijelaskan di [Design.md](docs/Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16) dan [AUDIT.md](docs/AUDIT.md).
+Marketplace warga: Belanja, Makanan, Jasa, dan direktori kontak Ojek; monitoring admin dan rekomendasi stok. Status implementasi dan batas lingkungan non-prod dijelaskan di [Design.md](docs/Design.md#38-commerce-direktori-ojek-dan-keputusan-persiapan--v16) dan [AUDIT.md](docs/AUDIT.md).
 
-## Menjalankan demo lokal
+## Menjalankan lingkungan non-prod
 
 Gunakan Node.js 22 dan npm. Dari folder repository:
 
 ```powershell
 npm ci
-npm run setup:local
-npm run setup:lan
-npm run dev:lan
+npm run setup:nonprod
+npm run dev:local
 ```
 
-setup:local hanya untuk instalasi pertama dan tidak menimpa .env.local existing. setup:lan memperbarui alamat jaringan, mengatur password demo, dan merotasi secret sesi. Bila .env.local sudah ada, pastikan NEXT_PUBLIC_LOCAL_PREVIEW=true sebelum melanjutkan; jangan pakai konfigurasi produksi untuk demo.
+Lingkungan non-prod memakai database Supabase non-prod (lihat [Database non-prod](#database-non-prod-supabase)). Urutannya: jalankan `supabase/migrations/*.sql` di project Supabase non-prod, isi `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` di `.env.local`, jalankan `npm run setup:nonprod`, lalu jalankan SQL pendaftaran secret yang dicetaknya di SQL Editor. `setup:nonprod` hanya menambahkan nilai yang belum ada dan tidak pernah menimpa `.env.local`. Untuk akses dari HP, jalankan `npm run setup:lan` (mengisi `NONPROD_HOSTS` dan merotasi secret sesi) lalu `npm run dev:lan`. Jangan pakai kredensial atau project production.
 
-Buka [localhost:3000](http://localhost:3000). Dari HP pada Wi-Fi yang sama, gunakan IP Wi-Fi laptop yang ditampilkan setup:lan. Saat verifikasi: [192.168.0.109:3000](http://192.168.0.109:3000). Laptop/server harus tetap menyala. Jika IP berubah, jalankan setup:lan dan restart dev:lan.
+Buka [localhost:3000](http://localhost:3000). Dari HP pada Wi-Fi yang sama, gunakan IP Wi-Fi laptop yang ditampilkan setup:lan dan jalankan `npm run dev:lan`. Laptop/server harus tetap menyala. Jika IP berubah, jalankan setup:lan dan restart dev:lan.
 
-| Akun | Username | Password demo | Halaman |
+| Akun | Username | Password | Halaman |
 |---|---|---|---|
-| Super Admin | admin | Admin123! | /super-admin |
-| Customer | user | User123! | / |
+| Super Admin | admin | dari `supabase/accounts.sql` (tabel `users`) | /super-admin |
+| Customer | user | dari `supabase/accounts.sql` (tabel `users`) | / |
 
-Alias email admin@palugada.local dan user@palugada.local juga diterima. Kredensial sederhana ini hanya untuk development; secret sesi acak, environment, dan data transaksi berada di file yang diabaikan Git.
+Alias email admin@palugada.local dan user@palugada.local juga diterima. Akun hasil pendaftaran lewat form disimpan di tabel `users` dengan hash bcrypt. Secret sesi dan environment berada di file yang diabaikan Git; password tidak lagi berasal dari `.env.local`.
 
 ## VS Code dan akses HP
 
@@ -30,7 +29,7 @@ Alias email admin@palugada.local dan user@palugada.local juga diterima. Kredensi
 - **Run and Debug → PALUGADA: Buka aplikasi lokal** membuka browser Edge setelah server berjalan.
 - .vscode/settings.json menamai port 3000 sebagai PALUGADA Banjarsari.
 - Jika HP tidak terhubung, jalankan VS Code **sebagai Administrator**, lalu task **PALUGADA: Izinkan akses HP (Windows Administrator)**. Aturan firewall hanya berlaku untuk Node, TCP 3000, sumber LocalSubnet. Pada sesi implementasi, UAC dibatalkan sehingga aturan ini belum diterapkan.
-- Untuk URL di luar Wi-Fi yang sama, pilih **Ports → Forward a Port → 3000**, sign in jika diminta, dan pertahankan visibility **Private**. Ini langkah manual; belum ada tunnel aktif. Jika proxy mempertahankan hostname tunnel, tambahkan hostname persis ke LOCAL_PREVIEW_HOSTS dan restart development server. Jangan memakai wildcard. Lihat [panduan VS Code](https://code.visualstudio.com/docs/debugtest/port-forwarding).
+- Untuk URL di luar Wi-Fi yang sama, pilih **Ports → Forward a Port → 3000**, sign in jika diminta, dan pertahankan visibility **Private**. Ini langkah manual; belum ada tunnel aktif. Jika proxy mempertahankan hostname tunnel, tambahkan hostname persis ke NONPROD_HOSTS dan restart development server. Jangan memakai wildcard. Lihat [panduan VS Code](https://code.visualstudio.com/docs/debugtest/port-forwarding).
 
 ## Mencoba fitur
 
@@ -38,7 +37,7 @@ Customer: login → lengkapi nama/HP/alamat pertama → pilih produk dan jumlah 
 
 Admin: buka Ringkasan untuk KPI dan insight, Pesanan/Pembayaran/Booking untuk monitoring, **Forecasting stok** untuk saran barang dan produksi makanan. Unduh contoh CSV, isi data harian lengkap minimal 28 hari, pilih tanggal akhir data, lalu impor. Dataset awal berupa simulasi 56 hari; data impor hanya dianalisis untuk sesi halaman.
 
-Demo tidak memproses pembayaran, mengirim WhatsApp, menjalankan pengantaran, atau menulis data ke Firebase production. Store demo .local/commerce.json tetap ada setelah restart. Jangan mengisi data pribadi sungguhan. Ruang lingkup yang belum selesai tercatat pada AUDIT.md.
+Lingkungan non-prod tidak memproses pembayaran, mengirim WhatsApp, menjalankan pengantaran, atau menulis data ke Firebase production. Stok, pesanan, booking, dan workspace seller tersimpan di database Supabase non-prod. Jangan mengisi data pribadi sungguhan. Ruang lingkup yang belum selesai tercatat pada AUDIT.md.
 
 ## Pemeriksaan
 
@@ -46,11 +45,11 @@ Demo tidak memproses pembayaran, mengirim WhatsApp, menjalankan pengantaran, ata
 npm test
 npm run lint
 npm run build
-npm run test:local-api
+npm run test:nonprod-api
 npm run test:commerce
 ```
 
-Dua pemeriksaan API memerlukan dev:lan/dev:local yang aktif dan .local/accounts.json. Test commerce membuat pesanan berlabel uji, membatalkannya, dan meninggalkan booking uji. Pengujian browser/screenshot lokal berada di .local/ dan tidak ikut Git.
+Tiga pemeriksaan API memerlukan dev server non-prod yang aktif, migrasi + secret server sudah diterapkan, dan password akun demo lewat `TEST_ADMIN_PASSWORD` dan `TEST_USER_PASSWORD` (atau `.local/accounts.json`). Test memilih produk dan jasa dari katalog non-prod, membuat pesanan berlabel uji, membatalkannya, dan meninggalkan booking uji. Pengujian browser/screenshot lokal berada di .local/ dan tidak ikut Git.
 
 Next.js 16.3.6, React 19, TypeScript, Firebase, CSS Modules. SheetJS memakai tarball 0.20.3 dari [distribusi resmi](https://docs.sheetjs.com/docs/getting-started/installation/nodejs/) karena versi npm lama memiliki advisori keamanan. npm ci memerlukan akses registry npm dan cdn.sheetjs.com.
 
@@ -71,7 +70,7 @@ Admin mobile memakai drawer melalui tombol Menu. Pembayaran menyediakan filter m
 
 ## Akun dan workspace — v1.7
 
-Semua registrasi baru menjadi **CUSTOMER**. Demo kini mendukung registrasi email/password lokal; setelah login lengkapi profil seperti biasa. Login masuk ke pengalaman customer. Tombol avatar kanan atas menyediakan profil, alamat, pesanan, favorit, settings, pengajuan toko, dan logout.
+Semua registrasi baru menjadi **CUSTOMER**. Non-prod mendukung registrasi email/password yang disimpan di database non-prod; setelah login lengkapi profil seperti biasa. Login masuk ke pengalaman customer. Tombol avatar kanan atas menyediakan profil, alamat, pesanan, favorit, settings, pengajuan toko, dan logout.
 
 Untuk mencoba seller:
 
@@ -88,7 +87,7 @@ Untuk mencoba seller:
 npm run test:accounts
 ```
 
-Tes membuat akun/pengajuan/katalog berlabel uji yang tetap tersimpan lokal. Password registrasi demo di-hash dengan scrypt; jangan gunakan kredensial pribadi. Katalog seller demo belum terhubung ke katalog transaksi customer, dan catatan stok seller belum menggantikan reservasi inventory. Dashboard transaksi seller baru menampilkan empty state. Ini dijelaskan juga pada UI, [Design v1.7](docs/Design.md#39-satu-akun-pembeli-seller-capability-dan-governance--v17), dan AUDIT.md.
+Tes membuat akun/pengajuan/katalog berlabel uji yang tetap tersimpan di database non-prod; item seller ikut tampil di katalog non-prod. Password registrasi di-hash bcrypt di Postgres; jangan gunakan kredensial pribadi.
 
 ### Mengaktifkan adapter Firebase production
 
@@ -97,7 +96,7 @@ Adapter role/approval/katalog disiapkan tetapi **belum diaktifkan atau diuji liv
 - `GOOGLE_APPLICATION_CREDENTIALS` atau Application Default Credentials memberi Firebase Admin akses ke project yang benar. Simpan credential di luar Git.
 - `NEXT_PUBLIC_FIREBASE_PROJECT_ID` dan `NEXT_PUBLIC_SITE_URL` harus menunjuk project/origin aplikasi yang benar.
 - Provision UID operator terverifikasi dengan `node scripts/provision-super-admin.mjs <uid>`, kemudian login ulang. Script tidak membuat akun baru dan tidak otomatis mempromosikan `users.role=admin` lama. Saat mencabut hak operator, hapus claim dan revoke refresh tokens/sesi melalui Admin SDK.
-- Setelah verifikasi rules/credential selesai, set `PALUGADA_ACCOUNT_SERVER_ENABLED=true` pada environment server. Nonaktifkan mode preview untuk deployment production.
+- Setelah verifikasi rules/credential selesai, set `PALUGADA_ACCOUNT_SERVER_ENABLED=true` pada environment server. Production tidak memakai sesi non-prod (`NEXT_PUBLIC_DATA_BACKEND` bukan `supabase`).
 - Role authority dan application disimpan di koleksi private `palugada_workspaces`; Business/katalog dimirror secara atomik ke `bisnis`/`produk`/`jasa`. Jangan memberi client akses tulis ke workspace ini.
 
 Tidak ada deployment rules, provisioning operator, atau migrasi toko legacy yang dijalankan dalam implementasi ini. Monitoring transaksi production tetap memerlukan integrasi domain transaksi existing.
@@ -114,18 +113,20 @@ Environment non-prod memakai database Supabase yang **terpisah dari production**
 | `NEXT_PUBLIC_SUPABASE_URL` | URL project Supabase **non-prod** | Koneksi DB |
 | `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Publishable key project non-prod | Kunci klien; akses dibatasi RLS |
 
-Pengaman: `supabase` ditolak bila `APP_ENV=production`, dan `firestore` di luar production hanya diizinkan dengan `NEXT_PUBLIC_LOCAL_PREVIEW=true`. Jangan mengisi variabel Supabase dengan project production atau menyimpan service key di `NEXT_PUBLIC_*`.
+Pengaman: `supabase` ditolak bila `APP_ENV=production`, dan `firestore` hanya diizinkan bila `APP_ENV=production`. Jangan mengisi variabel Supabase dengan project production atau menyimpan service key di `NEXT_PUBLIC_*`.
 
 Setup singkat (rincian di [supabase/README.md](supabase/README.md)):
 
 1. Buat project Supabase non-prod, lalu jalankan `supabase/migrations/*.sql` berurutan di SQL Editor.
 2. Buat seed anonim dari ekspor Firestore: `node scripts/firexport-to-supabase-seed.mjs <folder-csv>`, lalu jalankan `supabase/seed.sql`. Email, telepon, nama, alamat, dan foto dianonimkan; ekspor mentah dan hasil seed tidak boleh di-commit.
-3. Salin `supabase/accounts.example.sql` menjadi `supabase/accounts.sql`, ganti placeholder password, lalu jalankan di SQL Editor untuk membuat akun demo admin/user (password disimpan sebagai hash bcrypt, bukan teks polos). `accounts.sql` memuat password demo sehingga diabaikan Git.
+3. Salin `supabase/accounts.example.sql` menjadi `supabase/accounts.sql`, ganti placeholder password, lalu jalankan di SQL Editor untuk membuat akun admin/user (password disimpan sebagai hash bcrypt, bukan teks polos). `accounts.sql` memuat password sehingga diabaikan Git.
 4. Isi variabel di atas dan jalankan ulang `npm run dev:local`.
 
-Dengan backend Supabase, login `admin` dan `user` diperiksa terhadap DB (bukan password di `.env.local`), sehingga password pada tabel akun demo di atas tidak berlaku. Akun yang mendaftar lewat form tetap disimpan lokal.
+Semua login non-prod diperiksa terhadap DB lewat `login_user`; tidak ada password di `.env.local`. Akun hasil pendaftaran form disimpan di tabel `users`.
 
-Batas saat ini: baca katalog, detail, dan penghitung klik sudah memakai lapisan data. Stok/checkout tetap memakai store lokal sehingga produk seed tampil stok 0, ulasan, favorit, jalur tulis admin/seller, dan analytics klien belum dipindahkan, dan login Supabase baru tersedia pada mode preview development. Lihat [Design bagian 41](docs/Design.md#41-database-non-prod-supabase-dan-lapisan-data--v19) dan [AUDIT](docs/AUDIT.md#database-non-prod-supabase--v19-5-oktober-2026).
+**Keamanan akses.** Tabel transaksi (`orders`, `bookings`, `request_log`, `account_workspaces`) memakai RLS tanpa policy. Baca/tulis hanya lewat fungsi `security definer` yang menolak panggilan tanpa `NONPROD_DB_SECRET` (disimpan sebagai hash di tabel `server_secret`). Secret ini hanya ada di environment server, bukan `NEXT_PUBLIC_*`; publishable key saja tidak cukup untuk membaca pesanan.
+
+Sudah di Supabase: katalog, penghitung klik/like, stok, checkout, pembatalan, booking, registrasi, login, workspace seller beserta publikasi katalognya, dan monitoring. Belum: ulasan (menunggu alur pesanan selesai), halaman admin katalog lama (masih Firebase), analytics klien, dan sesi non-prod untuk build production (hanya `next dev`). Lihat [Design bagian 42](docs/Design.md#42-transaksi-non-prod-di-supabase-dan-penghapusan-mode-demo-firebase--v20) dan [AUDIT](docs/AUDIT.md#transaksi-non-prod-supabase--v20-23-oktober-2026).
 
 ## Dokumentasi dan catatan developer
 

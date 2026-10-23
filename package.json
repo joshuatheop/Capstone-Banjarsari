@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "setup:local": "node scripts/setup-local.mjs",
+    "setup:nonprod": "node scripts/setup-nonprod.mjs",
     "test:monitoring": "node --experimental-strip-types --test scripts/monitoring.test.mjs",
-    "test:local-api": "node scripts/check-local-api.mjs",
+    "test:nonprod-api": "node scripts/check-nonprod-api.mjs",
     "dev:local": "next dev --hostname 127.0.0.1",
     "dev:lan": "next dev --hostname 0.0.0.0 --port 3000",
     "setup:lan": "node scripts/setup-lan.mjs",

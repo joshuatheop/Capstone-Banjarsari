@@ -1,43 +1,61 @@
 import 'server-only';
-import { mkdir, open, readFile, rename, unlink, writeFile, readdir } from 'node:fs/promises';
-import { randomUUID } from 'node:crypto';
-import path from 'node:path';
 import { applicationDefault, getApps, initializeApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 import type { AccountIdentity, AccountWorkspace } from '@/lib/accounts/types';
 import { AccountError, actorSafeId, emptyWorkspace } from '@/lib/accounts/policy';
-import { previewEnabled } from './preview-session';
+import { nonprodEnabled } from './nonprod-session';
+import { DbError, rpc } from './nonprod-db';
 
 export function adminServices() {
   if (process.env.PALUGADA_ACCOUNT_SERVER_ENABLED !== 'true') throw new AccountError('Layanan akun production belum dikonfigurasi. Hubungi pengelola.', 503);
   const app = getApps().find(app => app.name === 'palugada-server') ?? initializeApp({ credential: applicationDefault(), projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID }, 'palugada-server');
   return { auth: getAuth(app), db: getFirestore(app) };
 }
-const folder = path.join(process.cwd(), '.local', 'account-workspaces');
+const tooLarge = (workspace: AccountWorkspace) => {
+  if (Buffer.byteLength(JSON.stringify(workspace), 'utf8') > 850000) throw new AccountError('Ukuran data toko terlalu besar. Kurangi gambar atau deskripsi.');
+};
+// Mirror toko dan listing seller ke katalog non-prod (bisnis/produk/jasa), setara mirror Firestore di production.
+const publishCatalog = async (workspace: AccountWorkspace) => {
+  const business = workspace.business;
+  if (!business) return;
+  const active = business.status === 'ACTIVE';
+  try {
+    await rpc('catalog_publish', {
+      p_business: { business_id: business.id, owner_user_id: business.ownerId, seller_status: business.status, business_name: business.businessName, business_description: business.description,
+        business_address: business.address, business_phone: business.whatsapp, business_logo_url: business.logo, slug: business.id, area_name: business.address, owner_name: business.ownerName, is_active: active, created_at: business.createdAt },
+      p_listings: workspace.listings.map(item => ({ kind: item.kind, id: item.id, business_id: business.id, name: item.name, description: item.description, price: item.price, stock: item.stock,
+        image: item.image, whatsapp: business.whatsapp, is_active: item.active && active, updated_at: item.updatedAt })),
+    });
+  } catch (error) {
+    if (error instanceof DbError && error.message === 'business_owned') throw new AccountError('Business ID sudah dimiliki akun lain.', 409);
+    throw error;
+  }
+};
+const readNonprod = async (identity: AccountIdentity) => {
+  const rows = await rpc<{ data: AccountWorkspace; revision: number }[]>('workspace_get', { p_uid: actorSafeId(identity.uid) });
+  return rows[0] ? { workspace: rows[0].data, revision: rows[0].revision } : { workspace: emptyWorkspace(identity), revision: 0 };
+};
 export async function readWorkspace(identity: AccountIdentity): Promise<AccountWorkspace> {
-  if (!previewEnabled()) {
+  if (!nonprodEnabled()) {
     const snapshot = await adminServices().db.collection('palugada_workspaces').doc(actorSafeId(identity.uid)).get();
     return snapshot.exists ? snapshot.data() as AccountWorkspace : emptyWorkspace(identity);
   }
-  try { return JSON.parse(await readFile(path.join(folder, `${actorSafeId(identity.uid)}.json`), 'utf8')); }
-  catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') return emptyWorkspace(identity); throw error; }
+  return (await readNonprod(identity)).workspace;
 }
 export async function listWorkspaces(): Promise<AccountWorkspace[]> {
-  if (!previewEnabled()) return (await adminServices().db.collection('palugada_workspaces').get()).docs.map(doc => doc.data() as AccountWorkspace);
-  await mkdir(folder, { recursive: true });
-  const files = (await readdir(folder)).filter(name => name.endsWith('.json'));
-  return Promise.all(files.map(async name => JSON.parse(await readFile(path.join(folder, name), 'utf8')) as AccountWorkspace));
+  if (!nonprodEnabled()) return (await adminServices().db.collection('palugada_workspaces').get()).docs.map(doc => doc.data() as AccountWorkspace);
+  return (await rpc<{ data: AccountWorkspace }[]>('workspace_list')).map(row => row.data);
 }
 export async function mutateWorkspace(identity: AccountIdentity, action: (workspace: AccountWorkspace) => void): Promise<AccountWorkspace> {
-  if (!previewEnabled()) {
+  if (!nonprodEnabled()) {
     const { db } = adminServices();
     return db.runTransaction(async transaction => {
       const ref = db.collection('palugada_workspaces').doc(actorSafeId(identity.uid));
       const snapshot = await transaction.get(ref);
       const workspace = snapshot.exists ? snapshot.data() as AccountWorkspace : emptyWorkspace(identity);
       action(workspace);
-      if (Buffer.byteLength(JSON.stringify(workspace), "utf8") > 850000) throw new AccountError("Ukuran data toko terlalu besar. Kurangi gambar atau deskripsi.");
+      tooLarge(workspace);
       const business = workspace.business;
       if (business) {
         const businessRef = db.collection('bisnis').doc(business.id);
@@ -61,19 +79,12 @@ export async function mutateWorkspace(identity: AccountIdentity, action: (worksp
       return workspace;
     });
   }
-  await mkdir(folder, { recursive: true });
-  const filename = path.join(folder, `${actorSafeId(identity.uid)}.json`), lockfile = filename + '.lock';
-  let lock;
-  for (let i = 0; i < 150; i++) {
-    try { lock = await open(lockfile, 'wx'); break; }
-    catch (error) { if ((error as NodeJS.ErrnoException).code !== 'EEXIST') throw error; await new Promise(resolve => setTimeout(resolve, 20)); }
+  // Optimistic lock: baca revision, terapkan perubahan, simpan hanya bila revision belum berubah.
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const { workspace, revision } = await readNonprod(identity);
+    action(workspace); tooLarge(workspace);
+    try { await rpc('workspace_save', { p_uid: actorSafeId(identity.uid), p_data: workspace, p_revision: revision }); await publishCatalog(workspace); return workspace; }
+    catch (error) { if (!(error instanceof DbError && error.message === 'conflict')) throw error; }
   }
-  if (!lock) throw new AccountError('Akun sedang diproses. Coba lagi.', 409);
-  try {
-    const workspace = await readWorkspace(identity); action(workspace);
-    if (Buffer.byteLength(JSON.stringify(workspace), "utf8") > 850000) throw new AccountError("Ukuran data toko terlalu besar. Kurangi gambar atau deskripsi.");
-    const temp = filename + `.${randomUUID()}.tmp`;
-    await writeFile(temp, JSON.stringify(workspace), 'utf8'); await rename(temp, filename);
-    return workspace;
-  } finally { await lock.close(); await unlink(lockfile); }
+  throw new AccountError('Akun sedang diproses. Coba lagi.', 409);
 }

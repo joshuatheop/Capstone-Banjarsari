@@ -15,9 +15,9 @@ This is the single project guide for coding agents. Do not create duplicate agen
 - app/(auth): login and registration.
 - app/(workspace)/seller and super-admin: owner-scoped operations and platform governance. app/(workspace)/admin retains migration sources; proxy.ts redirects old URLs.
 - app/api/account, seller, super-admin: server-verified role/ownership APIs; lib/accounts holds contracts/policy and lib/server/account-* holds persistence/auth. Client profile role is never authority.
-- app/api/local: development-only authenticated APIs. Keep host/origin validation, role checks, ownership checks, and idempotency.
+- app/api/nonprod: development-only authenticated APIs backed by Supabase non-prod. Keep host/origin validation, role checks, ownership checks, and idempotency.
 - components/commerce: reusable customer views; components/monitoring: admin views; components/shared: shared maps, reviews, icons, footer.
-- lib/commerce and lib/server: local transaction validation/storage; lib/monitoring: metrics; lib/monitoring/forecast*: forecasting.
+- lib/commerce and lib/server: transaction validation; lib/server persists non-prod data through Supabase RPC (supabase/migrations); lib/monitoring: metrics; lib/monitoring/forecast*: forecasting.
 - context: authentication, favorites, cart. Cart selection and browser address preferences are presentation state, not new Firestore fields.
 - styles/legacy: retained styles required by Firebase management/detail pages. New views use CSS Modules and the shared tokens in app/globals.css.
 - public/illustrations: original generated demo assets and provenance. Do not depict them as actual seller photography.
@@ -27,7 +27,7 @@ This is the single project guide for coding agents. Do not create duplicate agen
 
 Use TypeScript and CSS Modules; do not add Tailwind or dependencies without explaining and documenting why. Follow docs/Design.md tokens: Plus Jakarta Sans for customer headings/body, green primary, semantic colors for statuses, restrained orange for promotions. Keep mobile touch targets and keyboard focus visible. Do not fabricate discounts, ratings, urgency, balances, ETAs, or tracking.
 
-Keep Firebase configuration and all secrets in ignored environment files. Preserve production Firebase behavior and existing collections. Local demo data must remain development-only; no real payment or messaging side effects. Do not weaken Firestore rules or allow users to grant themselves admin roles.
+Keep Firebase configuration and all secrets in ignored environment files. Preserve production Firebase behavior and existing collections. Non-prod data lives only in the Supabase non-prod project; never point it at production. No real payment or messaging side effects. Do not weaken Firestore rules or allow users to grant themselves admin roles.
 
 Run npm run lint and npm run build for code/route changes; npm test for domain logic. When transaction behavior changes, verify local API tests and the browser checkout flow. Check mobile and desktop layouts, errors, empty states, and keyboard navigation. Update docs/Design.md and docs/AUDIT.md when behavior or limitations change.
 

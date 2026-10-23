@@ -6,7 +6,7 @@ import { ChevronLeft, MapPin, Plus, Check, Trash2 } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useCustomerProfile } from '@/context/CustomerProfileContext';
 import { safeReturnPath, type CustomerProfile, type SavedAddress } from '@/lib/commerce/profile';
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { NONPROD } from '@/lib/nonprod';
 import ContactFields from './ContactFields';
 import market from './marketplace.module.css';
 import styles from './refinement.module.css';
@@ -35,6 +35,6 @@ function ProfileEditor({ initial, manage }: { initial: CustomerProfile; manage: 
     <form onSubmit={submit} className={styles.profileForm}><h2>{profile.addresses.some(a => a.id === draft.id) ? 'Edit alamat' : 'Alamat pertama / baru'}</h2><label>Nama lengkap<input required minLength={2} maxLength={100} autoComplete="name" value={name} onChange={e => setName(e.target.value)}/></label><label>Label alamat<input required maxLength={40} value={draft.label} onChange={e => setDraft({ ...draft, label: e.target.value })} placeholder="Rumah, Kantor, atau lainnya"/></label><label>Nama penerima<input required minLength={2} maxLength={100} autoComplete="shipping name" value={draft.recipient} onChange={e => setDraft({ ...draft, recipient: e.target.value })}/></label><ContactFields value={draft} onChange={value => setDraft({ ...draft, ...value })} disabled={pending}/><label>Patokan / catatan alamat (opsional)<input maxLength={200} value={draft.note} onChange={e => setDraft({ ...draft, note: e.target.value })}/></label><label className={styles.check}><input type="checkbox" checked={primary} onChange={e => setPrimary(e.target.checked)}/>Jadikan alamat utama</label>
       {error && <p role="alert" className={styles.error}>{error}</p>}{message && <p role="status" className={market.feedback}><Check size={17}/>{message}</p>}<button className={market.mainButton} disabled={pending}>{pending ? 'Menyimpan…' : manage ? 'Simpan alamat' : 'Simpan & lanjutkan'}</button>
       {manage && profile.addresses.length > 1 && profile.addresses.some(a => a.id === draft.id) && <button type="button" className={styles.subtleDanger} disabled={pending} onClick={async () => { if (!confirm('Hapus alamat ini?')) return; setPending(true); try { const addresses = profile.addresses.filter(a => a.id !== draft.id); await save({ ...profile, addresses, defaultAddressId: profile.defaultAddressId === draft.id ? addresses[0].id : profile.defaultAddressId }); setDraft(addresses[0]); setPrimary(profile.defaultAddressId === draft.id || profile.defaultAddressId === addresses[0].id); } catch { setError('Alamat gagal dihapus.'); } finally { setPending(false); } }}><Trash2 size={16}/>Hapus alamat ini</button>}
-      <p className={styles.muted}>{LOCAL_PREVIEW ? 'Profil demo tersimpan per akun di browser ini.' : 'Kontak utama disimpan ke profil. Label, penerima, patokan, dan alamat tambahan tersimpan di browser ini.'}</p>
+      <p className={styles.muted}>{NONPROD ? 'Profil non-prod tersimpan per akun di browser ini.' : 'Kontak utama disimpan ke profil. Label, penerima, patokan, dan alamat tambahan tersimpan di browser ini.'}</p>
     </form></>;
 }

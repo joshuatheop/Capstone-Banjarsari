@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { createPreviewSession, isLocalRequest, sameOrigin, SESSION_AGE, SESSION_COOKIE } from '@/lib/server/preview-session';
-import { registerCustomer } from '@/lib/server/preview-identities';
+import { createSession, isLocalRequest, sameOrigin, SESSION_AGE, SESSION_COOKIE } from '@/lib/server/nonprod-session';
+import { registerCustomer } from '@/lib/server/nonprod-identities';
 import { accountFailure, accountInput } from '@/lib/server/account-auth';
 const attempts = new Map<string, number>();
 export async function POST(request: Request) {
@@ -13,7 +13,7 @@ export async function POST(request: Request) {
   try {
     const input = await accountInput(request), user = await registerCustomer(input);
     const response = NextResponse.json({ user }, { status: 201, headers: { 'Cache-Control': 'no-store' } });
-    response.cookies.set(SESSION_COOKIE, createPreviewSession(user), { httpOnly: true, sameSite: 'strict', path: '/', maxAge: SESSION_AGE });
+    response.cookies.set(SESSION_COOKIE, createSession(user), { httpOnly: true, sameSite: 'strict', path: '/', maxAge: SESSION_AGE });
     return response;
   } catch (error) { return accountFailure(error); }
 }

@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   agentRules: false,
   devIndicators: false,
-  allowedDevOrigins: ['localhost', '127.0.0.1', ...(process.env.LOCAL_PREVIEW_HOSTS ?? '').split(',').map(host => host.trim()).filter(Boolean)],
+  allowedDevOrigins: ['localhost', '127.0.0.1', ...(process.env.NONPROD_HOSTS ?? '').split(',').map(host => host.trim()).filter(Boolean)],
   images: {
     remotePatterns: [
       {

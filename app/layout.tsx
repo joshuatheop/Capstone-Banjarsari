@@ -2,7 +2,7 @@ import { AccountAccessProvider } from '@/context/AccountAccessContext';
 import type { Metadata } from 'next';
 import './globals.css';
 import { AuthProvider } from '@/context/AuthContext';
-import { LOCAL_PREVIEW } from '@/lib/local-preview';
+import { NONPROD } from '@/lib/nonprod';
 import { CartProvider } from '@/context/CartContext';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://palugada.banjarsarigarut.id';
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" data-scroll-behavior="smooth">
       <body className="workspace-theme">
-        <AuthProvider><AccountAccessProvider><CartProvider>{LOCAL_PREVIEW && <div className="preview-banner">Mode demo · Pesanan uji tersimpan lokal · Tidak ada pembayaran nyata</div>}{children}</CartProvider></AccountAccessProvider></AuthProvider>
+        <AuthProvider><AccountAccessProvider><CartProvider>{NONPROD && <div className="nonprod-banner">Lingkungan non-prod · Pesanan uji tersimpan di database non-prod · Tidak ada pembayaran nyata</div>}{children}</CartProvider></AccountAccessProvider></AuthProvider>
       </body>
     </html>
   );

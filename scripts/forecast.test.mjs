@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { forecastStock, datePlus } from '../lib/monitoring/forecast.ts';
 import { parseForecastCsv, forecastCsv } from '../lib/monitoring/forecast-csv.ts';
-import { allowedPreviewRequest, previewSameOrigin } from '../lib/local-network.ts';
+import { allowedHostRequest, sameOriginRequest } from '../lib/local-network.ts';
 const asOf = '2026-09-28';
 const input = (overrides = {}) => ({ id: 'a', name: 'Produk uji', kind: 'RETAIL', unit: 'pcs', onHand: 5, incoming: 2, leadDays: 2, reviewDays: 3, shelfLifeDays: null, history: Array.from({ length: 56 }, (_, i) => ({ date: datePlus(asOf, i - 55), quantity: 10 })), ...overrides });
 test('constant demand, order recommendation and zero-error validation', () => {
@@ -30,8 +30,8 @@ test('CSV round trip, quoting, inconsistent stock and malformed numeric values',
 });
 test('LAN host allowlist and origin require exact match',()=>{
  const request=(host,origin)=>new Request('http://localhost',{headers:{host,origin}});
- assert.equal(allowedPreviewRequest(request('192.168.0.103:3000','http://192.168.0.103:3000'),'192.168.0.103'),true);
- assert.equal(allowedPreviewRequest(request('192.168.0.103.evil.test:3000','http://192.168.0.103:3000'),'192.168.0.103'),false);
- assert.equal(previewSameOrigin(request('192.168.0.103:3000','http://evil.test')),false);
- assert.equal(previewSameOrigin(request('192.168.0.103:3000','http://192.168.0.103:3000')),true);
+ assert.equal(allowedHostRequest(request('192.168.0.103:3000','http://192.168.0.103:3000'),'192.168.0.103'),true);
+ assert.equal(allowedHostRequest(request('192.168.0.103.evil.test:3000','http://192.168.0.103:3000'),'192.168.0.103'),false);
+ assert.equal(sameOriginRequest(request('192.168.0.103:3000','http://evil.test')),false);
+ assert.equal(sameOriginRequest(request('192.168.0.103:3000','http://192.168.0.103:3000')),true);
 });

@@ -1,8 +1,8 @@
 import { auth } from './firebase';
-import { LOCAL_PREVIEW } from './local-preview';
+import { NONPROD } from './nonprod';
 export async function accountFetch(url: string, init: RequestInit = {}) {
   const headers = new Headers(init.headers);
-  if (!LOCAL_PREVIEW) {
+  if (!NONPROD) {
     const user = auth.currentUser;
     if (!user) throw new Error('Silakan masuk terlebih dahulu.');
     headers.set('Authorization', `Bearer ${await user.getIdToken()}`);

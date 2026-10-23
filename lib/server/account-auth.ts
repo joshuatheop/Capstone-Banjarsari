@@ -2,14 +2,14 @@ import 'server-only';
 import { cookies, headers } from 'next/headers';
 import { AccountError } from '@/lib/accounts/policy';
 import type { AccountIdentity } from '@/lib/accounts/types';
-import { isLocalRequest, previewEnabled, readPreviewSession, sameOrigin } from './preview-session';
+import { isLocalRequest, nonprodEnabled, readSession, sameOrigin } from './nonprod-session';
 import { adminServices, readWorkspace } from './account-store';
 
 export async function accountIdentity(request: Request): Promise<AccountIdentity> {
-  if (previewEnabled()) {
+  if (nonprodEnabled()) {
     if (!isLocalRequest(request)) throw new AccountError('Tidak tersedia.', 404);
     if (request.method !== 'GET' && !sameOrigin(request)) throw new AccountError('Origin tidak valid.', 403);
-    const user = await readPreviewSession();
+    const user = await readSession();
     if (!user) throw new AccountError('Silakan masuk terlebih dahulu.', 401);
     return { uid: user.uid, email: user.email, name: user.displayName, superAdmin: user.role === 'admin' };
   }
