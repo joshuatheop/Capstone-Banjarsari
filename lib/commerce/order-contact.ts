@@ -1,7 +1,7 @@
 import type { MonitorOrder } from '../monitoring/types';
-export interface SellerContact { name: string; phone: string | null }
+export interface SellerContact { businessId?: string; name: string; phone: string | null }
 export function whatsappOrderLink(order: MonitorOrder, contacts: SellerContact[]): string | null {
-  const matches = contacts.filter(contact => contact.name === order.seller);
+  const matches = contacts.filter(contact => order.businessId ? contact.businessId === order.businessId : contact.name === order.seller);
   const source = matches.length === 1 ? matches[0].phone : null;
   if (!source || !/^[+\d\s().-]+$/.test(source)) return null;
   const phone = source.replace(/\D/g, '').replace(/^0/, '62');

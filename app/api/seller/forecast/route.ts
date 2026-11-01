@@ -2,9 +2,26 @@ import { accountFailure, accountIdentity, accountInput, accountReply } from '@/l
 import { readWorkspace } from '@/lib/server/account-store';
 import { AccountError, assertOwner } from '@/lib/accounts/policy';
 import { parseForecastCsv } from '@/lib/monitoring/forecast-csv';
-import { forecastStock } from '@/lib/monitoring/forecast';
+import { forecastStock, datePlus, type StockInput } from '@/lib/monitoring/forecast';
+import { sellerMonitoring } from '@/lib/server/seller-data';
+import { wibDate } from '@/lib/monitoring/metrics';
+import { getStock } from '@/lib/server/commerce-store';
+import { nonprodEnabled } from '@/lib/server/nonprod-session';
 export async function GET(request: Request) {
-  try { const actor = await accountIdentity(request); assertOwner(await readWorkspace(actor), actor); return accountReply({ data: { source: 'upload', asOf: new Date().toISOString().slice(0,10), products: [], results: [] } }); }
+  try {
+    const actor = await accountIdentity(request), workspace = await readWorkspace(actor); assertOwner(workspace, actor);
+    const data = await sellerMonitoring(workspace), stock = nonprodEnabled() ? await getStock() : {};
+    const asOf = datePlus(wibDate(new Date().toISOString()), -1);
+    const products: StockInput[] = workspace.listings.filter(item => item.kind !== 'SERVICE').map(item => {
+      const quantities = new Map<string, number>();
+      for (const order of data.orders.filter(order => order.status !== 'CANCELLED' && order.payment === 'PAID' && wibDate(order.createdAt) <= asOf)) {
+        const quantity = order.items?.filter(row => row.productId === item.id).reduce((sum,row) => sum + row.quantity, 0) ?? 0;
+        if (quantity) quantities.set(wibDate(order.createdAt), (quantities.get(wibDate(order.createdAt)) ?? 0) + quantity);
+      }
+      return { id:item.id, name:item.name, kind:item.kind as StockInput['kind'], unit:'unit', onHand:stock[item.id] ?? item.stock, incoming:0, leadDays:0, reviewDays:1, shelfLifeDays:item.shelfLifeDays ?? null, history:[...quantities].map(([date,quantity]) => ({ date,quantity })) };
+    });
+    return accountReply({ data: { source:'orders', asOf, products, results:products.map(product => forecastStock(product, asOf)) } });
+  }
   catch (error) { return accountFailure(error); }
 }
 export async function POST(request: Request) {

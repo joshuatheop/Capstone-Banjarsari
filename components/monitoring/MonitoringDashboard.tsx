@@ -7,6 +7,8 @@ import { useMonitoring } from './useMonitoring';
 import styles from './monitoring.module.css';
 import { filterPayments, paymentMethods, paymentStatuses } from '@/lib/monitoring/payment-filters';
 import SalesInsights from './SalesInsights';
+import PlatformActions from '@/components/accounts/PlatformActions';
+import FinancialCharts from './FinancialCharts';
 
 interface MonitoringDashboardProps { section?: string }
 const names: Record<string, string> = { overview: 'Dashboard PALUGADA', orders: 'Monitoring pesanan', payments: 'Monitoring pembayaran', deliveries: 'Monitoring pengantaran', bookings: 'Monitoring booking jasa', sellers: 'Seller & usaha', users: 'Customer & kurir' };
@@ -44,6 +46,8 @@ const MonitoringDashboard = ({ section = 'overview' }: MonitoringDashboardProps)
     const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'palugada-pesanan-contoh.csv'; anchor.click(); URL.revokeObjectURL(url);
   };
   return <main className={styles.content}>
+    {section === 'overview' && <PlatformActions/>}
+    {section === 'overview' && <details className={styles.panel}><summary>Analytics pembayaran, volume order & kontribusi seller</summary><FinancialCharts orders={periodOrders} asOf={data.asOf} days={days} rows={[]}/></details>}
     <div className={styles.heading}><div><span className={styles.eyebrow}>MONITORING EKOSISTEM</span><h1>{names[section]}</h1><p>Gambaran aktivitas PALUGADA Banjarsari dalam satu tempat.</p></div><div className={styles.headingActions}>{!isAccounts && !isBooking && <select aria-label="Periode monitoring" value={days} onChange={(event) => setDays(Number(event.target.value))}><option value={7}>7 hari terakhir</option><option value={30}>30 hari terakhir</option></select>}<button className={styles.iconButton} aria-label="Muat ulang monitoring" onClick={reload}><RefreshCw size={17} /></button></div></div>
     <div className={styles.sourceNote}><span className={styles.dot} /><strong>Data dari database non-prod</strong><span>Pesanan dan booking uji. Diperbarui {new Date(data.asOf).toLocaleString('id-ID', {timeZone:'Asia/Jakarta'})} WIB.</span></div>
     {section === 'overview' && <>

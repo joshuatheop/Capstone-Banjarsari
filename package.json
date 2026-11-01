@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:offline": "node scripts/offline-database.mjs",
+    "test:workspace-sql": "node scripts/check-workspace-sql.mjs",
+    "test:offline-api": "node scripts/check-offline-api.mjs",
+    "test:offline-api": "node scripts/check-offline-api.mjs",
     "setup:nonprod": "node scripts/setup-nonprod.mjs",
     "test:monitoring": "node --experimental-strip-types --test scripts/monitoring.test.mjs",
     "test:nonprod-api": "node scripts/check-nonprod-api.mjs",
@@ -29,6 +33,7 @@
     "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.5.14",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

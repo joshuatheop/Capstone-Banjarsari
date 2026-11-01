@@ -2,9 +2,9 @@
 
 **Document Type:** Product Requirements Document  
 **Project:** PALUGADA Banjarsari  
-**Version:** 1.0  
+**Version:** 1.1
 **Status:** Baseline for Development  
-**Last Updated:** 28 September 2026  
+**Last Updated:** 1 November 2026
 **Primary Scope:** Banjarsari, Garut  
 
 ---
@@ -933,3 +933,20 @@ Keputusan tersebut tidak boleh digunakan sebagai alasan untuk mengubah core doma
 ## 32. Product Principle
 
 > **PALUGADA adalah source of truth untuk transaksi dan proses bisnis; WhatsApp adalah channel komunikasi, seller adalah pemilik katalognya sendiri, admin adalah pengawas platform, dan setiap developer wajib menjaga boundary domain agar perkembangan satu bagian tidak merusak bagian lain.**
+
+## 33. Pembaruan scope seller dan jasa — v1.1, 1 November 2026
+
+Instruksi terbaru memperjelas baseline tanpa menghapus kebutuhan historis:
+
+| Kebutuhan | Acceptance criteria |
+|---|---|
+| Peran akun | Register menjadi CUSTOMER; pengajuan direview SUPER_ADMIN; approve mengaktifkan SELLER pada UID yang sama. Tolak wajib alasan; akses seller dibatasi business sendiri oleh server. |
+| Navigasi seller | Tujuh menu inti; makanan digabung Produk Saya; forecasting berada dalam Inventory/detail stok produk. Route operasional lama dipertahankan atau diarahkan. |
+| Monitoring platform | Dashboard menggabungkan monitoring/analytics dan panel prioritas pengajuan seller. Direktori seller/user tetap dapat diakses. |
+| Inventory | Lokasi, saldo tercatat, adjustment dengan alasan/audit/idempotensi, riwayat, stok tersedia checkout terpisah. Edit metadata tidak memulihkan stok checkout. |
+| Forecast | Demand besok, persiapan tambahan, target periode, incoming, risk, alasan/confidence, dan chart. Data kurang tidak menghasilkan kepastian palsu; CSV dibatasi produk milik toko. |
+| Toko publik | Pengaturan toko tersimpan dan tampil pada profil publik. Owner/status approval tidak dapat diganti dari form seller. |
+| Jasa | Kontak WhatsApp langsung tanpa login/booking; usulan waktu opsional hanya konteks pesan. Booking internal existing tetap tersedia. Ojek tetap direktori. |
+| Alternatif pengembangan | Database PostgreSQL lokal terisolasi saat hosted belum tersedia, dipilih secara eksplisit dan berlabel uji. Tidak mengubah atau menyinkronkan database production. |
+
+Batas implementasi: saldo per lokasi belum dialokasikan otomatis oleh reservasi/fulfillment; tidak ada perubahan lifecycle order/payment/courier. Forecast dari pesanan terbayar mengukur histori penjualan teramati, bukan seluruh demand. Detail kontrak dan keterbatasan ada pada Design v2.1 dan AUDIT.

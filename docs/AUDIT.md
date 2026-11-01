@@ -126,3 +126,39 @@ Scope: marketplace customer, monitoring/analisis admin, forecasting, transaksi d
 - **Belum diuji:** project Supabase non-prod sebenarnya (migrasi belum diterapkan di sana, operator perlu menjalankannya dan mendaftarkan `NONPROD_DB_SECRET`); `npm run setup:nonprod` dan `setup:lan` tidak dijalankan; layout mobile 390 px dan navigasi keyboard; UI dashboard seller, super-admin, dan monitoring; pemanggilan `adjust_likes` dari UI favorit; booking jasa lewat UI (hanya lewat API). Tidak ada uji beban atau konkurensi selain dua checkout paralel di skrip commerce.
 - Dampak bagi pengguna lokal: sesi lama tidak valid (nama cookie berubah); `.env.local` perlu `NONPROD_SESSION_SECRET` dan `NONPROD_DB_SECRET` (jalankan `npm run setup:nonprod`); variabel `LOCAL_*` dan `NEXT_PUBLIC_LOCAL_PREVIEW` tidak dipakai lagi; data di `.local/commerce.json`, `registered-customers.json`, dan `account-workspaces/` tidak dimigrasi dan dapat dihapus manual.
 - Batas: ulasan, admin katalog lama, dan analytics klien belum di Supabase; sesi non-prod hanya pada `next dev`; `login_user` belum dibatasi percobaannya; fungsi publik lama (penghitung klik, `adjust_likes`, `login_user`, `get_user_public`) dapat dipanggil siapa pun yang memegang publishable key; gerbang `NONPROD_DB_SECRET` hanya melindungi fungsi transaksi. Voucher `DEMO*`, kontak ojek contoh, dan dataset forecast tetap data contoh berlabel.
+
+## Seller, inventory, dan database offline — v2.1, 1 November 2026
+
+Acuan PRD v1.1 dan Design v2.1. Branch kerja/tujuan `lukas`; developer Asricky. Baseline diselaraskan fast-forward ke `480f4bb` dari origin/main tanpa mengubah main. Perubahan lokal proposal dan penghapusan arsip UI yang sudah ada dipertahankan di working tree dan tidak termasuk commit fitur ini.
+
+### Hasil
+
+- Navigasi seller tujuh menu; barang/FOOD digabung, forecasting masuk Inventory. Monitoring/analytics super admin digabung; pengajuan, seller, dan user tetap dapat dibuka dari dashboard.
+- Workspace/catalog non-prod memakai RPC atomic; stok tersedia berubah berdasarkan delta, tidak ditimpa nilai workspace ketika metadata diubah. Alur order, cancel, reservation, payment, courier, booking existing tidak ditulis ulang.
+- Adjustment per lokasi mempunyai alasan, actor, waktu, before/after dan kunci idempotensi; ownership, saldo negatif dan edit stale divalidasi server. UI membedakan saldo lokasi dan stok tersedia checkout; forecast dimuat ulang setelah penyesuaian.
+- Pengaturan toko diproyeksikan secara publik tanpa membuka data akun/application. Jasa menyediakan WhatsApp tanpa login; usulan jadwal tidak membuat booking otomatis. Tracking klik jasa production dipertahankan.
+- Regresi browser menemukan nama toko duplikat menyebabkan WhatsApp pesanan tidak tersedia. Kontak kini dipilih berdasarkan businessId; fallback nama hanya untuk order lama tanpa ID dan hanya jika unik. Unit test mencakup nama sama, rename, dan ID tidak ditemukan.
+
+### Validasi yang dijalankan
+
+| Pemeriksaan | Hasil |
+|---|---|
+| `npm test` | 30/30 lulus; role/approval/ownership, profile, voucher, WhatsApp, inventory, forecasting dan financial projection. Warning Node strip-types/module-type existing masih muncul. |
+| `npm run test:workspace-sql` | Lulus pada PostgreSQL terisolasi: commit atomic, rollback, secret guard, stale revision, ownership, delta stok setelah simulasi checkout. |
+| `npm run test:offline-api` | Keempat suite lulus pada Next dev + PostgreSQL lokal: sesi/role/origin, account/application/approval/rejection/suspend, commerce/voucher/booking/cancel/idempotensi, inventory/settings/public profile/forecast. |
+| Browser Chrome via Playwright | Register, profil wajib, saved address checkout, add-cart, voucher, buy-now tanpa mengubah cart permanen, Pesanan/WhatsApp/cancel, filter collapsible lulus. Seller save inventory/journal, settings ke profil publik, jasa WA tanpa login, drawer auto-close/Escape lulus. |
+| Layout browser | Customer, seller dan super admin diperiksa pada 390/768/1440; tidak ada overflow horizontal dokumen atau uncaught page error pada flow yang diuji. Tabel lebar tetap memakai scroll internal. |
+| Forecast browser | CSV milik seller, angka persiapan/demand/confidence dan chart diperiksa; layout tiga ukuran lulus. Data tidak cukup tidak menampilkan estimasi palsu. |
+| `npm run lint` | Lulus full repository, termasuk file yang berubah. |
+| `npx tsc --noEmit` | Lulus. |
+| `npm run build` | Lulus; 43 halaman statis dibuat dan route dinamis dikompilasi. Build bukan bukti layanan hosted tersambung. |
+
+### Keterbatasan dan keputusan lingkungan
+
+1. Supabase terbaru membalas 401 sebelum login; user menyatakan belum dapat menyambungkannya dan meminta alternatif. Hosted belum diverifikasi end-to-end. `.env.local` tidak diubah; backup sebelumnya disimpan di `.local/` dan tidak di-commit.
+2. Alternatif eksplisit `dev:offline` memakai PGlite dev dependency dengan database persisten lokal dan subset bridge PostgREST, bukan layanan Supabase hosted. Seed/akun berlabel uji. Tidak ada sync ke hosted, payment nyata atau pengiriman pesan otomatis. Binding loopback tidak ditujukan untuk LAN.
+3. Migrasi `20261101000000_atomic_workspace_inventory.sql` sudah diuji/applied di database lokal; belum diterapkan pada hosted. Firebase production tidak dihubungi, sehingga behavior production hanya lolos typecheck/build/review.
+4. Saldo per lokasi belum terhubung otomatis dengan reservation/fulfillment. Transfer antarlokasi, lot/kedaluwarsa, stock opname menyeluruh, dan ERP inventory production belum dibuat. Batas 100 item/toko, 20 lokasi, 1.000 jurnal dan workspace 850 KB tetap berlaku.
+5. Histori forecast berasal dari order terbayar yang teramati; hari kosong tidak diasumsikan nol. CSV sesi tidak dipersist; kategori confidence bukan peluang pasti. Kategori produk deskriptif berada dalam workspace, belum menjadi taxonomy baru katalog.
+6. Foto/banner menerima URL HTTPS; tidak menambah upload/storage provider. Rating, saldo, ETA, demand maupun penjualan nyata tidak direkayasa. Akun/toko/booking uji tetap tersimpan lokal; percobaan browser yang berhenti di tengah dapat menyisakan pesanan berlabel uji.
+7. Existing profile non-prod tetap per browser. Uji hosted, Firebase, beban, pemulihan backup, dan keamanan production tetap pekerjaan terpisah; hasil lokal tidak diklaim sebagai sertifikasi production.

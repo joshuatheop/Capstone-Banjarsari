@@ -2,6 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { contactIsValid, normalizeContact } from '../lib/commerce/contact.ts';
 import { whatsappOrderLink } from '../lib/commerce/order-contact.ts';
+
+test('order contact uses business identity when seller names collide or change', () => {
+  const order = { businessId:'owned', seller:'Old shop name', id:'ORDER-1', customer:'Buyer', total:20000, item:'Item', quantity:1, status:'AWAITING_SELLER' };
+  const contacts = [{ businessId:'owned', name:'Same shop', phone:'081234567890' }, { businessId:'other', name:'Same shop', phone:'081298765432' }];
+  assert.equal(new URL(whatsappOrderLink(order, contacts)).pathname, '/6281234567890');
+  assert.equal(whatsappOrderLink({ ...order, businessId:'missing', seller:'Same shop' }, contacts), null);
+  assert.equal(whatsappOrderLink({ ...order, businessId:undefined, seller:'Same shop' }, contacts), null);
+});
 import { forecastPresentation } from '../lib/monitoring/forecast-presentation.ts';
 import { projectFinancials } from '../lib/monitoring/financial-projection.ts';
 import { forecastStock, datePlus } from '../lib/monitoring/forecast.ts';

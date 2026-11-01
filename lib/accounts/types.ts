@@ -17,15 +17,24 @@ export interface SellerApplication extends SellerApplicationForm {
 }
 export interface OwnedBusiness extends SellerApplicationForm {
   id: string; ownerId: string; status: 'ACTIVE' | 'SUSPENDED'; createdAt: string;
+  photo?: string; banner?: string; openingHours?: string; isOpen?: boolean;
+  pickupInfo?: string; serviceInfo?: string; latitude?: number | null; longitude?: number | null;
 }
 export interface SellerListing {
   id: string; businessId: string; kind: 'RETAIL' | 'FOOD' | 'SERVICE'; name: string;
   description: string; price: number; image: string; active: boolean; stock: number;
   updatedAt: string;
+  category?: string; shelfLifeDays?: number | null; stockByLocation?: Record<string, number>;
+}
+export interface InventoryLocation { id: string; name: string }
+export interface InventoryAdjustment {
+  id: string; listingId: string; locationId: string; delta: number; reason: string;
+  actorId: string; at: string; before: number; after: number;
 }
 export interface AccountWorkspace {
   access: AccountAccess; email: string; name: string;
   application: SellerApplication | null; business: OwnedBusiness | null; listings: SellerListing[];
+  inventoryLocations?: InventoryLocation[]; inventoryAdjustments?: InventoryAdjustment[];
 }
 export interface AccountIdentity { uid: string; email: string; name: string; superAdmin: boolean; courier?: boolean }
 export const customerAccess = (uid: string): AccountAccess => ({ uid, roles: ['CUSTOMER'], sellerStatus: 'NONE', businessId: null });
