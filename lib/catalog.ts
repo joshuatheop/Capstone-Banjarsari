@@ -3,7 +3,7 @@ import { getServicePriceDisplay } from './firestore/types';
 
 export interface CatalogEntry {
   id: string; name: string; description: string; price: number | null; priceLabel: string;
-  kind: 'product' | 'food' | 'service'; category: string; categoryId: string; area: string; popularity: number; business: string; businessId: string;
+  kind: 'product' | 'service' | 'food'; category: string; categoryId: string; area: string; popularity: number; business: string; businessId: string;
   image: string | null; href: string; available: boolean;
   whatsapp?: string | null;
 }
@@ -15,11 +15,9 @@ export const loadCatalog = async () => {
   const entries: CatalogEntry[] = [
     ...products.map((item): CatalogEntry => {
       const category = categoryMap.get(item.category_id);
-      // Existing catalogue taxonomy only; not a food fulfillment rule.
-      const food = item.vertical === 'FOOD' || ['makanan', 'makanan-minuman', 'food', 'camilan'].includes(category?.slug ?? '');
       return { id: item.product_id, name: item.product_name, description: item.product_description ?? '', price: item.product_price,
         priceLabel: new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(item.product_price),
-        kind: food ? 'food' : 'product', category: category?.category_name ?? 'Produk lokal', business: businessMap.get(item.business_id)?.business_name ?? 'UMKM Banjarsari',
+        kind: 'product', category: category?.category_name ?? 'Produk UMKM', business: businessMap.get(item.business_id)?.business_name ?? 'UMKM Banjarsari',
         businessId: item.business_id, categoryId: item.category_id, area: businessMap.get(item.business_id)?.area_name ?? '', popularity: item.clickCount ?? 0,
         image: item.thumbnail_url, href: `/produk/${item.product_id}`, available: item.is_active };
     }),

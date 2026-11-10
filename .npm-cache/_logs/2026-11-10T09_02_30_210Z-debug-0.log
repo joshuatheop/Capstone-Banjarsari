@@ -1,0 +1,1766 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\laragon\www\Capstone-Banjarsari\.npmrc
+5 silly config load:file:C:\Users\ADMIN\.npmrc
+6 silly config load:file:C:\Users\ADMIN\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm ci
+8 verbose argv "ci" "--cache" ".npm-cache"
+9 verbose logfile logs-max:10 dir:C:\laragon\www\Capstone-Banjarsari\.npm-cache\_logs\2026-11-10T09_02_30_210Z-
+10 verbose logfile C:\laragon\www\Capstone-Banjarsari\.npm-cache\_logs\2026-11-10T09_02_30_210Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly idealTree buildDeps
+14 silly reify moves {}
+15 silly audit bulk request {
+15 silly audit   '@babel/code-frame': [ '7.29.7' ],
+15 silly audit   '@babel/compat-data': [ '7.29.7' ],
+15 silly audit   '@babel/core': [ '7.29.7' ],
+15 silly audit   '@babel/generator': [ '7.29.7' ],
+15 silly audit   '@babel/helper-compilation-targets': [ '7.29.7' ],
+15 silly audit   '@babel/helper-globals': [ '7.29.7' ],
+15 silly audit   '@babel/helper-module-imports': [ '7.29.7' ],
+15 silly audit   '@babel/helper-module-transforms': [ '7.29.7' ],
+15 silly audit   '@babel/helper-string-parser': [ '7.29.7' ],
+15 silly audit   '@babel/helper-validator-identifier': [ '7.29.7' ],
+15 silly audit   '@babel/helper-validator-option': [ '7.29.7' ],
+15 silly audit   '@babel/helpers': [ '7.29.7' ],
+15 silly audit   '@babel/parser': [ '7.29.7' ],
+15 silly audit   '@babel/template': [ '7.29.7' ],
+15 silly audit   '@babel/traverse': [ '7.29.7' ],
+15 silly audit   '@babel/types': [ '7.29.7' ],
+15 silly audit   '@electric-sql/pglite': [ '0.5.14' ],
+15 silly audit   '@emnapi/core': [ '1.11.3', '1.10.0' ],
+15 silly audit   '@emnapi/runtime': [ '1.11.3', '1.10.0' ],
+15 silly audit   '@emnapi/wasi-threads': [ '1.2.3', '1.2.1' ],
+15 silly audit   '@eslint-community/eslint-utils': [ '4.9.1' ],
+15 silly audit   'eslint-visitor-keys': [ '3.4.3', '5.0.1', '4.2.1' ],
+15 silly audit   '@eslint-community/regexpp': [ '4.12.2' ],
+15 silly audit   '@eslint/config-array': [ '0.21.2' ],
+15 silly audit   '@eslint/config-helpers': [ '0.4.2' ],
+15 silly audit   '@eslint/core': [ '0.17.0' ],
+15 silly audit   '@eslint/eslintrc': [ '3.3.5' ],
+15 silly audit   '@eslint/js': [ '9.39.4' ],
+15 silly audit   '@eslint/object-schema': [ '2.1.7' ],
+15 silly audit   '@eslint/plugin-kit': [ '0.4.1' ],
+15 silly audit   '@fastify/busboy': [ '3.2.0' ],
+15 silly audit   '@firebase/ai': [ '2.13.1' ],
+15 silly audit   '@firebase/analytics': [ '0.10.22' ],
+15 silly audit   '@firebase/analytics-compat': [ '0.2.28' ],
+15 silly audit   '@firebase/analytics-types': [ '0.8.4' ],
+15 silly audit   '@firebase/app': [ '0.15.0' ],
+15 silly audit   '@firebase/app-check': [ '0.12.0' ],
+15 silly audit   '@firebase/app-check-compat': [ '0.4.5' ],
+15 silly audit   '@firebase/app-check-interop-types': [ '0.3.4' ],
+15 silly audit   '@firebase/app-check-types': [ '0.5.4' ],
+15 silly audit   '@firebase/app-compat': [ '0.5.14' ],
+15 silly audit   '@firebase/app-types': [ '0.9.5' ],
+15 silly audit   '@firebase/auth': [ '1.13.3' ],
+15 silly audit   '@firebase/auth-compat': [ '0.6.8' ],
+15 silly audit   '@firebase/auth-interop-types': [ '0.2.5' ],
+15 silly audit   '@firebase/auth-types': [ '0.13.1' ],
+15 silly audit   '@firebase/component': [ '0.7.3' ],
+15 silly audit   '@firebase/data-connect': [ '0.7.1' ],
+15 silly audit   '@firebase/database': [ '1.1.3' ],
+15 silly audit   '@firebase/database-compat': [ '2.1.4' ],
+15 silly audit   '@firebase/database-types': [ '1.0.20' ],
+15 silly audit   '@firebase/firestore': [ '4.16.0' ],
+15 silly audit   '@firebase/firestore-compat': [ '0.4.11' ],
+15 silly audit   '@firebase/firestore-types': [ '3.0.4' ],
+15 silly audit   '@firebase/functions': [ '0.13.5' ],
+15 silly audit   '@firebase/functions-compat': [ '0.4.5' ],
+15 silly audit   '@firebase/functions-types': [ '0.6.4' ],
+15 silly audit   '@firebase/installations': [ '0.6.22' ],
+15 silly audit   '@firebase/installations-compat': [ '0.2.22' ],
+15 silly audit   '@firebase/installations-types': [ '0.5.4' ],
+15 silly audit   '@firebase/logger': [ '0.5.1' ],
+15 silly audit   '@firebase/messaging': [ '0.13.0' ],
+15 silly audit   '@firebase/messaging-compat': [ '0.2.27' ],
+15 silly audit   '@firebase/messaging-interop-types': [ '0.2.5' ],
+15 silly audit   '@firebase/performance': [ '0.7.12' ],
+15 silly audit   '@firebase/performance-compat': [ '0.2.25' ],
+15 silly audit   '@firebase/performance-types': [ '0.2.4' ],
+15 silly audit   '@firebase/remote-config': [ '0.8.5' ],
+15 silly audit   '@firebase/remote-config-compat': [ '0.2.26' ],
+15 silly audit   '@firebase/remote-config-types': [ '0.5.1' ],
+15 silly audit   '@firebase/storage': [ '0.14.3' ],
+15 silly audit   '@firebase/storage-compat': [ '0.4.3' ],
+15 silly audit   '@firebase/storage-types': [ '0.8.4' ],
+15 silly audit   '@firebase/util': [ '1.15.1' ],
+15 silly audit   '@firebase/webchannel-wrapper': [ '1.0.6' ],
+15 silly audit   '@google-cloud/firestore': [ '9.2.0' ],
+15 silly audit   '@google-cloud/firestore-api': [ '0.2.0' ],
+15 silly audit   '@grpc/grpc-js': [ '1.14.5', '1.9.16' ],
+15 silly audit   '@grpc/proto-loader': [ '0.8.1', '0.7.15' ],
+15 silly audit   gaxios: [ '7.3.1', '7.1.3', '6.3.0' ],
+15 silly audit   'gcp-metadata': [ '8.1.4', '6.1.1', '9.0.4' ],
+15 silly audit   'google-auth-library': [ '10.5.0', '9.15.1', '11.1.0' ],
+15 silly audit   'google-gax': [ '5.0.8', '6.9.0' ],
+15 silly audit   'google-logging-utils': [ '1.1.3', '0.0.2', '2.0.1' ],
+15 silly audit   'node-fetch': [ '3.3.2', '2.7.0' ],
+15 silly audit   'proto3-json-serializer': [ '3.0.4', '4.0.2' ],
+15 silly audit   'retry-request': [ '8.0.4', '9.0.1' ],
+15 silly audit   'teeny-request': [ '10.1.4', '11.0.1' ],
+15 silly audit   '@google-cloud/paginator': [ '7.1.0' ],
+15 silly audit   '@google-cloud/projectify': [ '6.1.0' ],
+15 silly audit   '@google-cloud/promisify': [ '6.1.0' ],
+15 silly audit   '@google-cloud/storage': [ '8.2.0' ],
+15 silly audit   gtoken: [ '7.1.0', '8.0.0' ],
+15 silly audit   '@humanfs/core': [ '0.19.2' ],
+15 silly audit   '@humanfs/node': [ '0.16.8' ],
+15 silly audit   '@humanfs/types': [ '0.15.0' ],
+15 silly audit   '@humanwhocodes/module-importer': [ '1.0.1' ],
+15 silly audit   '@humanwhocodes/retry': [ '0.4.3' ],
+15 silly audit   '@img/colour': [ '1.1.0' ],
+15 silly audit   '@img/sharp-darwin-arm64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-darwin-x64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-freebsd-wasm32': [ '0.35.5' ],
+15 silly audit   '@img/sharp-libvips-darwin-arm64': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-darwin-x64': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-linux-arm': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-linux-arm64': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-linux-ppc64': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-linux-riscv64': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-linux-s390x': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-linux-x64': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-linuxmusl-arm64': [ '1.3.4' ],
+15 silly audit   '@img/sharp-libvips-linuxmusl-x64': [ '1.3.4' ],
+15 silly audit   '@img/sharp-linux-arm': [ '0.35.5' ],
+15 silly audit   '@img/sharp-linux-arm64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-linux-ppc64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-linux-riscv64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-linux-s390x': [ '0.35.5' ],
+15 silly audit   '@img/sharp-linux-x64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-linuxmusl-arm64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-linuxmusl-x64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-wasm32': [ '0.35.5' ],
+15 silly audit   '@img/sharp-webcontainers-wasm32': [ '0.35.5' ],
+15 silly audit   '@img/sharp-win32-arm64': [ '0.35.5' ],
+15 silly audit   '@img/sharp-win32-ia32': [ '0.35.5' ],
+15 silly audit   '@img/sharp-win32-x64': [ '0.35.5' ],
+15 silly audit   '@isaacs/cliui': [ '8.0.2' ],
+15 silly audit   'ansi-regex': [ '6.4.0', '5.0.1' ],
+15 silly audit   'ansi-styles': [ '6.2.3', '4.3.0' ],
+15 silly audit   'string-width': [ '5.1.2', '4.2.3' ],
+15 silly audit   'strip-ansi': [ '7.2.0', '6.0.1' ],
+15 silly audit   'wrap-ansi': [ '8.1.0', '7.0.0' ],
+15 silly audit   '@jridgewell/gen-mapping': [ '0.3.13' ],
+15 silly audit   '@jridgewell/remapping': [ '2.3.5' ],
+15 silly audit   '@jridgewell/resolve-uri': [ '3.1.2' ],
+15 silly audit   '@jridgewell/sourcemap-codec': [ '1.5.5' ],
+15 silly audit   '@jridgewell/trace-mapping': [ '0.3.31' ],
+15 silly audit   '@js-sdsl/ordered-map': [ '4.4.2' ],
+15 silly audit   '@napi-rs/wasm-runtime': [ '1.1.6' ],
+15 silly audit   '@next/env': [ '16.3.6' ],
+15 silly audit   '@next/eslint-plugin-next': [ '16.3.6' ],
+15 silly audit   '@next/swc-darwin-arm64': [ '16.3.6' ],
+15 silly audit   '@next/swc-darwin-x64': [ '16.3.6' ],
+15 silly audit   '@next/swc-linux-arm64-gnu': [ '16.3.6' ],
+15 silly audit   '@next/swc-linux-arm64-musl': [ '16.3.6' ],
+15 silly audit   '@next/swc-linux-x64-gnu': [ '16.3.6' ],
+15 silly audit   '@next/swc-linux-x64-musl': [ '16.3.6' ],
+15 silly audit   '@next/swc-win32-arm64-msvc': [ '16.3.6' ],
+15 silly audit   '@next/swc-win32-x64-msvc': [ '16.3.6' ],
+15 silly audit   '@nodable/entities': [ '3.0.0' ],
+15 silly audit   '@nodelib/fs.scandir': [ '2.1.5' ],
+15 silly audit   '@nodelib/fs.stat': [ '2.0.5' ],
+15 silly audit   '@nodelib/fs.walk': [ '1.2.8' ],
+15 silly audit   '@nolyfill/is-core-module': [ '1.0.39' ],
+15 silly audit   '@opentelemetry/api': [ '1.9.1' ],
+15 silly audit   '@pkgjs/parseargs': [ '0.11.0' ],
+15 silly audit   '@protobufjs/aspromise': [ '1.1.2' ],
+15 silly audit   '@protobufjs/base64': [ '1.1.2' ],
+15 silly audit   '@protobufjs/codegen': [ '2.0.5' ],
+15 silly audit   '@protobufjs/eventemitter': [ '1.1.1' ],
+15 silly audit   '@protobufjs/fetch': [ '1.1.1' ],
+15 silly audit   '@protobufjs/float': [ '1.0.2' ],
+15 silly audit   '@protobufjs/path': [ '1.1.2' ],
+15 silly audit   '@protobufjs/pool': [ '1.1.0' ],
+15 silly audit   '@protobufjs/utf8': [ '1.1.1' ],
+15 silly audit   '@rtsao/scc': [ '1.1.0' ],
+15 silly audit   '@supabase/auth-js': [ '2.117.2' ],
+15 silly audit   '@supabase/functions-js': [ '2.117.2' ],
+15 silly audit   '@supabase/phoenix': [ '0.4.5' ],
+15 silly audit   '@supabase/postgrest-js': [ '2.117.2' ],
+15 silly audit   '@supabase/realtime-js': [ '2.117.2' ],
+15 silly audit   '@supabase/ssr': [ '0.12.7' ],
+15 silly audit   '@supabase/storage-js': [ '2.117.2' ],
+15 silly audit   '@supabase/supabase-js': [ '2.117.2' ],
+15 silly audit   '@swc/helpers': [ '0.5.23' ],
+15 silly audit   '@tybys/wasm-util': [ '0.10.3' ],
+15 silly audit   '@types/estree': [ '1.0.9' ],
+15 silly audit   '@types/json-schema': [ '7.0.15' ],
+15 silly audit   '@types/json5': [ '0.0.29' ],
+15 silly audit   '@types/jsonwebtoken': [ '9.0.10' ],
+15 silly audit   '@types/ms': [ '2.1.0' ],
+15 silly audit   '@types/node': [ '20.19.43' ],
+15 silly audit   '@types/react': [ '19.2.17' ],
+15 silly audit   '@types/react-dom': [ '19.2.3' ],
+15 silly audit   '@typescript-eslint/eslint-plugin': [ '8.62.1' ],
+15 silly audit   ignore: [ '7.0.5', '5.3.2' ],
+15 silly audit   '@typescript-eslint/parser': [ '8.62.1' ],
+15 silly audit   '@typescript-eslint/project-service': [ '8.62.1' ],
+15 silly audit   '@typescript-eslint/scope-manager': [ '8.62.1' ],
+15 silly audit   '@typescript-eslint/tsconfig-utils': [ '8.62.1' ],
+15 silly audit   '@typescript-eslint/type-utils': [ '8.62.1' ],
+15 silly audit   '@typescript-eslint/types': [ '8.62.1' ],
+15 silly audit   '@typescript-eslint/typescript-estree': [ '8.62.1' ],
+15 silly audit   'balanced-match': [ '4.0.4', '1.0.2' ],
+15 silly audit   'brace-expansion': [ '5.0.12', '1.1.21', '2.1.7' ],
+15 silly audit   minimatch: [ '10.2.5', '9.0.9', '3.1.5' ],
+15 silly audit   semver: [ '7.8.5', '6.3.1' ],
+15 silly audit   '@typescript-eslint/utils': [ '8.62.1' ],
+15 silly audit   '@typescript-eslint/visitor-keys': [ '8.62.1' ],
+15 silly audit   '@unrs/resolver-binding-android-arm-eabi': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-android-arm64': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-darwin-arm64': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-darwin-x64': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-freebsd-x64': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-arm-gnueabihf': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-arm-musleabihf': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-arm64-gnu': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-arm64-musl': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-loong64-gnu': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-loong64-musl': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-ppc64-gnu': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-riscv64-gnu': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-riscv64-musl': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-s390x-gnu': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-x64-gnu': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-linux-x64-musl': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-openharmony-arm64': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-wasm32-wasi': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-win32-arm64-msvc': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-win32-ia32-msvc': [ '1.12.2' ],
+15 silly audit   '@unrs/resolver-binding-win32-x64-msvc': [ '1.12.2' ],
+15 silly audit   'abort-controller': [ '3.0.0' ],
+15 silly audit   acorn: [ '8.17.0' ],
+15 silly audit   'acorn-jsx': [ '5.3.2' ],
+15 silly audit   'agent-base': [ '7.1.4' ],
+15 silly audit   ajv: [ '6.15.0' ],
+15 silly audit   anynum: [ '1.0.1' ],
+15 silly audit   argparse: [ '2.0.1' ],
+15 silly audit   'aria-query': [ '5.3.2' ],
+15 silly audit   'array-buffer-byte-length': [ '1.0.2' ],
+15 silly audit   'array-includes': [ '3.1.9' ],
+15 silly audit   'array.prototype.findlast': [ '1.2.5' ],
+15 silly audit   'array.prototype.findlastindex': [ '1.2.6' ],
+15 silly audit   'array.prototype.flat': [ '1.3.3' ],
+15 silly audit   'array.prototype.flatmap': [ '1.3.3' ],
+15 silly audit   'array.prototype.tosorted': [ '1.1.4' ],
+15 silly audit   'arraybuffer.prototype.slice': [ '1.0.4' ],
+15 silly audit   'ast-types-flow': [ '0.0.8' ],
+15 silly audit   'async-function': [ '1.0.0' ],
+15 silly audit   'async-retry': [ '1.3.3' ],
+15 silly audit   'available-typed-arrays': [ '1.0.7' ],
+15 silly audit   'axe-core': [ '4.12.1' ],
+15 silly audit   'axobject-query': [ '4.1.0' ],
+15 silly audit   'base64-js': [ '1.5.1' ],
+15 silly audit   'baseline-browser-mapping': [ '2.11.26' ],
+15 silly audit   'bignumber.js': [ '9.3.1' ],
+15 silly audit   braces: [ '3.0.3' ],
+15 silly audit   browserslist: [ '4.29.2' ],
+15 silly audit   'buffer-equal-constant-time': [ '1.0.1' ],
+15 silly audit   'call-bind': [ '1.0.9' ],
+15 silly audit   'call-bind-apply-helpers': [ '1.0.2' ],
+15 silly audit   'call-bound': [ '1.0.4' ],
+15 silly audit   callsites: [ '3.1.0' ],
+15 silly audit   'caniuse-lite': [ '1.0.30001813' ],
+15 silly audit   chalk: [ '4.1.2' ],
+15 silly audit   'client-only': [ '0.0.1' ],
+15 silly audit   cliui: [ '8.0.1' ],
+15 silly audit   'color-convert': [ '2.0.1' ],
+15 silly audit   'color-name': [ '1.1.4' ],
+15 silly audit   'concat-map': [ '0.0.1' ],
+15 silly audit   'convert-source-map': [ '2.0.0' ],
+15 silly audit   cookie: [ '1.1.1' ],
+15 silly audit   'cross-spawn': [ '7.0.6' ],
+15 silly audit   csstype: [ '3.2.3' ],
+15 silly audit   'damerau-levenshtein': [ '1.0.8' ],
+15 silly audit   'data-uri-to-buffer': [ '4.0.1' ],
+15 silly audit   'data-view-buffer': [ '1.0.2' ],
+15 silly audit   'data-view-byte-length': [ '1.0.2' ],
+15 silly audit   'data-view-byte-offset': [ '1.0.1' ],
+15 silly audit   debug: [ '4.4.3', '3.2.7' ],
+15 silly audit   'deep-is': [ '0.1.4' ],
+15 silly audit   'define-data-property': [ '1.1.4' ],
+15 silly audit   'define-properties': [ '1.2.1' ],
+15 silly audit   'detect-libc': [ '2.1.2' ],
+15 silly audit   doctrine: [ '2.1.0' ],
+15 silly audit   'dunder-proto': [ '1.0.1' ],
+15 silly audit   duplexify: [ '4.1.3' ],
+15 silly audit   eastasianwidth: [ '0.2.0' ],
+15 silly audit   'ecdsa-sig-formatter': [ '1.0.11' ],
+15 silly audit   'electron-to-chromium': [ '1.5.439' ],
+15 silly audit   'emoji-regex': [ '9.2.2', '8.0.0' ],
+15 silly audit   'end-of-stream': [ '1.4.5' ],
+15 silly audit   'es-abstract': [ '1.24.2' ],
+15 silly audit   'es-abstract-get': [ '1.0.0' ],
+15 silly audit   'es-define-property': [ '1.0.1' ],
+15 silly audit   'es-errors': [ '1.3.0' ],
+15 silly audit   'es-iterator-helpers': [ '1.3.3' ],
+15 silly audit   'es-object-atoms': [ '1.1.2' ],
+15 silly audit   'es-set-tostringtag': [ '2.1.0' ],
+15 silly audit   'es-shim-unscopables': [ '1.1.0' ],
+15 silly audit   'es-to-primitive': [ '1.3.4' ],
+15 silly audit   escalade: [ '3.2.0' ],
+15 silly audit   'escape-string-regexp': [ '4.0.0' ],
+15 silly audit   eslint: [ '9.39.4' ],
+15 silly audit   'eslint-config-next': [ '16.3.6' ],
+15 silly audit   globals: [ '16.4.0', '14.0.0' ],
+15 silly audit   'eslint-import-resolver-node': [ '0.3.10' ],
+15 silly audit   'eslint-import-resolver-typescript': [ '3.10.1' ],
+15 silly audit   'eslint-module-utils': [ '2.13.0' ],
+15 silly audit   'eslint-plugin-import': [ '2.32.0' ],
+15 silly audit   'eslint-plugin-jsx-a11y': [ '6.10.2' ],
+15 silly audit   'eslint-plugin-react': [ '7.37.5' ],
+15 silly audit   'eslint-plugin-react-hooks': [ '7.1.1' ],
+15 silly audit   'eslint-scope': [ '8.4.0' ],
+15 silly audit   espree: [ '10.4.0' ],
+15 silly audit   esquery: [ '1.7.0' ],
+15 silly audit   esrecurse: [ '4.3.0' ],
+15 silly audit   estraverse: [ '5.3.0' ],
+15 silly audit   esutils: [ '2.0.3' ],
+15 silly audit   'event-target-shim': [ '5.0.1' ],
+15 silly audit   extend: [ '3.0.2' ],
+15 silly audit   'fast-deep-equal': [ '3.1.3' ],
+15 silly audit   'fast-glob': [ '3.3.1' ],
+15 silly audit   'glob-parent': [ '5.1.2', '6.0.2' ],
+15 silly audit   'fast-json-stable-stringify': [ '2.1.0' ],
+15 silly audit   'fast-levenshtein': [ '2.0.6' ],
+15 silly audit   'fast-xml-builder': [ '1.3.1' ],
+15 silly audit   'fast-xml-parser': [ '5.11.1' ],
+15 silly audit   fastq: [ '1.20.3' ],
+15 silly audit   'faye-websocket': [ '0.11.4' ],
+15 silly audit   'fetch-blob': [ '3.2.0' ],
+15 silly audit   'file-entry-cache': [ '8.0.0' ],
+15 silly audit   'fill-range': [ '7.1.1' ],
+15 silly audit   'find-up': [ '5.0.0' ],
+15 silly audit   firebase: [ '12.15.0' ],
+15 silly audit   'firebase-admin': [ '14.5.0' ],
+15 silly audit   'flat-cache': [ '4.0.1' ],
+15 silly audit   flatted: [ '3.4.2' ],
+15 silly audit   'for-each': [ '0.3.5' ],
+15 silly audit   'foreground-child': [ '3.3.1' ],
+15 silly audit   'formdata-polyfill': [ '4.0.10' ],
+15 silly audit   'function-bind': [ '1.1.2' ],
+15 silly audit   'function.prototype.name': [ '1.2.0' ],
+15 silly audit   'functional-red-black-tree': [ '1.0.1' ],
+15 silly audit   'functions-have-names': [ '1.2.3' ],
+15 silly audit   'generator-function': [ '2.0.1' ],
+15 silly audit   gensync: [ '1.0.0-beta.2' ],
+15 silly audit   'get-caller-file': [ '2.0.5' ],
+15 silly audit   'get-intrinsic': [ '1.3.0' ],
+15 silly audit   'get-proto': [ '1.0.1' ],
+15 silly audit   'get-symbol-description': [ '1.1.0' ],
+15 silly audit   'get-tsconfig': [ '4.14.0' ],
+15 silly audit   glob: [ '10.5.0' ],
+15 silly audit   globalthis: [ '1.0.4' ],
+15 silly audit   gopd: [ '1.2.0' ],
+15 silly audit   'has-bigints': [ '1.1.0' ],
+15 silly audit   'has-flag': [ '4.0.0' ],
+15 silly audit   'has-property-descriptors': [ '1.0.2' ],
+15 silly audit   'has-proto': [ '1.2.0' ],
+15 silly audit   'has-symbols': [ '1.1.0' ],
+15 silly audit   'has-tostringtag': [ '1.0.2' ],
+15 silly audit   hasown: [ '2.0.4' ],
+15 silly audit   'hermes-estree': [ '0.25.1' ],
+15 silly audit   'hermes-parser': [ '0.25.1' ],
+15 silly audit   'html-entities': [ '2.6.0' ],
+15 silly audit   'http-parser-js': [ '0.5.10' ],
+15 silly audit   'http-proxy-agent': [ '7.0.2' ],
+15 silly audit   'https-proxy-agent': [ '7.0.6' ],
+15 silly audit   'iceberg-js': [ '0.8.1' ],
+15 silly audit   idb: [ '7.1.1' ],
+15 silly audit   'import-fresh': [ '3.3.1' ],
+15 silly audit   imurmurhash: [ '0.1.4' ],
+15 silly audit   inherits: [ '2.0.4' ],
+15 silly audit   'internal-slot': [ '1.1.0' ],
+15 silly audit   'is-array-buffer': [ '3.0.5' ],
+15 silly audit   'is-async-function': [ '2.1.1' ],
+15 silly audit   'is-bigint': [ '1.1.0' ],
+15 silly audit   'is-boolean-object': [ '1.2.2' ],
+15 silly audit   'is-bun-module': [ '2.0.0' ],
+15 silly audit   'is-callable': [ '1.2.7' ],
+15 silly audit   'is-core-module': [ '2.16.2' ],
+15 silly audit   'is-data-view': [ '1.0.2' ],
+15 silly audit   'is-date-object': [ '1.1.0' ],
+15 silly audit   'is-document.all': [ '1.0.0' ],
+15 silly audit   'is-extglob': [ '2.1.1' ],
+15 silly audit   'is-finalizationregistry': [ '1.1.1' ],
+15 silly audit   'is-fullwidth-code-point': [ '3.0.0' ],
+15 silly audit   'is-generator-function': [ '1.1.2' ],
+15 silly audit   'is-glob': [ '4.0.3' ],
+15 silly audit   'is-map': [ '2.0.3' ],
+15 silly audit   'is-negative-zero': [ '2.0.3' ],
+15 silly audit   'is-number': [ '7.0.0' ],
+15 silly audit   'is-number-object': [ '1.1.1' ],
+15 silly audit   'is-regex': [ '1.2.1' ],
+15 silly audit   'is-set': [ '2.0.3' ],
+15 silly audit   'is-shared-array-buffer': [ '1.0.4' ],
+15 silly audit   'is-stream': [ '2.0.1' ],
+15 silly audit   'is-string': [ '1.1.1' ],
+15 silly audit   'is-symbol': [ '1.1.1' ],
+15 silly audit   'is-typed-array': [ '1.1.15' ],
+15 silly audit   'is-unsafe': [ '2.0.2' ],
+15 silly audit   'is-weakmap': [ '2.0.2' ],
+15 silly audit   'is-weakref': [ '1.1.1' ],
+15 silly audit   'is-weakset': [ '2.0.4' ],
+15 silly audit   isarray: [ '2.0.5' ],
+15 silly audit   isexe: [ '2.0.0' ],
+15 silly audit   'iterator.prototype': [ '1.1.5' ],
+15 silly audit   jackspeak: [ '3.4.3' ],
+15 silly audit   jose: [ '6.2.4' ],
+15 silly audit   'js-tokens': [ '4.0.0' ],
+15 silly audit   'js-yaml': [ '4.3.2' ],
+15 silly audit   jsesc: [ '3.1.0' ],
+15 silly audit   'json-bigint': [ '1.0.0' ],
+15 silly audit   'json-buffer': [ '3.0.1' ],
+15 silly audit   'json-schema-traverse': [ '0.4.1' ],
+15 silly audit   'json-stable-stringify-without-jsonify': [ '1.0.1' ],
+15 silly audit   json5: [ '2.2.3', '1.0.2' ],
+15 silly audit   jsonwebtoken: [ '9.0.3' ],
+15 silly audit   'jsx-ast-utils': [ '3.3.5' ],
+15 silly audit   jwa: [ '2.0.1' ],
+15 silly audit   'jwks-rsa': [ '4.1.0' ],
+15 silly audit   'lru-cache': [ '11.5.2', '5.1.1', '10.4.3' ],
+15 silly audit   jws: [ '4.0.1' ],
+15 silly audit   keyv: [ '4.5.4' ],
+15 silly audit   'language-subtag-registry': [ '0.3.23' ],
+15 silly audit   'language-tags': [ '1.0.9' ],
+15 silly audit   levn: [ '0.4.1' ],
+15 silly audit   limiter: [ '1.1.5' ],
+15 silly audit   'locate-path': [ '6.0.0' ],
+15 silly audit   'lodash.camelcase': [ '4.3.0' ],
+15 silly audit   'lodash.clonedeep': [ '4.5.0' ],
+15 silly audit   'lodash.includes': [ '4.3.0' ],
+15 silly audit   'lodash.isboolean': [ '3.0.3' ],
+15 silly audit   'lodash.isinteger': [ '4.0.4' ],
+15 silly audit   'lodash.isnumber': [ '3.0.3' ],
+15 silly audit   'lodash.isplainobject': [ '4.0.6' ],
+15 silly audit   'lodash.isstring': [ '4.0.1' ],
+15 silly audit   'lodash.merge': [ '4.6.2' ],
+15 silly audit   'lodash.once': [ '4.1.1' ],
+15 silly audit   long: [ '5.3.2' ],
+15 silly audit   'loose-envify': [ '1.4.0' ],
+15 silly audit   'lru-memoizer': [ '3.0.0' ],
+15 silly audit   'lucide-react': [ '1.28.0' ],
+15 silly audit   'math-intrinsics': [ '1.1.0' ],
+15 silly audit   merge2: [ '1.4.1' ],
+15 silly audit   micromatch: [ '4.0.8' ],
+15 silly audit   mime: [ '3.0.0' ],
+15 silly audit   minimist: [ '1.2.8' ],
+15 silly audit   minipass: [ '7.1.3' ],
+15 silly audit   ms: [ '2.1.3' ],
+15 silly audit   nanoid: [ '3.3.19' ],
+15 silly audit   'napi-postinstall': [ '0.3.4' ],
+15 silly audit   'natural-compare': [ '1.4.0' ],
+15 silly audit   next: [ '16.3.6' ],
+15 silly audit   'node-domexception': [ '1.0.0' ],
+15 silly audit   'node-exports-info': [ '1.6.2' ],
+15 silly audit   'node-releases': [ '2.0.57' ],
+15 silly audit   'object-assign': [ '4.1.1' ],
+15 silly audit   'object-hash': [ '3.0.0' ],
+15 silly audit   'object-inspect': [ '1.13.4' ],
+15 silly audit   'object-keys': [ '1.1.1' ],
+15 silly audit   'object.assign': [ '4.1.7' ],
+15 silly audit   'object.entries': [ '1.1.9' ],
+15 silly audit   'object.fromentries': [ '2.0.8' ],
+15 silly audit   'object.groupby': [ '1.0.3' ],
+15 silly audit   'object.values': [ '1.2.1' ],
+15 silly audit   once: [ '1.4.0' ],
+15 silly audit   optionator: [ '0.9.4' ],
+15 silly audit   'own-keys': [ '1.0.1' ],
+15 silly audit   'p-limit': [ '3.1.0' ],
+15 silly audit   'p-locate': [ '5.0.0' ],
+15 silly audit   'package-json-from-dist': [ '1.0.1' ],
+15 silly audit   'parent-module': [ '1.0.1' ],
+15 silly audit   'path-exists': [ '4.0.0' ],
+15 silly audit   'path-expression-matcher': [ '1.6.2' ],
+15 silly audit   'path-key': [ '3.1.1' ],
+15 silly audit   'path-parse': [ '1.0.7' ],
+15 silly audit   'path-scurry': [ '1.11.1' ],
+15 silly audit   picocolors: [ '1.1.1' ],
+15 silly audit   picomatch: [ '2.3.2', '4.0.4' ],
+15 silly audit   'possible-typed-array-names': [ '1.1.0' ],
+15 silly audit   postcss: [ '8.5.23' ],
+15 silly audit   'prelude-ls': [ '1.2.1' ],
+15 silly audit   'prop-types': [ '15.8.1' ],
+15 silly audit   protobufjs: [ '7.6.6' ],
+15 silly audit   punycode: [ '2.3.1' ],
+15 silly audit   'queue-microtask': [ '1.2.3' ],
+15 silly audit   re2js: [ '0.4.3' ],
+15 silly audit   react: [ '19.2.4' ],
+15 silly audit   'react-dom': [ '19.2.4' ],
+15 silly audit   'react-is': [ '16.13.1' ],
+15 silly audit   'readable-stream': [ '3.6.2' ],
+15 silly audit   'reflect.getprototypeof': [ '1.0.10' ],
+15 silly audit   'regexp.prototype.flags': [ '1.5.4' ],
+15 silly audit   'require-directory': [ '2.1.1' ],
+15 silly audit   resolve: [ '2.0.0-next.7' ],
+15 silly audit   'resolve-from': [ '4.0.0' ],
+15 silly audit   'resolve-pkg-maps': [ '1.0.0' ],
+15 silly audit   retry: [ '0.13.1' ],
+15 silly audit   reusify: [ '1.1.0' ],
+15 silly audit   rimraf: [ '5.0.10' ],
+15 silly audit   'run-parallel': [ '1.2.0' ],
+15 silly audit   'safe-array-concat': [ '1.1.4' ],
+15 silly audit   'safe-buffer': [ '5.2.1' ],
+15 silly audit   'safe-push-apply': [ '1.0.0' ],
+15 silly audit   'safe-regex-test': [ '1.1.0' ],
+15 silly audit   scheduler: [ '0.27.0' ],
+15 silly audit   'set-function-length': [ '1.2.2' ],
+15 silly audit   'set-function-name': [ '2.0.2' ],
+15 silly audit   'set-proto': [ '1.0.0' ],
+15 silly audit   sharp: [ '0.35.5' ],
+15 silly audit   'shebang-command': [ '2.0.0' ],
+15 silly audit   'shebang-regex': [ '3.0.0' ],
+15 silly audit   'side-channel': [ '1.1.1' ],
+15 silly audit   'side-channel-list': [ '1.0.1' ],
+15 silly audit   'side-channel-map': [ '1.0.1' ],
+15 silly audit   'side-channel-weakmap': [ '1.0.2' ],
+15 silly audit   'signal-exit': [ '4.1.0' ],
+15 silly audit   'source-map-js': [ '1.2.1' ],
+15 silly audit   'stable-hash': [ '0.0.5' ],
+15 silly audit   'stop-iteration-iterator': [ '1.1.0' ],
+15 silly audit   'stream-events': [ '1.0.5' ],
+15 silly audit   'stream-shift': [ '1.0.3' ],
+15 silly audit   string_decoder: [ '1.3.0' ],
+15 silly audit   'string.prototype.includes': [ '2.0.1' ],
+15 silly audit   'string.prototype.matchall': [ '4.0.12' ],
+15 silly audit   'string.prototype.repeat': [ '1.0.0' ],
+15 silly audit   'string.prototype.trim': [ '1.2.11' ],
+15 silly audit   'string.prototype.trimend': [ '1.0.10' ],
+15 silly audit   'string.prototype.trimstart': [ '1.0.8' ],
+15 silly audit   'strip-bom': [ '3.0.0' ],
+15 silly audit   'strip-json-comments': [ '3.1.1' ],
+15 silly audit   strnum: [ '2.4.2' ],
+15 silly audit   stubs: [ '3.0.0' ],
+15 silly audit   'styled-jsx': [ '5.1.6' ],
+15 silly audit   'supports-color': [ '7.2.0' ],
+15 silly audit   'supports-preserve-symlinks-flag': [ '1.0.0' ],
+15 silly audit   tinyglobby: [ '0.2.17' ],
+15 silly audit   fdir: [ '6.5.0' ],
+15 silly audit   'to-regex-range': [ '5.0.1' ],
+15 silly audit   tr46: [ '0.0.3' ],
+15 silly audit   'ts-api-utils': [ '2.5.0' ],
+15 silly audit   'tsconfig-paths': [ '3.15.0' ],
+15 silly audit   tslib: [ '2.8.1' ],
+15 silly audit   'type-check': [ '0.4.0' ],
+15 silly audit   'typed-array-buffer': [ '1.0.3' ],
+15 silly audit   'typed-array-byte-length': [ '1.0.3' ],
+15 silly audit   'typed-array-byte-offset': [ '1.0.4' ],
+15 silly audit   'typed-array-length': [ '1.0.8' ],
+15 silly audit   typescript: [ '5.9.3' ],
+15 silly audit   'typescript-eslint': [ '8.62.1' ],
+15 silly audit   'unbox-primitive': [ '1.1.0' ],
+15 silly audit   'undici-types': [ '6.21.0' ],
+15 silly audit   'unrs-resolver': [ '1.12.2' ],
+15 silly audit   'update-browserslist-db': [ '1.3.3' ],
+15 silly audit   'uri-js': [ '4.4.1' ],
+15 silly audit   'util-deprecate': [ '1.0.2' ],
+15 silly audit   'web-streams-polyfill': [ '3.3.3' ],
+15 silly audit   'web-vitals': [ '4.2.4' ],
+15 silly audit   'webidl-conversions': [ '3.0.1' ],
+15 silly audit   'websocket-driver': [ '0.7.5' ],
+15 silly audit   'websocket-extensions': [ '0.1.4' ],
+15 silly audit   'whatwg-url': [ '5.0.0' ],
+15 silly audit   which: [ '2.0.2' ],
+15 silly audit   'which-boxed-primitive': [ '1.1.1' ],
+15 silly audit   'which-builtin-type': [ '1.2.1' ],
+15 silly audit   'which-collection': [ '1.0.2' ],
+15 silly audit   'which-typed-array': [ '1.1.22' ],
+15 silly audit   'word-wrap': [ '1.2.5' ],
+15 silly audit   wrappy: [ '1.0.2' ],
+15 silly audit   xlsx: [ '0.20.3' ],
+15 silly audit   'xml-naming': [ '0.3.0' ],
+15 silly audit   y18n: [ '5.0.8' ],
+15 silly audit   yallist: [ '3.1.1' ],
+15 silly audit   yargs: [ '17.7.3' ],
+15 silly audit   'yargs-parser': [ '21.1.1' ],
+15 silly audit   'yocto-queue': [ '0.1.0' ],
+15 silly audit   zod: [ '4.4.3' ],
+15 silly audit   'zod-validation-error': [ '4.0.2' ]
+15 silly audit }
+16 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-win32-ia32-msvc
+17 silly reify mark deleted [
+17 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-win32-ia32-msvc'
+17 silly reify ]
+18 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-win32-arm64-msvc
+19 silly reify mark deleted [
+19 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-win32-arm64-msvc'
+19 silly reify ]
+20 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-wasm32-wasi
+21 silly reify mark deleted [
+21 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-wasm32-wasi'
+21 silly reify ]
+22 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-wasm32-wasi\node_modules\@emnapi\core
+23 silly reify mark deleted [
+23 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-wasm32-wasi\\node_modules\\@emnapi\\core'
+23 silly reify ]
+24 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-wasm32-wasi\node_modules\@emnapi\runtime
+25 silly reify mark deleted [
+25 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-wasm32-wasi\\node_modules\\@emnapi\\runtime'
+25 silly reify ]
+26 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@napi-rs\wasm-runtime
+27 silly reify mark deleted [
+27 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@napi-rs\\wasm-runtime'
+27 silly reify ]
+28 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-wasm32-wasi\node_modules\@emnapi\wasi-threads
+29 silly reify mark deleted [
+29 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-wasm32-wasi\\node_modules\\@emnapi\\wasi-threads'
+29 silly reify ]
+30 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@emnapi\core
+31 silly reify mark deleted [
+31 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@emnapi\\core'
+31 silly reify ]
+32 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@tybys\wasm-util
+33 silly reify mark deleted [
+33 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@tybys\\wasm-util'
+33 silly reify ]
+34 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@emnapi\wasi-threads
+35 silly reify mark deleted [
+35 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@emnapi\\wasi-threads'
+35 silly reify ]
+36 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-openharmony-arm64
+37 silly reify mark deleted [
+37 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-openharmony-arm64'
+37 silly reify ]
+38 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-x64-musl
+39 silly reify mark deleted [
+39 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-x64-musl'
+39 silly reify ]
+40 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-x64-gnu
+41 silly reify mark deleted [
+41 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-x64-gnu'
+41 silly reify ]
+42 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-s390x-gnu
+43 silly reify mark deleted [
+43 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-s390x-gnu'
+43 silly reify ]
+44 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-riscv64-musl
+45 silly reify mark deleted [
+45 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-riscv64-musl'
+45 silly reify ]
+46 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-riscv64-gnu
+47 silly reify mark deleted [
+47 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-riscv64-gnu'
+47 silly reify ]
+48 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-ppc64-gnu
+49 silly reify mark deleted [
+49 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-ppc64-gnu'
+49 silly reify ]
+50 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-loong64-musl
+51 silly reify mark deleted [
+51 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-loong64-musl'
+51 silly reify ]
+52 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-loong64-gnu
+53 silly reify mark deleted [
+53 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-loong64-gnu'
+53 silly reify ]
+54 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-arm64-musl
+55 silly reify mark deleted [
+55 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-arm64-musl'
+55 silly reify ]
+56 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-arm64-gnu
+57 silly reify mark deleted [
+57 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-arm64-gnu'
+57 silly reify ]
+58 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-arm-musleabihf
+59 silly reify mark deleted [
+59 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-arm-musleabihf'
+59 silly reify ]
+60 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-linux-arm-gnueabihf
+61 silly reify mark deleted [
+61 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-linux-arm-gnueabihf'
+61 silly reify ]
+62 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-freebsd-x64
+63 silly reify mark deleted [
+63 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-freebsd-x64'
+63 silly reify ]
+64 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-darwin-x64
+65 silly reify mark deleted [
+65 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-darwin-x64'
+65 silly reify ]
+66 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-darwin-arm64
+67 silly reify mark deleted [
+67 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-darwin-arm64'
+67 silly reify ]
+68 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-android-arm64
+69 silly reify mark deleted [
+69 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-android-arm64'
+69 silly reify ]
+70 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@unrs\resolver-binding-android-arm-eabi
+71 silly reify mark deleted [
+71 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@unrs\\resolver-binding-android-arm-eabi'
+71 silly reify ]
+72 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@next\swc-win32-arm64-msvc
+73 silly reify mark deleted [
+73 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@next\\swc-win32-arm64-msvc'
+73 silly reify ]
+74 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@next\swc-linux-x64-musl
+75 silly reify mark deleted [
+75 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@next\\swc-linux-x64-musl'
+75 silly reify ]
+76 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@next\swc-linux-x64-gnu
+77 silly reify mark deleted [
+77 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@next\\swc-linux-x64-gnu'
+77 silly reify ]
+78 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@next\swc-linux-arm64-musl
+79 silly reify mark deleted [
+79 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@next\\swc-linux-arm64-musl'
+79 silly reify ]
+80 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@next\swc-linux-arm64-gnu
+81 silly reify mark deleted [
+81 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@next\\swc-linux-arm64-gnu'
+81 silly reify ]
+82 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@next\swc-darwin-x64
+83 silly reify mark deleted [
+83 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@next\\swc-darwin-x64'
+83 silly reify ]
+84 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@next\swc-darwin-arm64
+85 silly reify mark deleted [
+85 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@next\\swc-darwin-arm64'
+85 silly reify ]
+86 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-win32-ia32
+87 silly reify mark deleted [
+87 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-win32-ia32'
+87 silly reify ]
+88 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-win32-arm64
+89 silly reify mark deleted [
+89 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-win32-arm64'
+89 silly reify ]
+90 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-webcontainers-wasm32
+91 silly reify mark deleted [
+91 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-webcontainers-wasm32'
+91 silly reify ]
+92 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-linuxmusl-x64
+93 silly reify mark deleted [
+93 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-linuxmusl-x64'
+93 silly reify ]
+94 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-linuxmusl-arm64
+95 silly reify mark deleted [
+95 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-linuxmusl-arm64'
+95 silly reify ]
+96 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-linux-x64
+97 silly reify mark deleted [
+97 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-linux-x64'
+97 silly reify ]
+98 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-linux-s390x
+99 silly reify mark deleted [
+99 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-linux-s390x'
+99 silly reify ]
+100 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-linux-riscv64
+101 silly reify mark deleted [
+101 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-linux-riscv64'
+101 silly reify ]
+102 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-linux-ppc64
+103 silly reify mark deleted [
+103 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-linux-ppc64'
+103 silly reify ]
+104 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-linux-arm64
+105 silly reify mark deleted [
+105 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-linux-arm64'
+105 silly reify ]
+106 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-linux-arm
+107 silly reify mark deleted [
+107 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-linux-arm'
+107 silly reify ]
+108 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-linuxmusl-x64
+109 silly reify mark deleted [
+109 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-linuxmusl-x64'
+109 silly reify ]
+110 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-linuxmusl-arm64
+111 silly reify mark deleted [
+111 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-linuxmusl-arm64'
+111 silly reify ]
+112 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-linux-x64
+113 silly reify mark deleted [
+113 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-linux-x64'
+113 silly reify ]
+114 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-linux-s390x
+115 silly reify mark deleted [
+115 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-linux-s390x'
+115 silly reify ]
+116 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-linux-riscv64
+117 silly reify mark deleted [
+117 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-linux-riscv64'
+117 silly reify ]
+118 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-linux-ppc64
+119 silly reify mark deleted [
+119 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-linux-ppc64'
+119 silly reify ]
+120 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-linux-arm64
+121 silly reify mark deleted [
+121 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-linux-arm64'
+121 silly reify ]
+122 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-linux-arm
+123 silly reify mark deleted [
+123 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-linux-arm'
+123 silly reify ]
+124 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-darwin-x64
+125 silly reify mark deleted [
+125 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-darwin-x64'
+125 silly reify ]
+126 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-libvips-darwin-arm64
+127 silly reify mark deleted [
+127 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-libvips-darwin-arm64'
+127 silly reify ]
+128 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-freebsd-wasm32
+129 silly reify mark deleted [
+129 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-freebsd-wasm32'
+129 silly reify ]
+130 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-darwin-x64
+131 silly reify mark deleted [
+131 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-darwin-x64'
+131 silly reify ]
+132 verbose reify failed optional dependency C:\laragon\www\Capstone-Banjarsari\node_modules\@img\sharp-darwin-arm64
+133 silly reify mark deleted [
+133 silly reify   'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@img\\sharp-darwin-arm64'
+133 silly reify ]
+134 http cache zod-validation-error@https://registry.npmjs.org/zod-validation-error/-/zod-validation-error-4.0.2.tgz 1ms (cache hit)
+135 http cache yargs@https://registry.npmjs.org/yargs/-/yargs-17.7.3.tgz 0ms (cache hit)
+136 http cache yocto-queue@https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz 0ms (cache hit)
+137 http cache zod@https://registry.npmjs.org/zod/-/zod-4.4.3.tgz 1ms (cache hit)
+138 http cache yallist@https://registry.npmjs.org/yallist/-/yallist-3.1.1.tgz 0ms (cache hit)
+139 http cache yargs-parser@https://registry.npmjs.org/yargs-parser/-/yargs-parser-21.1.1.tgz 0ms (cache hit)
+140 http cache y18n@https://registry.npmjs.org/y18n/-/y18n-5.0.8.tgz 0ms (cache hit)
+141 http cache xlsx@https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz 0ms (cache hit)
+142 http cache xml-naming@https://registry.npmjs.org/xml-naming/-/xml-naming-0.3.0.tgz 0ms (cache hit)
+143 http cache wrappy@https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz 0ms (cache hit)
+144 http cache wrap-ansi-cjs@https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-7.0.0.tgz 0ms (cache hit)
+145 http cache wrap-ansi@https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-7.0.0.tgz 0ms (cache hit)
+146 http cache word-wrap@https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.5.tgz 0ms (cache hit)
+147 http cache which-typed-array@https://registry.npmjs.org/which-typed-array/-/which-typed-array-1.1.22.tgz 0ms (cache hit)
+148 http cache which-collection@https://registry.npmjs.org/which-collection/-/which-collection-1.0.2.tgz 0ms (cache hit)
+149 http cache which-builtin-type@https://registry.npmjs.org/which-builtin-type/-/which-builtin-type-1.2.1.tgz 0ms (cache hit)
+150 http cache which-boxed-primitive@https://registry.npmjs.org/which-boxed-primitive/-/which-boxed-primitive-1.1.1.tgz 0ms (cache hit)
+151 http cache which@https://registry.npmjs.org/which/-/which-2.0.2.tgz 0ms (cache hit)
+152 http cache whatwg-url@https://registry.npmjs.org/whatwg-url/-/whatwg-url-5.0.0.tgz 0ms (cache hit)
+153 http cache websocket-extensions@https://registry.npmjs.org/websocket-extensions/-/websocket-extensions-0.1.4.tgz 0ms (cache hit)
+154 http cache webidl-conversions@https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-3.0.1.tgz 0ms (cache hit)
+155 http cache websocket-driver@https://registry.npmjs.org/websocket-driver/-/websocket-driver-0.7.5.tgz 0ms (cache hit)
+156 http cache web-vitals@https://registry.npmjs.org/web-vitals/-/web-vitals-4.2.4.tgz 0ms (cache hit)
+157 http cache web-streams-polyfill@https://registry.npmjs.org/web-streams-polyfill/-/web-streams-polyfill-3.3.3.tgz 0ms (cache hit)
+158 http cache util-deprecate@https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz 0ms (cache hit)
+159 http cache uri-js@https://registry.npmjs.org/uri-js/-/uri-js-4.4.1.tgz 0ms (cache hit)
+160 http cache update-browserslist-db@https://registry.npmjs.org/update-browserslist-db/-/update-browserslist-db-1.3.3.tgz 0ms (cache hit)
+161 http cache unrs-resolver@https://registry.npmjs.org/unrs-resolver/-/unrs-resolver-1.12.2.tgz 0ms (cache hit)
+162 http cache undici-types@https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz 0ms (cache hit)
+163 http cache unbox-primitive@https://registry.npmjs.org/unbox-primitive/-/unbox-primitive-1.1.0.tgz 0ms (cache hit)
+164 http cache typescript-eslint@https://registry.npmjs.org/typescript-eslint/-/typescript-eslint-8.62.1.tgz 0ms (cache hit)
+165 http cache typescript@https://registry.npmjs.org/typescript/-/typescript-5.9.3.tgz 0ms (cache hit)
+166 http cache typed-array-length@https://registry.npmjs.org/typed-array-length/-/typed-array-length-1.0.8.tgz 0ms (cache hit)
+167 http cache typed-array-byte-length@https://registry.npmjs.org/typed-array-byte-length/-/typed-array-byte-length-1.0.3.tgz 0ms (cache hit)
+168 http cache typed-array-byte-offset@https://registry.npmjs.org/typed-array-byte-offset/-/typed-array-byte-offset-1.0.4.tgz 0ms (cache hit)
+169 http cache typed-array-buffer@https://registry.npmjs.org/typed-array-buffer/-/typed-array-buffer-1.0.3.tgz 0ms (cache hit)
+170 http cache type-check@https://registry.npmjs.org/type-check/-/type-check-0.4.0.tgz 0ms (cache hit)
+171 http cache tslib@https://registry.npmjs.org/tslib/-/tslib-2.8.1.tgz 0ms (cache hit)
+172 http cache tsconfig-paths@https://registry.npmjs.org/tsconfig-paths/-/tsconfig-paths-3.15.0.tgz 0ms (cache hit)
+173 http cache to-regex-range@https://registry.npmjs.org/to-regex-range/-/to-regex-range-5.0.1.tgz 0ms (cache hit)
+174 http cache ts-api-utils@https://registry.npmjs.org/ts-api-utils/-/ts-api-utils-2.5.0.tgz 0ms (cache hit)
+175 http cache tr46@https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz 0ms (cache hit)
+176 http cache teeny-request@https://registry.npmjs.org/teeny-request/-/teeny-request-11.0.1.tgz 0ms (cache hit)
+177 http cache tinyglobby@https://registry.npmjs.org/tinyglobby/-/tinyglobby-0.2.17.tgz 0ms (cache hit)
+178 http cache styled-jsx@https://registry.npmjs.org/styled-jsx/-/styled-jsx-5.1.6.tgz 0ms (cache hit)
+179 http cache supports-color@https://registry.npmjs.org/supports-color/-/supports-color-7.2.0.tgz 0ms (cache hit)
+180 http cache stubs@https://registry.npmjs.org/stubs/-/stubs-3.0.0.tgz 0ms (cache hit)
+181 http cache strnum@https://registry.npmjs.org/strnum/-/strnum-2.4.2.tgz 0ms (cache hit)
+182 http cache supports-preserve-symlinks-flag@https://registry.npmjs.org/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz 0ms (cache hit)
+183 http cache strip-json-comments@https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-3.1.1.tgz 0ms (cache hit)
+184 http cache strip-ansi-cjs@https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz 0ms (cache hit)
+185 http cache strip-bom@https://registry.npmjs.org/strip-bom/-/strip-bom-3.0.0.tgz 0ms (cache hit)
+186 http cache strip-ansi@https://registry.npmjs.org/strip-ansi/-/strip-ansi-6.0.1.tgz 0ms (cache hit)
+187 http cache string.prototype.trim@https://registry.npmjs.org/string.prototype.trim/-/string.prototype.trim-1.2.11.tgz 0ms (cache hit)
+188 http cache string.prototype.trimend@https://registry.npmjs.org/string.prototype.trimend/-/string.prototype.trimend-1.0.10.tgz 0ms (cache hit)
+189 http cache string.prototype.matchall@https://registry.npmjs.org/string.prototype.matchall/-/string.prototype.matchall-4.0.12.tgz 0ms (cache hit)
+190 http cache string.prototype.repeat@https://registry.npmjs.org/string.prototype.repeat/-/string.prototype.repeat-1.0.0.tgz 0ms (cache hit)
+191 http cache string.prototype.trimstart@https://registry.npmjs.org/string.prototype.trimstart/-/string.prototype.trimstart-1.0.8.tgz 0ms (cache hit)
+192 http cache string-width-cjs@https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz 0ms (cache hit)
+193 http cache string.prototype.includes@https://registry.npmjs.org/string.prototype.includes/-/string.prototype.includes-2.0.1.tgz 0ms (cache hit)
+194 http cache string-width@https://registry.npmjs.org/string-width/-/string-width-4.2.3.tgz 0ms (cache hit)
+195 http cache string_decoder@https://registry.npmjs.org/string_decoder/-/string_decoder-1.3.0.tgz 0ms (cache hit)
+196 http cache stream-shift@https://registry.npmjs.org/stream-shift/-/stream-shift-1.0.3.tgz 0ms (cache hit)
+197 http cache stop-iteration-iterator@https://registry.npmjs.org/stop-iteration-iterator/-/stop-iteration-iterator-1.1.0.tgz 0ms (cache hit)
+198 http cache stream-events@https://registry.npmjs.org/stream-events/-/stream-events-1.0.5.tgz 0ms (cache hit)
+199 http cache stable-hash@https://registry.npmjs.org/stable-hash/-/stable-hash-0.0.5.tgz 0ms (cache hit)
+200 http cache source-map-js@https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.1.tgz 0ms (cache hit)
+201 http cache side-channel-weakmap@https://registry.npmjs.org/side-channel-weakmap/-/side-channel-weakmap-1.0.2.tgz 0ms (cache hit)
+202 http cache side-channel-map@https://registry.npmjs.org/side-channel-map/-/side-channel-map-1.0.1.tgz 0ms (cache hit)
+203 http cache side-channel-list@https://registry.npmjs.org/side-channel-list/-/side-channel-list-1.0.1.tgz 0ms (cache hit)
+204 http cache signal-exit@https://registry.npmjs.org/signal-exit/-/signal-exit-4.1.0.tgz 0ms (cache hit)
+205 http cache side-channel@https://registry.npmjs.org/side-channel/-/side-channel-1.1.1.tgz 0ms (cache hit)
+206 http cache shebang-regex@https://registry.npmjs.org/shebang-regex/-/shebang-regex-3.0.0.tgz 0ms (cache hit)
+207 http cache shebang-command@https://registry.npmjs.org/shebang-command/-/shebang-command-2.0.0.tgz 0ms (cache hit)
+208 http cache set-proto@https://registry.npmjs.org/set-proto/-/set-proto-1.0.0.tgz 0ms (cache hit)
+209 http cache sharp@https://registry.npmjs.org/sharp/-/sharp-0.35.5.tgz 0ms (cache hit)
+210 http cache set-function-name@https://registry.npmjs.org/set-function-name/-/set-function-name-2.0.2.tgz 0ms (cache hit)
+211 http cache scheduler@https://registry.npmjs.org/scheduler/-/scheduler-0.27.0.tgz 0ms (cache hit)
+212 http cache safe-regex-test@https://registry.npmjs.org/safe-regex-test/-/safe-regex-test-1.1.0.tgz 0ms (cache hit)
+213 http cache semver@https://registry.npmjs.org/semver/-/semver-6.3.1.tgz 0ms (cache hit)
+214 http cache set-function-length@https://registry.npmjs.org/set-function-length/-/set-function-length-1.2.2.tgz 0ms (cache hit)
+215 http cache safe-push-apply@https://registry.npmjs.org/safe-push-apply/-/safe-push-apply-1.0.0.tgz 0ms (cache hit)
+216 http cache safe-buffer@https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.2.1.tgz 0ms (cache hit)
+217 http cache run-parallel@https://registry.npmjs.org/run-parallel/-/run-parallel-1.2.0.tgz 0ms (cache hit)
+218 http cache safe-array-concat@https://registry.npmjs.org/safe-array-concat/-/safe-array-concat-1.1.4.tgz 0ms (cache hit)
+219 http cache rimraf@https://registry.npmjs.org/rimraf/-/rimraf-5.0.10.tgz 0ms (cache hit)
+220 http cache reusify@https://registry.npmjs.org/reusify/-/reusify-1.1.0.tgz 0ms (cache hit)
+221 http cache retry-request@https://registry.npmjs.org/retry-request/-/retry-request-9.0.1.tgz 0ms (cache hit)
+222 http cache retry@https://registry.npmjs.org/retry/-/retry-0.13.1.tgz 0ms (cache hit)
+223 http cache resolve-pkg-maps@https://registry.npmjs.org/resolve-pkg-maps/-/resolve-pkg-maps-1.0.0.tgz 0ms (cache hit)
+224 http cache resolve-from@https://registry.npmjs.org/resolve-from/-/resolve-from-4.0.0.tgz 0ms (cache hit)
+225 http cache resolve@https://registry.npmjs.org/resolve/-/resolve-2.0.0-next.7.tgz 0ms (cache hit)
+226 http cache require-directory@https://registry.npmjs.org/require-directory/-/require-directory-2.1.1.tgz 0ms (cache hit)
+227 http cache regexp.prototype.flags@https://registry.npmjs.org/regexp.prototype.flags/-/regexp.prototype.flags-1.5.4.tgz 0ms (cache hit)
+228 http cache reflect.getprototypeof@https://registry.npmjs.org/reflect.getprototypeof/-/reflect.getprototypeof-1.0.10.tgz 0ms (cache hit)
+229 http cache readable-stream@https://registry.npmjs.org/readable-stream/-/readable-stream-3.6.2.tgz 0ms (cache hit)
+230 http cache react-is@https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz 0ms (cache hit)
+231 http cache re2js@https://registry.npmjs.org/re2js/-/re2js-0.4.3.tgz 0ms (cache hit)
+232 http cache react@https://registry.npmjs.org/react/-/react-19.2.4.tgz 0ms (cache hit)
+233 http cache punycode@https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz 0ms (cache hit)
+234 http cache protobufjs@https://registry.npmjs.org/protobufjs/-/protobufjs-7.6.6.tgz 0ms (cache hit)
+235 http cache react-dom@https://registry.npmjs.org/react-dom/-/react-dom-19.2.4.tgz 0ms (cache hit)
+236 http cache proto3-json-serializer@https://registry.npmjs.org/proto3-json-serializer/-/proto3-json-serializer-4.0.2.tgz 0ms (cache hit)
+237 http cache prop-types@https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz 0ms (cache hit)
+238 http cache possible-typed-array-names@https://registry.npmjs.org/possible-typed-array-names/-/possible-typed-array-names-1.1.0.tgz 0ms (cache hit)
+239 http cache postcss@https://registry.npmjs.org/postcss/-/postcss-8.5.23.tgz 0ms (cache hit)
+240 http cache prelude-ls@https://registry.npmjs.org/prelude-ls/-/prelude-ls-1.2.1.tgz 0ms (cache hit)
+241 http cache path-scurry@https://registry.npmjs.org/path-scurry/-/path-scurry-1.11.1.tgz 0ms (cache hit)
+242 http cache picomatch@https://registry.npmjs.org/picomatch/-/picomatch-2.3.2.tgz 0ms (cache hit)
+243 http cache picocolors@https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz 0ms (cache hit)
+244 http cache path-key@https://registry.npmjs.org/path-key/-/path-key-3.1.1.tgz 0ms (cache hit)
+245 http cache path-expression-matcher@https://registry.npmjs.org/path-expression-matcher/-/path-expression-matcher-1.6.2.tgz 0ms (cache hit)
+246 http cache path-exists@https://registry.npmjs.org/path-exists/-/path-exists-4.0.0.tgz 0ms (cache hit)
+247 http cache package-json-from-dist@https://registry.npmjs.org/package-json-from-dist/-/package-json-from-dist-1.0.1.tgz 0ms (cache hit)
+248 http cache p-locate@https://registry.npmjs.org/p-locate/-/p-locate-5.0.0.tgz 0ms (cache hit)
+249 http cache own-keys@https://registry.npmjs.org/own-keys/-/own-keys-1.0.1.tgz 0ms (cache hit)
+250 http cache parent-module@https://registry.npmjs.org/parent-module/-/parent-module-1.0.1.tgz 0ms (cache hit)
+251 http cache p-limit@https://registry.npmjs.org/p-limit/-/p-limit-3.1.0.tgz 0ms (cache hit)
+252 http cache optionator@https://registry.npmjs.org/optionator/-/optionator-0.9.4.tgz 0ms (cache hit)
+253 http cache once@https://registry.npmjs.org/once/-/once-1.4.0.tgz 0ms (cache hit)
+254 http cache object.groupby@https://registry.npmjs.org/object.groupby/-/object.groupby-1.0.3.tgz 0ms (cache hit)
+255 http cache object.values@https://registry.npmjs.org/object.values/-/object.values-1.2.1.tgz 0ms (cache hit)
+256 http cache object.fromentries@https://registry.npmjs.org/object.fromentries/-/object.fromentries-2.0.8.tgz 0ms (cache hit)
+257 http cache object.entries@https://registry.npmjs.org/object.entries/-/object.entries-1.1.9.tgz 0ms (cache hit)
+258 http cache object.assign@https://registry.npmjs.org/object.assign/-/object.assign-4.1.7.tgz 0ms (cache hit)
+259 http cache object-keys@https://registry.npmjs.org/object-keys/-/object-keys-1.1.1.tgz 0ms (cache hit)
+260 http cache object-inspect@https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.4.tgz 0ms (cache hit)
+261 http cache object-assign@https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz 0ms (cache hit)
+262 http cache object-hash@https://registry.npmjs.org/object-hash/-/object-hash-3.0.0.tgz 0ms (cache hit)
+263 http cache node-releases@https://registry.npmjs.org/node-releases/-/node-releases-2.0.57.tgz 0ms (cache hit)
+264 http cache node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-2.7.0.tgz 0ms (cache hit)
+265 http cache node-exports-info@https://registry.npmjs.org/node-exports-info/-/node-exports-info-1.6.2.tgz 0ms (cache hit)
+266 http cache node-domexception@https://registry.npmjs.org/node-domexception/-/node-domexception-1.0.0.tgz 0ms (cache hit)
+267 http cache napi-postinstall@https://registry.npmjs.org/napi-postinstall/-/napi-postinstall-0.3.4.tgz 0ms (cache hit)
+268 http cache natural-compare@https://registry.npmjs.org/natural-compare/-/natural-compare-1.4.0.tgz 0ms (cache hit)
+269 http cache next@https://registry.npmjs.org/next/-/next-16.3.6.tgz 0ms (cache hit)
+270 http cache nanoid@https://registry.npmjs.org/nanoid/-/nanoid-3.3.19.tgz 0ms (cache hit)
+271 http cache ms@https://registry.npmjs.org/ms/-/ms-2.1.3.tgz 0ms (cache hit)
+272 http cache minipass@https://registry.npmjs.org/minipass/-/minipass-7.1.3.tgz 0ms (cache hit)
+273 http cache minimist@https://registry.npmjs.org/minimist/-/minimist-1.2.8.tgz 0ms (cache hit)
+274 http cache minimatch@https://registry.npmjs.org/minimatch/-/minimatch-3.1.5.tgz 0ms (cache hit)
+275 http cache mime@https://registry.npmjs.org/mime/-/mime-3.0.0.tgz 0ms (cache hit)
+276 http cache merge2@https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz 0ms (cache hit)
+277 http cache micromatch@https://registry.npmjs.org/micromatch/-/micromatch-4.0.8.tgz 0ms (cache hit)
+278 http cache lru-cache@https://registry.npmjs.org/lru-cache/-/lru-cache-5.1.1.tgz 0ms (cache hit)
+279 http cache loose-envify@https://registry.npmjs.org/loose-envify/-/loose-envify-1.4.0.tgz 0ms (cache hit)
+280 http cache lru-memoizer@https://registry.npmjs.org/lru-memoizer/-/lru-memoizer-3.0.0.tgz 0ms (cache hit)
+281 http cache long@https://registry.npmjs.org/long/-/long-5.3.2.tgz 0ms (cache hit)
+282 http cache lodash.once@https://registry.npmjs.org/lodash.once/-/lodash.once-4.1.1.tgz 0ms (cache hit)
+283 http cache lucide-react@https://registry.npmjs.org/lucide-react/-/lucide-react-1.28.0.tgz 0ms (cache hit)
+284 http cache lodash.merge@https://registry.npmjs.org/lodash.merge/-/lodash.merge-4.6.2.tgz 0ms (cache hit)
+285 http cache lodash.isstring@https://registry.npmjs.org/lodash.isstring/-/lodash.isstring-4.0.1.tgz 0ms (cache hit)
+286 http cache lodash.isplainobject@https://registry.npmjs.org/lodash.isplainobject/-/lodash.isplainobject-4.0.6.tgz 0ms (cache hit)
+287 http cache lodash.isnumber@https://registry.npmjs.org/lodash.isnumber/-/lodash.isnumber-3.0.3.tgz 0ms (cache hit)
+288 http cache lodash.isinteger@https://registry.npmjs.org/lodash.isinteger/-/lodash.isinteger-4.0.4.tgz 0ms (cache hit)
+289 http cache lodash.isboolean@https://registry.npmjs.org/lodash.isboolean/-/lodash.isboolean-3.0.3.tgz 0ms (cache hit)
+290 http cache lodash.clonedeep@https://registry.npmjs.org/lodash.clonedeep/-/lodash.clonedeep-4.5.0.tgz 0ms (cache hit)
+291 http cache lodash.camelcase@https://registry.npmjs.org/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz 0ms (cache hit)
+292 http cache locate-path@https://registry.npmjs.org/locate-path/-/locate-path-6.0.0.tgz 0ms (cache hit)
+293 http cache limiter@https://registry.npmjs.org/limiter/-/limiter-1.1.5.tgz 0ms (cache hit)
+294 http cache language-tags@https://registry.npmjs.org/language-tags/-/language-tags-1.0.9.tgz 0ms (cache hit)
+295 http cache language-subtag-registry@https://registry.npmjs.org/language-subtag-registry/-/language-subtag-registry-0.3.23.tgz 0ms (cache hit)
+296 http cache levn@https://registry.npmjs.org/levn/-/levn-0.4.1.tgz 0ms (cache hit)
+297 http cache jws@https://registry.npmjs.org/jws/-/jws-4.0.1.tgz 0ms (cache hit)
+298 http cache keyv@https://registry.npmjs.org/keyv/-/keyv-4.5.4.tgz 0ms (cache hit)
+299 http cache jwks-rsa@https://registry.npmjs.org/jwks-rsa/-/jwks-rsa-4.1.0.tgz 0ms (cache hit)
+300 http cache math-intrinsics@https://registry.npmjs.org/math-intrinsics/-/math-intrinsics-1.1.0.tgz 0ms (cache hit)
+301 http cache jwa@https://registry.npmjs.org/jwa/-/jwa-2.0.1.tgz 0ms (cache hit)
+302 http cache json5@https://registry.npmjs.org/json5/-/json5-2.2.3.tgz 0ms (cache hit)
+303 http cache jsonwebtoken@https://registry.npmjs.org/jsonwebtoken/-/jsonwebtoken-9.0.3.tgz 0ms (cache hit)
+304 http cache json-stable-stringify-without-jsonify@https://registry.npmjs.org/json-stable-stringify-without-jsonify/-/json-stable-stringify-without-jsonify-1.0.1.tgz 0ms (cache hit)
+305 http cache json-schema-traverse@https://registry.npmjs.org/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz 0ms (cache hit)
+306 http cache json-bigint@https://registry.npmjs.org/json-bigint/-/json-bigint-1.0.0.tgz 0ms (cache hit)
+307 http cache jsx-ast-utils@https://registry.npmjs.org/jsx-ast-utils/-/jsx-ast-utils-3.3.5.tgz 0ms (cache hit)
+308 http cache json-buffer@https://registry.npmjs.org/json-buffer/-/json-buffer-3.0.1.tgz 0ms (cache hit)
+309 http cache js-yaml@https://registry.npmjs.org/js-yaml/-/js-yaml-4.3.2.tgz 0ms (cache hit)
+310 http cache jsesc@https://registry.npmjs.org/jsesc/-/jsesc-3.1.0.tgz 0ms (cache hit)
+311 http cache jose@https://registry.npmjs.org/jose/-/jose-6.2.4.tgz 0ms (cache hit)
+312 http cache jackspeak@https://registry.npmjs.org/jackspeak/-/jackspeak-3.4.3.tgz 0ms (cache hit)
+313 http cache js-tokens@https://registry.npmjs.org/js-tokens/-/js-tokens-4.0.0.tgz 0ms (cache hit)
+314 http cache iterator.prototype@https://registry.npmjs.org/iterator.prototype/-/iterator.prototype-1.1.5.tgz 0ms (cache hit)
+315 http cache isexe@https://registry.npmjs.org/isexe/-/isexe-2.0.0.tgz 0ms (cache hit)
+316 http cache isarray@https://registry.npmjs.org/isarray/-/isarray-2.0.5.tgz 0ms (cache hit)
+317 http cache is-weakset@https://registry.npmjs.org/is-weakset/-/is-weakset-2.0.4.tgz 0ms (cache hit)
+318 http cache is-weakref@https://registry.npmjs.org/is-weakref/-/is-weakref-1.1.1.tgz 0ms (cache hit)
+319 http cache is-weakmap@https://registry.npmjs.org/is-weakmap/-/is-weakmap-2.0.2.tgz 0ms (cache hit)
+320 http cache is-unsafe@https://registry.npmjs.org/is-unsafe/-/is-unsafe-2.0.2.tgz 0ms (cache hit)
+321 http cache is-typed-array@https://registry.npmjs.org/is-typed-array/-/is-typed-array-1.1.15.tgz 0ms (cache hit)
+322 http cache is-symbol@https://registry.npmjs.org/is-symbol/-/is-symbol-1.1.1.tgz 0ms (cache hit)
+323 http cache is-string@https://registry.npmjs.org/is-string/-/is-string-1.1.1.tgz 0ms (cache hit)
+324 http cache is-stream@https://registry.npmjs.org/is-stream/-/is-stream-2.0.1.tgz 0ms (cache hit)
+325 http cache is-shared-array-buffer@https://registry.npmjs.org/is-shared-array-buffer/-/is-shared-array-buffer-1.0.4.tgz 0ms (cache hit)
+326 http cache is-set@https://registry.npmjs.org/is-set/-/is-set-2.0.3.tgz 0ms (cache hit)
+327 http cache is-regex@https://registry.npmjs.org/is-regex/-/is-regex-1.2.1.tgz 0ms (cache hit)
+328 http cache is-number-object@https://registry.npmjs.org/is-number-object/-/is-number-object-1.1.1.tgz 0ms (cache hit)
+329 http cache is-number@https://registry.npmjs.org/is-number/-/is-number-7.0.0.tgz 0ms (cache hit)
+330 http cache is-negative-zero@https://registry.npmjs.org/is-negative-zero/-/is-negative-zero-2.0.3.tgz 0ms (cache hit)
+331 http cache is-map@https://registry.npmjs.org/is-map/-/is-map-2.0.3.tgz 0ms (cache hit)
+332 http cache is-glob@https://registry.npmjs.org/is-glob/-/is-glob-4.0.3.tgz 0ms (cache hit)
+333 http cache is-fullwidth-code-point@https://registry.npmjs.org/is-fullwidth-code-point/-/is-fullwidth-code-point-3.0.0.tgz 0ms (cache hit)
+334 http cache is-generator-function@https://registry.npmjs.org/is-generator-function/-/is-generator-function-1.1.2.tgz 0ms (cache hit)
+335 http cache is-finalizationregistry@https://registry.npmjs.org/is-finalizationregistry/-/is-finalizationregistry-1.1.1.tgz 0ms (cache hit)
+336 http cache is-extglob@https://registry.npmjs.org/is-extglob/-/is-extglob-2.1.1.tgz 0ms (cache hit)
+337 http cache is-document.all@https://registry.npmjs.org/is-document.all/-/is-document.all-1.0.0.tgz 0ms (cache hit)
+338 http cache is-date-object@https://registry.npmjs.org/is-date-object/-/is-date-object-1.1.0.tgz 0ms (cache hit)
+339 http cache is-data-view@https://registry.npmjs.org/is-data-view/-/is-data-view-1.0.2.tgz 0ms (cache hit)
+340 http cache is-core-module@https://registry.npmjs.org/is-core-module/-/is-core-module-2.16.2.tgz 0ms (cache hit)
+341 http cache is-callable@https://registry.npmjs.org/is-callable/-/is-callable-1.2.7.tgz 0ms (cache hit)
+342 http cache is-boolean-object@https://registry.npmjs.org/is-boolean-object/-/is-boolean-object-1.2.2.tgz 0ms (cache hit)
+343 http cache is-bun-module@https://registry.npmjs.org/is-bun-module/-/is-bun-module-2.0.0.tgz 0ms (cache hit)
+344 http cache is-async-function@https://registry.npmjs.org/is-async-function/-/is-async-function-2.1.1.tgz 0ms (cache hit)
+345 http cache is-bigint@https://registry.npmjs.org/is-bigint/-/is-bigint-1.1.0.tgz 0ms (cache hit)
+346 http cache is-array-buffer@https://registry.npmjs.org/is-array-buffer/-/is-array-buffer-3.0.5.tgz 0ms (cache hit)
+347 http cache inherits@https://registry.npmjs.org/inherits/-/inherits-2.0.4.tgz 0ms (cache hit)
+348 http cache imurmurhash@https://registry.npmjs.org/imurmurhash/-/imurmurhash-0.1.4.tgz 0ms (cache hit)
+349 http cache import-fresh@https://registry.npmjs.org/import-fresh/-/import-fresh-3.3.1.tgz 0ms (cache hit)
+350 http cache internal-slot@https://registry.npmjs.org/internal-slot/-/internal-slot-1.1.0.tgz 0ms (cache hit)
+351 http cache ignore@https://registry.npmjs.org/ignore/-/ignore-5.3.2.tgz 0ms (cache hit)
+352 http cache idb@https://registry.npmjs.org/idb/-/idb-7.1.1.tgz 0ms (cache hit)
+353 http cache iceberg-js@https://registry.npmjs.org/iceberg-js/-/iceberg-js-0.8.1.tgz 0ms (cache hit)
+354 http cache https-proxy-agent@https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-7.0.6.tgz 0ms (cache hit)
+355 http cache http-proxy-agent@https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz 0ms (cache hit)
+356 http cache http-parser-js@https://registry.npmjs.org/http-parser-js/-/http-parser-js-0.5.10.tgz 0ms (cache hit)
+357 http cache html-entities@https://registry.npmjs.org/html-entities/-/html-entities-2.6.0.tgz 0ms (cache hit)
+358 http cache hermes-parser@https://registry.npmjs.org/hermes-parser/-/hermes-parser-0.25.1.tgz 0ms (cache hit)
+359 http cache hermes-estree@https://registry.npmjs.org/hermes-estree/-/hermes-estree-0.25.1.tgz 0ms (cache hit)
+360 http cache has-tostringtag@https://registry.npmjs.org/has-tostringtag/-/has-tostringtag-1.0.2.tgz 0ms (cache hit)
+361 http cache hasown@https://registry.npmjs.org/hasown/-/hasown-2.0.4.tgz 0ms (cache hit)
+362 http cache has-symbols@https://registry.npmjs.org/has-symbols/-/has-symbols-1.1.0.tgz 0ms (cache hit)
+363 http cache has-proto@https://registry.npmjs.org/has-proto/-/has-proto-1.2.0.tgz 0ms (cache hit)
+364 http cache has-property-descriptors@https://registry.npmjs.org/has-property-descriptors/-/has-property-descriptors-1.0.2.tgz 0ms (cache hit)
+365 http cache has-flag@https://registry.npmjs.org/has-flag/-/has-flag-4.0.0.tgz 0ms (cache hit)
+366 http cache has-bigints@https://registry.npmjs.org/has-bigints/-/has-bigints-1.1.0.tgz 0ms (cache hit)
+367 http cache gtoken@https://registry.npmjs.org/gtoken/-/gtoken-8.0.0.tgz 1ms (cache hit)
+368 http cache gopd@https://registry.npmjs.org/gopd/-/gopd-1.2.0.tgz 0ms (cache hit)
+369 http cache google-logging-utils@https://registry.npmjs.org/google-logging-utils/-/google-logging-utils-2.0.1.tgz 0ms (cache hit)
+370 http cache google-gax@https://registry.npmjs.org/google-gax/-/google-gax-6.9.0.tgz 0ms (cache hit)
+371 http cache google-auth-library@https://registry.npmjs.org/google-auth-library/-/google-auth-library-11.1.0.tgz 0ms (cache hit)
+372 http cache globalthis@https://registry.npmjs.org/globalthis/-/globalthis-1.0.4.tgz 0ms (cache hit)
+373 http cache globals@https://registry.npmjs.org/globals/-/globals-14.0.0.tgz 0ms (cache hit)
+374 http cache glob-parent@https://registry.npmjs.org/glob-parent/-/glob-parent-6.0.2.tgz 0ms (cache hit)
+375 http cache get-tsconfig@https://registry.npmjs.org/get-tsconfig/-/get-tsconfig-4.14.0.tgz 0ms (cache hit)
+376 http cache glob@https://registry.npmjs.org/glob/-/glob-10.5.0.tgz 0ms (cache hit)
+377 http cache get-proto@https://registry.npmjs.org/get-proto/-/get-proto-1.0.1.tgz 0ms (cache hit)
+378 http cache get-symbol-description@https://registry.npmjs.org/get-symbol-description/-/get-symbol-description-1.1.0.tgz 0ms (cache hit)
+379 http cache get-intrinsic@https://registry.npmjs.org/get-intrinsic/-/get-intrinsic-1.3.0.tgz 0ms (cache hit)
+380 http cache get-caller-file@https://registry.npmjs.org/get-caller-file/-/get-caller-file-2.0.5.tgz 0ms (cache hit)
+381 http cache gensync@https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz 0ms (cache hit)
+382 http cache generator-function@https://registry.npmjs.org/generator-function/-/generator-function-2.0.1.tgz 0ms (cache hit)
+383 http cache gcp-metadata@https://registry.npmjs.org/gcp-metadata/-/gcp-metadata-9.0.4.tgz 0ms (cache hit)
+384 http cache gaxios@https://registry.npmjs.org/gaxios/-/gaxios-6.3.0.tgz 0ms (cache hit)
+385 http cache functional-red-black-tree@https://registry.npmjs.org/functional-red-black-tree/-/functional-red-black-tree-1.0.1.tgz 0ms (cache hit)
+386 http cache functions-have-names@https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz 0ms (cache hit)
+387 http cache function-bind@https://registry.npmjs.org/function-bind/-/function-bind-1.1.2.tgz 0ms (cache hit)
+388 http cache function.prototype.name@https://registry.npmjs.org/function.prototype.name/-/function.prototype.name-1.2.0.tgz 0ms (cache hit)
+389 http cache formdata-polyfill@https://registry.npmjs.org/formdata-polyfill/-/formdata-polyfill-4.0.10.tgz 0ms (cache hit)
+390 http cache foreground-child@https://registry.npmjs.org/foreground-child/-/foreground-child-3.3.1.tgz 0ms (cache hit)
+391 http cache for-each@https://registry.npmjs.org/for-each/-/for-each-0.3.5.tgz 0ms (cache hit)
+392 http cache queue-microtask@https://registry.npmjs.org/queue-microtask/-/queue-microtask-1.2.3.tgz 0ms (cache hit)
+393 http cache flatted@https://registry.npmjs.org/flatted/-/flatted-3.4.2.tgz 0ms (cache hit)
+394 http cache firebase@https://registry.npmjs.org/firebase/-/firebase-12.15.0.tgz 0ms (cache hit)
+395 http cache find-up@https://registry.npmjs.org/find-up/-/find-up-5.0.0.tgz 0ms (cache hit)
+396 http cache firebase-admin@https://registry.npmjs.org/firebase-admin/-/firebase-admin-14.5.0.tgz 0ms (cache hit)
+397 http cache flat-cache@https://registry.npmjs.org/flat-cache/-/flat-cache-4.0.1.tgz 0ms (cache hit)
+398 http cache fetch-blob@https://registry.npmjs.org/fetch-blob/-/fetch-blob-3.2.0.tgz 0ms (cache hit)
+399 http cache file-entry-cache@https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-8.0.0.tgz 0ms (cache hit)
+400 http cache faye-websocket@https://registry.npmjs.org/faye-websocket/-/faye-websocket-0.11.4.tgz 0ms (cache hit)
+401 http cache fill-range@https://registry.npmjs.org/fill-range/-/fill-range-7.1.1.tgz 0ms (cache hit)
+402 http cache fastq@https://registry.npmjs.org/fastq/-/fastq-1.20.3.tgz 0ms (cache hit)
+403 http cache fast-xml-parser@https://registry.npmjs.org/fast-xml-parser/-/fast-xml-parser-5.11.1.tgz 0ms (cache hit)
+404 http cache fast-levenshtein@https://registry.npmjs.org/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz 0ms (cache hit)
+405 http cache fast-xml-builder@https://registry.npmjs.org/fast-xml-builder/-/fast-xml-builder-1.3.1.tgz 0ms (cache hit)
+406 http cache fast-json-stable-stringify@https://registry.npmjs.org/fast-json-stable-stringify/-/fast-json-stable-stringify-2.1.0.tgz 0ms (cache hit)
+407 http cache fast-glob@https://registry.npmjs.org/fast-glob/-/fast-glob-3.3.1.tgz 0ms (cache hit)
+408 http cache fast-deep-equal@https://registry.npmjs.org/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz 0ms (cache hit)
+409 http cache extend@https://registry.npmjs.org/extend/-/extend-3.0.2.tgz 0ms (cache hit)
+410 http cache event-target-shim@https://registry.npmjs.org/event-target-shim/-/event-target-shim-5.0.1.tgz 0ms (cache hit)
+411 http cache esutils@https://registry.npmjs.org/esutils/-/esutils-2.0.3.tgz 0ms (cache hit)
+412 http cache estraverse@https://registry.npmjs.org/estraverse/-/estraverse-5.3.0.tgz 0ms (cache hit)
+413 http cache esrecurse@https://registry.npmjs.org/esrecurse/-/esrecurse-4.3.0.tgz 0ms (cache hit)
+414 http cache esquery@https://registry.npmjs.org/esquery/-/esquery-1.7.0.tgz 0ms (cache hit)
+415 http cache espree@https://registry.npmjs.org/espree/-/espree-10.4.0.tgz 0ms (cache hit)
+416 http cache eslint-visitor-keys@https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-4.2.1.tgz 0ms (cache hit)
+417 http cache eslint-scope@https://registry.npmjs.org/eslint-scope/-/eslint-scope-8.4.0.tgz 0ms (cache hit)
+418 http cache eslint-plugin-react-hooks@https://registry.npmjs.org/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-7.1.1.tgz 0ms (cache hit)
+419 http cache eslint-plugin-react@https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.37.5.tgz 0ms (cache hit)
+420 http cache eslint-plugin-jsx-a11y@https://registry.npmjs.org/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.10.2.tgz 0ms (cache hit)
+421 http cache eslint-plugin-import@https://registry.npmjs.org/eslint-plugin-import/-/eslint-plugin-import-2.32.0.tgz 0ms (cache hit)
+422 http cache eslint-module-utils@https://registry.npmjs.org/eslint-module-utils/-/eslint-module-utils-2.13.0.tgz 0ms (cache hit)
+423 http cache eslint-import-resolver-node@https://registry.npmjs.org/eslint-import-resolver-node/-/eslint-import-resolver-node-0.3.10.tgz 0ms (cache hit)
+424 http cache eslint-import-resolver-typescript@https://registry.npmjs.org/eslint-import-resolver-typescript/-/eslint-import-resolver-typescript-3.10.1.tgz 0ms (cache hit)
+425 http cache eslint-config-next@https://registry.npmjs.org/eslint-config-next/-/eslint-config-next-16.3.6.tgz 0ms (cache hit)
+426 http cache eslint@https://registry.npmjs.org/eslint/-/eslint-9.39.4.tgz 0ms (cache hit)
+427 http cache escape-string-regexp@https://registry.npmjs.org/escape-string-regexp/-/escape-string-regexp-4.0.0.tgz 0ms (cache hit)
+428 http cache es-to-primitive@https://registry.npmjs.org/es-to-primitive/-/es-to-primitive-1.3.4.tgz 0ms (cache hit)
+429 http cache es-shim-unscopables@https://registry.npmjs.org/es-shim-unscopables/-/es-shim-unscopables-1.1.0.tgz 0ms (cache hit)
+430 http cache es-set-tostringtag@https://registry.npmjs.org/es-set-tostringtag/-/es-set-tostringtag-2.1.0.tgz 0ms (cache hit)
+431 http cache es-object-atoms@https://registry.npmjs.org/es-object-atoms/-/es-object-atoms-1.1.2.tgz 0ms (cache hit)
+432 http cache escalade@https://registry.npmjs.org/escalade/-/escalade-3.2.0.tgz 0ms (cache hit)
+433 http cache es-iterator-helpers@https://registry.npmjs.org/es-iterator-helpers/-/es-iterator-helpers-1.3.3.tgz 0ms (cache hit)
+434 http cache es-errors@https://registry.npmjs.org/es-errors/-/es-errors-1.3.0.tgz 0ms (cache hit)
+435 http cache es-define-property@https://registry.npmjs.org/es-define-property/-/es-define-property-1.0.1.tgz 0ms (cache hit)
+436 http cache es-abstract@https://registry.npmjs.org/es-abstract/-/es-abstract-1.24.2.tgz 0ms (cache hit)
+437 http cache es-abstract-get@https://registry.npmjs.org/es-abstract-get/-/es-abstract-get-1.0.0.tgz 0ms (cache hit)
+438 http cache end-of-stream@https://registry.npmjs.org/end-of-stream/-/end-of-stream-1.4.5.tgz 0ms (cache hit)
+439 http cache emoji-regex@https://registry.npmjs.org/emoji-regex/-/emoji-regex-9.2.2.tgz 0ms (cache hit)
+440 http cache ecdsa-sig-formatter@https://registry.npmjs.org/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.11.tgz 0ms (cache hit)
+441 http cache electron-to-chromium@https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.5.439.tgz 0ms (cache hit)
+442 http cache eastasianwidth@https://registry.npmjs.org/eastasianwidth/-/eastasianwidth-0.2.0.tgz 0ms (cache hit)
+443 http cache duplexify@https://registry.npmjs.org/duplexify/-/duplexify-4.1.3.tgz 0ms (cache hit)
+444 http cache doctrine@https://registry.npmjs.org/doctrine/-/doctrine-2.1.0.tgz 0ms (cache hit)
+445 http cache dunder-proto@https://registry.npmjs.org/dunder-proto/-/dunder-proto-1.0.1.tgz 0ms (cache hit)
+446 http cache detect-libc@https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz 0ms (cache hit)
+447 http cache define-properties@https://registry.npmjs.org/define-properties/-/define-properties-1.2.1.tgz 0ms (cache hit)
+448 http cache deep-is@https://registry.npmjs.org/deep-is/-/deep-is-0.1.4.tgz 0ms (cache hit)
+449 http cache define-data-property@https://registry.npmjs.org/define-data-property/-/define-data-property-1.1.4.tgz 0ms (cache hit)
+450 http cache debug@https://registry.npmjs.org/debug/-/debug-4.4.3.tgz 0ms (cache hit)
+451 http cache data-view-byte-offset@https://registry.npmjs.org/data-view-byte-offset/-/data-view-byte-offset-1.0.1.tgz 0ms (cache hit)
+452 http cache data-view-byte-length@https://registry.npmjs.org/data-view-byte-length/-/data-view-byte-length-1.0.2.tgz 0ms (cache hit)
+453 http cache data-view-buffer@https://registry.npmjs.org/data-view-buffer/-/data-view-buffer-1.0.2.tgz 0ms (cache hit)
+454 http cache damerau-levenshtein@https://registry.npmjs.org/damerau-levenshtein/-/damerau-levenshtein-1.0.8.tgz 0ms (cache hit)
+455 http cache data-uri-to-buffer@https://registry.npmjs.org/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz 0ms (cache hit)
+456 http cache cross-spawn@https://registry.npmjs.org/cross-spawn/-/cross-spawn-7.0.6.tgz 0ms (cache hit)
+457 http cache csstype@https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz 0ms (cache hit)
+458 http cache cookie@https://registry.npmjs.org/cookie/-/cookie-1.1.1.tgz 0ms (cache hit)
+459 http cache concat-map@https://registry.npmjs.org/concat-map/-/concat-map-0.0.1.tgz 0ms (cache hit)
+460 http cache convert-source-map@https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz 0ms (cache hit)
+461 http cache color-convert@https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz 0ms (cache hit)
+462 http cache cliui@https://registry.npmjs.org/cliui/-/cliui-8.0.1.tgz 0ms (cache hit)
+463 http cache color-name@https://registry.npmjs.org/color-name/-/color-name-1.1.4.tgz 0ms (cache hit)
+464 http cache client-only@https://registry.npmjs.org/client-only/-/client-only-0.0.1.tgz 0ms (cache hit)
+465 http cache chalk@https://registry.npmjs.org/chalk/-/chalk-4.1.2.tgz 0ms (cache hit)
+466 http cache caniuse-lite@https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001813.tgz 0ms (cache hit)
+467 http cache callsites@https://registry.npmjs.org/callsites/-/callsites-3.1.0.tgz 0ms (cache hit)
+468 http cache call-bound@https://registry.npmjs.org/call-bound/-/call-bound-1.0.4.tgz 0ms (cache hit)
+469 http cache call-bind-apply-helpers@https://registry.npmjs.org/call-bind-apply-helpers/-/call-bind-apply-helpers-1.0.2.tgz 0ms (cache hit)
+470 http cache call-bind@https://registry.npmjs.org/call-bind/-/call-bind-1.0.9.tgz 0ms (cache hit)
+471 http cache buffer-equal-constant-time@https://registry.npmjs.org/buffer-equal-constant-time/-/buffer-equal-constant-time-1.0.1.tgz 0ms (cache hit)
+472 http cache browserslist@https://registry.npmjs.org/browserslist/-/browserslist-4.29.2.tgz 0ms (cache hit)
+473 http cache braces@https://registry.npmjs.org/braces/-/braces-3.0.3.tgz 0ms (cache hit)
+474 http cache brace-expansion@https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.21.tgz 0ms (cache hit)
+475 http cache bignumber.js@https://registry.npmjs.org/bignumber.js/-/bignumber.js-9.3.1.tgz 0ms (cache hit)
+476 http cache baseline-browser-mapping@https://registry.npmjs.org/baseline-browser-mapping/-/baseline-browser-mapping-2.11.26.tgz 0ms (cache hit)
+477 http cache base64-js@https://registry.npmjs.org/base64-js/-/base64-js-1.5.1.tgz 0ms (cache hit)
+478 http cache balanced-match@https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz 0ms (cache hit)
+479 http cache axobject-query@https://registry.npmjs.org/axobject-query/-/axobject-query-4.1.0.tgz 0ms (cache hit)
+480 http cache axe-core@https://registry.npmjs.org/axe-core/-/axe-core-4.12.1.tgz 0ms (cache hit)
+481 http cache available-typed-arrays@https://registry.npmjs.org/available-typed-arrays/-/available-typed-arrays-1.0.7.tgz 0ms (cache hit)
+482 http cache async-function@https://registry.npmjs.org/async-function/-/async-function-1.0.0.tgz 0ms (cache hit)
+483 http cache ast-types-flow@https://registry.npmjs.org/ast-types-flow/-/ast-types-flow-0.0.8.tgz 0ms (cache hit)
+484 http cache arraybuffer.prototype.slice@https://registry.npmjs.org/arraybuffer.prototype.slice/-/arraybuffer.prototype.slice-1.0.4.tgz 0ms (cache hit)
+485 http cache async-retry@https://registry.npmjs.org/async-retry/-/async-retry-1.3.3.tgz 0ms (cache hit)
+486 http cache array.prototype.tosorted@https://registry.npmjs.org/array.prototype.tosorted/-/array.prototype.tosorted-1.1.4.tgz 0ms (cache hit)
+487 http cache array.prototype.flatmap@https://registry.npmjs.org/array.prototype.flatmap/-/array.prototype.flatmap-1.3.3.tgz 0ms (cache hit)
+488 http cache array.prototype.flat@https://registry.npmjs.org/array.prototype.flat/-/array.prototype.flat-1.3.3.tgz 0ms (cache hit)
+489 http cache array.prototype.findlastindex@https://registry.npmjs.org/array.prototype.findlastindex/-/array.prototype.findlastindex-1.2.6.tgz 0ms (cache hit)
+490 http cache array-includes@https://registry.npmjs.org/array-includes/-/array-includes-3.1.9.tgz 0ms (cache hit)
+491 http cache array.prototype.findlast@https://registry.npmjs.org/array.prototype.findlast/-/array.prototype.findlast-1.2.5.tgz 0ms (cache hit)
+492 http cache array-buffer-byte-length@https://registry.npmjs.org/array-buffer-byte-length/-/array-buffer-byte-length-1.0.2.tgz 0ms (cache hit)
+493 http cache aria-query@https://registry.npmjs.org/aria-query/-/aria-query-5.3.2.tgz 0ms (cache hit)
+494 http cache argparse@https://registry.npmjs.org/argparse/-/argparse-2.0.1.tgz 0ms (cache hit)
+495 http cache anynum@https://registry.npmjs.org/anynum/-/anynum-1.0.1.tgz 0ms (cache hit)
+496 http cache ansi-styles@https://registry.npmjs.org/ansi-styles/-/ansi-styles-4.3.0.tgz 0ms (cache hit)
+497 http cache ansi-regex@https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz 0ms (cache hit)
+498 http cache ajv@https://registry.npmjs.org/ajv/-/ajv-6.15.0.tgz 0ms (cache hit)
+499 http cache agent-base@https://registry.npmjs.org/agent-base/-/agent-base-7.1.4.tgz 0ms (cache hit)
+500 http cache acorn-jsx@https://registry.npmjs.org/acorn-jsx/-/acorn-jsx-5.3.2.tgz 0ms (cache hit)
+501 http cache acorn@https://registry.npmjs.org/acorn/-/acorn-8.17.0.tgz 0ms (cache hit)
+502 http cache abort-controller@https://registry.npmjs.org/abort-controller/-/abort-controller-3.0.0.tgz 0ms (cache hit)
+503 http cache @unrs/resolver-binding-win32-x64-msvc@https://registry.npmjs.org/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.12.2.tgz 0ms (cache hit)
+504 http cache @typescript-eslint/utils@https://registry.npmjs.org/@typescript-eslint/utils/-/utils-8.62.1.tgz 0ms (cache hit)
+505 http cache @typescript-eslint/typescript-estree@https://registry.npmjs.org/@typescript-eslint/typescript-estree/-/typescript-estree-8.62.1.tgz 0ms (cache hit)
+506 http cache @typescript-eslint/visitor-keys@https://registry.npmjs.org/@typescript-eslint/visitor-keys/-/visitor-keys-8.62.1.tgz 0ms (cache hit)
+507 http cache @typescript-eslint/types@https://registry.npmjs.org/@typescript-eslint/types/-/types-8.62.1.tgz 0ms (cache hit)
+508 http cache @typescript-eslint/type-utils@https://registry.npmjs.org/@typescript-eslint/type-utils/-/type-utils-8.62.1.tgz 0ms (cache hit)
+509 http cache @typescript-eslint/scope-manager@https://registry.npmjs.org/@typescript-eslint/scope-manager/-/scope-manager-8.62.1.tgz 0ms (cache hit)
+510 http cache @typescript-eslint/tsconfig-utils@https://registry.npmjs.org/@typescript-eslint/tsconfig-utils/-/tsconfig-utils-8.62.1.tgz 0ms (cache hit)
+511 http cache @typescript-eslint/project-service@https://registry.npmjs.org/@typescript-eslint/project-service/-/project-service-8.62.1.tgz 0ms (cache hit)
+512 http cache @typescript-eslint/parser@https://registry.npmjs.org/@typescript-eslint/parser/-/parser-8.62.1.tgz 0ms (cache hit)
+513 http cache @typescript-eslint/eslint-plugin@https://registry.npmjs.org/@typescript-eslint/eslint-plugin/-/eslint-plugin-8.62.1.tgz 0ms (cache hit)
+514 http cache @types/react-dom@https://registry.npmjs.org/@types/react-dom/-/react-dom-19.2.3.tgz 0ms (cache hit)
+515 http cache @types/react@https://registry.npmjs.org/@types/react/-/react-19.2.17.tgz 0ms (cache hit)
+516 http cache @types/node@https://registry.npmjs.org/@types/node/-/node-20.19.43.tgz 0ms (cache hit)
+517 http cache @types/ms@https://registry.npmjs.org/@types/ms/-/ms-2.1.0.tgz 0ms (cache hit)
+518 http cache @types/jsonwebtoken@https://registry.npmjs.org/@types/jsonwebtoken/-/jsonwebtoken-9.0.10.tgz 0ms (cache hit)
+519 http cache @types/json5@https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz 0ms (cache hit)
+520 http cache @types/json-schema@https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.15.tgz 0ms (cache hit)
+521 http cache @types/estree@https://registry.npmjs.org/@types/estree/-/estree-1.0.9.tgz 0ms (cache hit)
+522 http cache @tybys/wasm-util@https://registry.npmjs.org/@tybys/wasm-util/-/wasm-util-0.10.3.tgz 0ms (cache hit)
+523 http cache @swc/helpers@https://registry.npmjs.org/@swc/helpers/-/helpers-0.5.23.tgz 0ms (cache hit)
+524 http cache @supabase/storage-js@https://registry.npmjs.org/@supabase/storage-js/-/storage-js-2.117.2.tgz 0ms (cache hit)
+525 http cache @supabase/supabase-js@https://registry.npmjs.org/@supabase/supabase-js/-/supabase-js-2.117.2.tgz 0ms (cache hit)
+526 http cache @supabase/ssr@https://registry.npmjs.org/@supabase/ssr/-/ssr-0.12.7.tgz 0ms (cache hit)
+527 http cache @supabase/realtime-js@https://registry.npmjs.org/@supabase/realtime-js/-/realtime-js-2.117.2.tgz 0ms (cache hit)
+528 http cache @supabase/postgrest-js@https://registry.npmjs.org/@supabase/postgrest-js/-/postgrest-js-2.117.2.tgz 0ms (cache hit)
+529 http cache @supabase/phoenix@https://registry.npmjs.org/@supabase/phoenix/-/phoenix-0.4.5.tgz 0ms (cache hit)
+530 http cache @supabase/functions-js@https://registry.npmjs.org/@supabase/functions-js/-/functions-js-2.117.2.tgz 0ms (cache hit)
+531 http cache @supabase/auth-js@https://registry.npmjs.org/@supabase/auth-js/-/auth-js-2.117.2.tgz 0ms (cache hit)
+532 http cache @rtsao/scc@https://registry.npmjs.org/@rtsao/scc/-/scc-1.1.0.tgz 0ms (cache hit)
+533 http cache @protobufjs/pool@https://registry.npmjs.org/@protobufjs/pool/-/pool-1.1.0.tgz 0ms (cache hit)
+534 http cache @protobufjs/path@https://registry.npmjs.org/@protobufjs/path/-/path-1.1.2.tgz 0ms (cache hit)
+535 http cache @protobufjs/utf8@https://registry.npmjs.org/@protobufjs/utf8/-/utf8-1.1.1.tgz 0ms (cache hit)
+536 http cache @protobufjs/fetch@https://registry.npmjs.org/@protobufjs/fetch/-/fetch-1.1.1.tgz 0ms (cache hit)
+537 http cache @protobufjs/float@https://registry.npmjs.org/@protobufjs/float/-/float-1.0.2.tgz 0ms (cache hit)
+538 http cache @protobufjs/eventemitter@https://registry.npmjs.org/@protobufjs/eventemitter/-/eventemitter-1.1.1.tgz 0ms (cache hit)
+539 http cache @protobufjs/codegen@https://registry.npmjs.org/@protobufjs/codegen/-/codegen-2.0.5.tgz 0ms (cache hit)
+540 http cache @protobufjs/base64@https://registry.npmjs.org/@protobufjs/base64/-/base64-1.1.2.tgz 0ms (cache hit)
+541 http cache @protobufjs/aspromise@https://registry.npmjs.org/@protobufjs/aspromise/-/aspromise-1.1.2.tgz 0ms (cache hit)
+542 http cache @opentelemetry/api@https://registry.npmjs.org/@opentelemetry/api/-/api-1.9.1.tgz 0ms (cache hit)
+543 http cache @pkgjs/parseargs@https://registry.npmjs.org/@pkgjs/parseargs/-/parseargs-0.11.0.tgz 0ms (cache hit)
+544 http cache @nolyfill/is-core-module@https://registry.npmjs.org/@nolyfill/is-core-module/-/is-core-module-1.0.39.tgz 0ms (cache hit)
+545 http cache @nodelib/fs.walk@https://registry.npmjs.org/@nodelib/fs.walk/-/fs.walk-1.2.8.tgz 0ms (cache hit)
+546 http cache @nodelib/fs.stat@https://registry.npmjs.org/@nodelib/fs.stat/-/fs.stat-2.0.5.tgz 0ms (cache hit)
+547 http cache @nodelib/fs.scandir@https://registry.npmjs.org/@nodelib/fs.scandir/-/fs.scandir-2.1.5.tgz 0ms (cache hit)
+548 http cache @next/swc-win32-x64-msvc@https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-16.3.6.tgz 0ms (cache hit)
+549 http cache @nodable/entities@https://registry.npmjs.org/@nodable/entities/-/entities-3.0.0.tgz 0ms (cache hit)
+550 http cache @next/eslint-plugin-next@https://registry.npmjs.org/@next/eslint-plugin-next/-/eslint-plugin-next-16.3.6.tgz 0ms (cache hit)
+551 http cache @next/env@https://registry.npmjs.org/@next/env/-/env-16.3.6.tgz 0ms (cache hit)
+552 http cache @napi-rs/wasm-runtime@https://registry.npmjs.org/@napi-rs/wasm-runtime/-/wasm-runtime-1.1.6.tgz 0ms (cache hit)
+553 http cache @js-sdsl/ordered-map@https://registry.npmjs.org/@js-sdsl/ordered-map/-/ordered-map-4.4.2.tgz 0ms (cache hit)
+554 http cache @jridgewell/trace-mapping@https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.31.tgz 0ms (cache hit)
+555 http cache @jridgewell/resolve-uri@https://registry.npmjs.org/@jridgewell/resolve-uri/-/resolve-uri-3.1.2.tgz 0ms (cache hit)
+556 http cache @jridgewell/gen-mapping@https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.13.tgz 0ms (cache hit)
+557 http cache @isaacs/cliui@https://registry.npmjs.org/@isaacs/cliui/-/cliui-8.0.2.tgz 0ms (cache hit)
+558 http cache @jridgewell/remapping@https://registry.npmjs.org/@jridgewell/remapping/-/remapping-2.3.5.tgz 0ms (cache hit)
+559 http cache @img/sharp-win32-x64@https://registry.npmjs.org/@img/sharp-win32-x64/-/sharp-win32-x64-0.35.5.tgz 0ms (cache hit)
+560 http cache @jridgewell/sourcemap-codec@https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.5.5.tgz 0ms (cache hit)
+561 http cache @img/sharp-wasm32@https://registry.npmjs.org/@img/sharp-wasm32/-/sharp-wasm32-0.35.5.tgz 0ms (cache hit)
+562 http cache @humanwhocodes/module-importer@https://registry.npmjs.org/@humanwhocodes/module-importer/-/module-importer-1.0.1.tgz 0ms (cache hit)
+563 http cache @humanwhocodes/retry@https://registry.npmjs.org/@humanwhocodes/retry/-/retry-0.4.3.tgz 0ms (cache hit)
+564 http cache @grpc/proto-loader@https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.7.15.tgz 0ms (cache hit)
+565 http cache @img/colour@https://registry.npmjs.org/@img/colour/-/colour-1.1.0.tgz 0ms (cache hit)
+566 http cache @humanfs/node@https://registry.npmjs.org/@humanfs/node/-/node-0.16.8.tgz 0ms (cache hit)
+567 http cache @grpc/grpc-js@https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.9.16.tgz 0ms (cache hit)
+568 http cache @humanfs/types@https://registry.npmjs.org/@humanfs/types/-/types-0.15.0.tgz 0ms (cache hit)
+569 http cache @google-cloud/promisify@https://registry.npmjs.org/@google-cloud/promisify/-/promisify-6.1.0.tgz 0ms (cache hit)
+570 http cache @google-cloud/storage@https://registry.npmjs.org/@google-cloud/storage/-/storage-8.2.0.tgz 0ms (cache hit)
+571 http cache @humanfs/core@https://registry.npmjs.org/@humanfs/core/-/core-0.19.2.tgz 0ms (cache hit)
+572 http cache @google-cloud/projectify@https://registry.npmjs.org/@google-cloud/projectify/-/projectify-6.1.0.tgz 0ms (cache hit)
+573 http cache @google-cloud/paginator@https://registry.npmjs.org/@google-cloud/paginator/-/paginator-7.1.0.tgz 0ms (cache hit)
+574 http cache @google-cloud/firestore@https://registry.npmjs.org/@google-cloud/firestore/-/firestore-9.2.0.tgz 0ms (cache hit)
+575 http cache @google-cloud/firestore-api@https://registry.npmjs.org/@google-cloud/firestore-api/-/firestore-api-0.2.0.tgz 0ms (cache hit)
+576 http cache @firebase/webchannel-wrapper@https://registry.npmjs.org/@firebase/webchannel-wrapper/-/webchannel-wrapper-1.0.6.tgz 0ms (cache hit)
+577 http cache @firebase/util@https://registry.npmjs.org/@firebase/util/-/util-1.15.1.tgz 0ms (cache hit)
+578 http cache @firebase/storage-types@https://registry.npmjs.org/@firebase/storage-types/-/storage-types-0.8.4.tgz 0ms (cache hit)
+579 http cache @firebase/storage-compat@https://registry.npmjs.org/@firebase/storage-compat/-/storage-compat-0.4.3.tgz 0ms (cache hit)
+580 http cache @firebase/storage@https://registry.npmjs.org/@firebase/storage/-/storage-0.14.3.tgz 0ms (cache hit)
+581 http cache @firebase/remote-config-types@https://registry.npmjs.org/@firebase/remote-config-types/-/remote-config-types-0.5.1.tgz 0ms (cache hit)
+582 http cache @firebase/remote-config-compat@https://registry.npmjs.org/@firebase/remote-config-compat/-/remote-config-compat-0.2.26.tgz 0ms (cache hit)
+583 http cache path-parse@https://registry.npmjs.org/path-parse/-/path-parse-1.0.7.tgz 0ms (cache hit)
+584 http cache @firebase/performance-types@https://registry.npmjs.org/@firebase/performance-types/-/performance-types-0.2.4.tgz 0ms (cache hit)
+585 http cache @firebase/performance-compat@https://registry.npmjs.org/@firebase/performance-compat/-/performance-compat-0.2.25.tgz 0ms (cache hit)
+586 http cache @firebase/performance@https://registry.npmjs.org/@firebase/performance/-/performance-0.7.12.tgz 0ms (cache hit)
+587 http cache @firebase/remote-config@https://registry.npmjs.org/@firebase/remote-config/-/remote-config-0.8.5.tgz 0ms (cache hit)
+588 http cache @firebase/messaging-interop-types@https://registry.npmjs.org/@firebase/messaging-interop-types/-/messaging-interop-types-0.2.5.tgz 0ms (cache hit)
+589 http cache @firebase/messaging@https://registry.npmjs.org/@firebase/messaging/-/messaging-0.13.0.tgz 0ms (cache hit)
+590 http cache @firebase/logger@https://registry.npmjs.org/@firebase/logger/-/logger-0.5.1.tgz 0ms (cache hit)
+591 http cache @firebase/installations-types@https://registry.npmjs.org/@firebase/installations-types/-/installations-types-0.5.4.tgz 0ms (cache hit)
+592 http cache @firebase/installations-compat@https://registry.npmjs.org/@firebase/installations-compat/-/installations-compat-0.2.22.tgz 0ms (cache hit)
+593 http cache @firebase/installations@https://registry.npmjs.org/@firebase/installations/-/installations-0.6.22.tgz 0ms (cache hit)
+594 http cache @firebase/messaging-compat@https://registry.npmjs.org/@firebase/messaging-compat/-/messaging-compat-0.2.27.tgz 0ms (cache hit)
+595 http cache @firebase/functions-compat@https://registry.npmjs.org/@firebase/functions-compat/-/functions-compat-0.4.5.tgz 0ms (cache hit)
+596 http cache @firebase/functions@https://registry.npmjs.org/@firebase/functions/-/functions-0.13.5.tgz 0ms (cache hit)
+597 http cache @firebase/functions-types@https://registry.npmjs.org/@firebase/functions-types/-/functions-types-0.6.4.tgz 0ms (cache hit)
+598 http cache @firebase/firestore-types@https://registry.npmjs.org/@firebase/firestore-types/-/firestore-types-3.0.4.tgz 0ms (cache hit)
+599 http cache @firebase/firestore-compat@https://registry.npmjs.org/@firebase/firestore-compat/-/firestore-compat-0.4.11.tgz 0ms (cache hit)
+600 http cache @firebase/firestore@https://registry.npmjs.org/@firebase/firestore/-/firestore-4.16.0.tgz 0ms (cache hit)
+601 http cache @firebase/database-types@https://registry.npmjs.org/@firebase/database-types/-/database-types-1.0.20.tgz 0ms (cache hit)
+602 http cache @firebase/data-connect@https://registry.npmjs.org/@firebase/data-connect/-/data-connect-0.7.1.tgz 0ms (cache hit)
+603 http cache @firebase/database-compat@https://registry.npmjs.org/@firebase/database-compat/-/database-compat-2.1.4.tgz 0ms (cache hit)
+604 http cache @firebase/auth-interop-types@https://registry.npmjs.org/@firebase/auth-interop-types/-/auth-interop-types-0.2.5.tgz 0ms (cache hit)
+605 http cache @firebase/auth-types@https://registry.npmjs.org/@firebase/auth-types/-/auth-types-0.13.1.tgz 0ms (cache hit)
+606 http cache lodash.includes@https://registry.npmjs.org/lodash.includes/-/lodash.includes-4.3.0.tgz 0ms (cache hit)
+607 http cache @firebase/database@https://registry.npmjs.org/@firebase/database/-/database-1.1.3.tgz 0ms (cache hit)
+608 http cache @firebase/auth-compat@https://registry.npmjs.org/@firebase/auth-compat/-/auth-compat-0.6.8.tgz 0ms (cache hit)
+609 http cache @firebase/component@https://registry.npmjs.org/@firebase/component/-/component-0.7.3.tgz 0ms (cache hit)
+610 http cache @firebase/app-compat@https://registry.npmjs.org/@firebase/app-compat/-/app-compat-0.5.14.tgz 0ms (cache hit)
+611 http cache @firebase/auth@https://registry.npmjs.org/@firebase/auth/-/auth-1.13.3.tgz 0ms (cache hit)
+612 http cache @firebase/app-types@https://registry.npmjs.org/@firebase/app-types/-/app-types-0.9.5.tgz 0ms (cache hit)
+613 http cache @firebase/app-check-interop-types@https://registry.npmjs.org/@firebase/app-check-interop-types/-/app-check-interop-types-0.3.4.tgz 0ms (cache hit)
+614 http cache @firebase/app-check-compat@https://registry.npmjs.org/@firebase/app-check-compat/-/app-check-compat-0.4.5.tgz 0ms (cache hit)
+615 http cache @firebase/app-check-types@https://registry.npmjs.org/@firebase/app-check-types/-/app-check-types-0.5.4.tgz 0ms (cache hit)
+616 http cache @firebase/app-check@https://registry.npmjs.org/@firebase/app-check/-/app-check-0.12.0.tgz 0ms (cache hit)
+617 http cache @firebase/analytics-types@https://registry.npmjs.org/@firebase/analytics-types/-/analytics-types-0.8.4.tgz 0ms (cache hit)
+618 http cache @firebase/analytics-compat@https://registry.npmjs.org/@firebase/analytics-compat/-/analytics-compat-0.2.28.tgz 0ms (cache hit)
+619 http cache @firebase/app@https://registry.npmjs.org/@firebase/app/-/app-0.15.0.tgz 0ms (cache hit)
+620 http cache @firebase/analytics@https://registry.npmjs.org/@firebase/analytics/-/analytics-0.10.22.tgz 0ms (cache hit)
+621 http cache @firebase/ai@https://registry.npmjs.org/@firebase/ai/-/ai-2.13.1.tgz 0ms (cache hit)
+622 http cache @eslint/plugin-kit@https://registry.npmjs.org/@eslint/plugin-kit/-/plugin-kit-0.4.1.tgz 0ms (cache hit)
+623 http cache @eslint/js@https://registry.npmjs.org/@eslint/js/-/js-9.39.4.tgz 0ms (cache hit)
+624 http cache @eslint/eslintrc@https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-3.3.5.tgz 0ms (cache hit)
+625 http cache @eslint/object-schema@https://registry.npmjs.org/@eslint/object-schema/-/object-schema-2.1.7.tgz 0ms (cache hit)
+626 http cache @eslint/core@https://registry.npmjs.org/@eslint/core/-/core-0.17.0.tgz 0ms (cache hit)
+627 http cache @eslint/config-helpers@https://registry.npmjs.org/@eslint/config-helpers/-/config-helpers-0.4.2.tgz 0ms (cache hit)
+628 http cache @eslint/config-array@https://registry.npmjs.org/@eslint/config-array/-/config-array-0.21.2.tgz 0ms (cache hit)
+629 http cache @eslint-community/regexpp@https://registry.npmjs.org/@eslint-community/regexpp/-/regexpp-4.12.2.tgz 0ms (cache hit)
+630 http cache @eslint-community/eslint-utils@https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.9.1.tgz 0ms (cache hit)
+631 http cache @emnapi/wasi-threads@https://registry.npmjs.org/@emnapi/wasi-threads/-/wasi-threads-1.2.3.tgz 0ms (cache hit)
+632 http cache @emnapi/core@https://registry.npmjs.org/@emnapi/core/-/core-1.11.3.tgz 0ms (cache hit)
+633 http cache @emnapi/runtime@https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.11.3.tgz 0ms (cache hit)
+634 http cache @electric-sql/pglite@https://registry.npmjs.org/@electric-sql/pglite/-/pglite-0.5.14.tgz 0ms (cache hit)
+635 http cache @babel/types@https://registry.npmjs.org/@babel/types/-/types-7.29.7.tgz 0ms (cache hit)
+636 http cache @fastify/busboy@https://registry.npmjs.org/@fastify/busboy/-/busboy-3.2.0.tgz 0ms (cache hit)
+637 http cache @babel/traverse@https://registry.npmjs.org/@babel/traverse/-/traverse-7.29.7.tgz 0ms (cache hit)
+638 http cache @babel/parser@https://registry.npmjs.org/@babel/parser/-/parser-7.29.7.tgz 0ms (cache hit)
+639 http cache @babel/template@https://registry.npmjs.org/@babel/template/-/template-7.29.7.tgz 0ms (cache hit)
+640 http cache @babel/helpers@https://registry.npmjs.org/@babel/helpers/-/helpers-7.29.7.tgz 0ms (cache hit)
+641 http cache @babel/helper-validator-option@https://registry.npmjs.org/@babel/helper-validator-option/-/helper-validator-option-7.29.7.tgz 0ms (cache hit)
+642 http cache @babel/helper-string-parser@https://registry.npmjs.org/@babel/helper-string-parser/-/helper-string-parser-7.29.7.tgz 0ms (cache hit)
+643 http cache @babel/helper-validator-identifier@https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.29.7.tgz 0ms (cache hit)
+644 http cache @babel/helper-module-transforms@https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.29.7.tgz 0ms (cache hit)
+645 http cache @babel/helper-module-imports@https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.29.7.tgz 0ms (cache hit)
+646 http cache @babel/helper-globals@https://registry.npmjs.org/@babel/helper-globals/-/helper-globals-7.29.7.tgz 0ms (cache hit)
+647 http cache @babel/helper-compilation-targets@https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.29.7.tgz 0ms (cache hit)
+648 http cache @babel/generator@https://registry.npmjs.org/@babel/generator/-/generator-7.29.7.tgz 0ms (cache hit)
+649 http cache @babel/core@https://registry.npmjs.org/@babel/core/-/core-7.29.7.tgz 0ms (cache hit)
+650 http cache @babel/code-frame@https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.29.7.tgz 0ms (cache hit)
+651 http cache @babel/compat-data@https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.29.7.tgz 0ms (cache hit)
+652 http cache fdir@https://registry.npmjs.org/fdir/-/fdir-6.5.0.tgz 0ms (cache hit)
+653 http cache json5@https://registry.npmjs.org/json5/-/json5-1.0.2.tgz 0ms (cache hit)
+654 http cache picomatch@https://registry.npmjs.org/picomatch/-/picomatch-4.0.4.tgz 0ms (cache hit)
+655 http cache node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 0ms (cache hit)
+656 http cache emoji-regex@https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz 0ms (cache hit)
+657 http cache emoji-regex@https://registry.npmjs.org/emoji-regex/-/emoji-regex-8.0.0.tgz 0ms (cache hit)
+658 http cache semver@https://registry.npmjs.org/semver/-/semver-7.8.5.tgz 0ms (cache hit)
+659 http cache lru-cache@https://registry.npmjs.org/lru-cache/-/lru-cache-11.5.2.tgz 0ms (cache hit)
+660 http cache lru-cache@https://registry.npmjs.org/lru-cache/-/lru-cache-10.4.3.tgz 0ms (cache hit)
+661 http cache semver@https://registry.npmjs.org/semver/-/semver-7.8.5.tgz 0ms (cache hit)
+662 http cache lru-cache@https://registry.npmjs.org/lru-cache/-/lru-cache-11.5.2.tgz 0ms (cache hit)
+663 http cache node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 0ms (cache hit)
+664 http cache semver@https://registry.npmjs.org/semver/-/semver-7.8.5.tgz 0ms (cache hit)
+665 http cache gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz 0ms (cache hit)
+666 http cache node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 0ms (cache hit)
+667 http cache node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 0ms (cache hit)
+668 http cache gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz 0ms (cache hit)
+669 http cache @grpc/grpc-js@https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.14.5.tgz 0ms (cache hit)
+670 http cache brace-expansion@https://registry.npmjs.org/brace-expansion/-/brace-expansion-2.1.7.tgz 0ms (cache hit)
+671 http cache @grpc/proto-loader@https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.8.1.tgz 0ms (cache hit)
+672 http cache node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 0ms (cache hit)
+673 http cache minimatch@https://registry.npmjs.org/minimatch/-/minimatch-9.0.9.tgz 0ms (cache hit)
+674 http cache glob-parent@https://registry.npmjs.org/glob-parent/-/glob-parent-5.1.2.tgz 0ms (cache hit)
+675 http cache debug@https://registry.npmjs.org/debug/-/debug-3.2.7.tgz 0ms (cache hit)
+676 http cache globals@https://registry.npmjs.org/globals/-/globals-16.4.0.tgz 0ms (cache hit)
+677 http cache debug@https://registry.npmjs.org/debug/-/debug-3.2.7.tgz 0ms (cache hit)
+678 http cache @emnapi/wasi-threads@https://registry.npmjs.org/@emnapi/wasi-threads/-/wasi-threads-1.2.1.tgz 0ms (cache hit)
+679 http cache @emnapi/runtime@https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.10.0.tgz 0ms (cache hit)
+680 http cache gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz 0ms (cache hit)
+681 http cache debug@https://registry.npmjs.org/debug/-/debug-3.2.7.tgz 0ms (cache hit)
+682 http cache @emnapi/core@https://registry.npmjs.org/@emnapi/core/-/core-1.10.0.tgz 0ms (cache hit)
+683 http cache eslint-visitor-keys@https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-5.0.1.tgz 0ms (cache hit)
+684 http cache semver@https://registry.npmjs.org/semver/-/semver-7.8.5.tgz 0ms (cache hit)
+685 http cache minimatch@https://registry.npmjs.org/minimatch/-/minimatch-10.2.5.tgz 0ms (cache hit)
+686 http cache brace-expansion@https://registry.npmjs.org/brace-expansion/-/brace-expansion-5.0.12.tgz 0ms (cache hit)
+687 http cache balanced-match@https://registry.npmjs.org/balanced-match/-/balanced-match-4.0.4.tgz 0ms (cache hit)
+688 http cache ignore@https://registry.npmjs.org/ignore/-/ignore-7.0.5.tgz 0ms (cache hit)
+689 http cache wrap-ansi@https://registry.npmjs.org/wrap-ansi/-/wrap-ansi-8.1.0.tgz 0ms (cache hit)
+690 http cache strip-ansi@https://registry.npmjs.org/strip-ansi/-/strip-ansi-7.2.0.tgz 0ms (cache hit)
+691 http cache string-width@https://registry.npmjs.org/string-width/-/string-width-5.1.2.tgz 0ms (cache hit)
+692 http cache ansi-styles@https://registry.npmjs.org/ansi-styles/-/ansi-styles-6.2.3.tgz 0ms (cache hit)
+693 http cache ansi-regex@https://registry.npmjs.org/ansi-regex/-/ansi-regex-6.4.0.tgz 0ms (cache hit)
+694 http cache google-auth-library@https://registry.npmjs.org/google-auth-library/-/google-auth-library-9.15.1.tgz 0ms (cache hit)
+695 http cache google-logging-utils@https://registry.npmjs.org/google-logging-utils/-/google-logging-utils-0.0.2.tgz 0ms (cache hit)
+696 http cache teeny-request@https://registry.npmjs.org/teeny-request/-/teeny-request-10.1.4.tgz 0ms (cache hit)
+697 http cache retry-request@https://registry.npmjs.org/retry-request/-/retry-request-8.0.4.tgz 0ms (cache hit)
+698 http cache proto3-json-serializer@https://registry.npmjs.org/proto3-json-serializer/-/proto3-json-serializer-3.0.4.tgz 0ms (cache hit)
+699 http cache google-logging-utils@https://registry.npmjs.org/google-logging-utils/-/google-logging-utils-1.1.3.tgz 0ms (cache hit)
+700 http cache node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 0ms (cache hit)
+701 http cache google-gax@https://registry.npmjs.org/google-gax/-/google-gax-5.0.8.tgz 0ms (cache hit)
+702 http cache google-auth-library@https://registry.npmjs.org/google-auth-library/-/google-auth-library-10.5.0.tgz 0ms (cache hit)
+703 http cache gcp-metadata@https://registry.npmjs.org/gcp-metadata/-/gcp-metadata-8.1.4.tgz 0ms (cache hit)
+704 http cache gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.1.3.tgz 0ms (cache hit)
+705 http cache gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz 0ms (cache hit)
+706 http cache @grpc/proto-loader@https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.8.1.tgz 0ms (cache hit)
+707 http cache gcp-metadata@https://registry.npmjs.org/gcp-metadata/-/gcp-metadata-6.1.1.tgz 0ms (cache hit)
+708 http cache @grpc/grpc-js@https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.14.5.tgz 0ms (cache hit)
+709 http cache eslint-visitor-keys@https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz 0ms (cache hit)
+710 http cache gtoken@https://registry.npmjs.org/gtoken/-/gtoken-7.1.0.tgz 0ms (cache hit)
+711 silly tarball no local data for string.prototype.trimstart@https://registry.npmjs.org/string.prototype.trimstart/-/string.prototype.trimstart-1.0.8.tgz. Extracting by manifest.
+712 silly tarball no local data for next@https://registry.npmjs.org/next/-/next-16.3.6.tgz. Extracting by manifest.
+713 silly tarball no local data for @unrs/resolver-binding-win32-x64-msvc@https://registry.npmjs.org/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.12.2.tgz. Extracting by manifest.
+714 silly tarball no local data for @next/swc-win32-x64-msvc@https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-16.3.6.tgz. Extracting by manifest.
+715 silly tarball no local data for node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz. Extracting by manifest.
+716 silly tarball no local data for node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz. Extracting by manifest.
+717 silly tarball no local data for gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz. Extracting by manifest.
+718 silly tarball no local data for node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz. Extracting by manifest.
+719 silly tarball no local data for node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz. Extracting by manifest.
+720 silly tarball no local data for gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz. Extracting by manifest.
+721 silly tarball no local data for @grpc/grpc-js@https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.14.5.tgz. Extracting by manifest.
+722 silly tarball no local data for @grpc/proto-loader@https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.8.1.tgz. Extracting by manifest.
+723 silly tarball no local data for node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz. Extracting by manifest.
+724 silly tarball no local data for gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz. Extracting by manifest.
+725 silly tarball no local data for google-auth-library@https://registry.npmjs.org/google-auth-library/-/google-auth-library-9.15.1.tgz. Extracting by manifest.
+726 silly tarball no local data for google-logging-utils@https://registry.npmjs.org/google-logging-utils/-/google-logging-utils-0.0.2.tgz. Extracting by manifest.
+727 silly tarball no local data for teeny-request@https://registry.npmjs.org/teeny-request/-/teeny-request-10.1.4.tgz. Extracting by manifest.
+728 silly tarball no local data for proto3-json-serializer@https://registry.npmjs.org/proto3-json-serializer/-/proto3-json-serializer-3.0.4.tgz. Extracting by manifest.
+729 silly tarball no local data for google-logging-utils@https://registry.npmjs.org/google-logging-utils/-/google-logging-utils-1.1.3.tgz. Extracting by manifest.
+730 silly tarball no local data for node-fetch@https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz. Extracting by manifest.
+731 silly tarball no local data for google-gax@https://registry.npmjs.org/google-gax/-/google-gax-5.0.8.tgz. Extracting by manifest.
+732 silly tarball no local data for google-auth-library@https://registry.npmjs.org/google-auth-library/-/google-auth-library-10.5.0.tgz. Extracting by manifest.
+733 silly tarball no local data for gcp-metadata@https://registry.npmjs.org/gcp-metadata/-/gcp-metadata-8.1.4.tgz. Extracting by manifest.
+734 silly tarball no local data for gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.1.3.tgz. Extracting by manifest.
+735 silly tarball no local data for gaxios@https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz. Extracting by manifest.
+736 silly tarball no local data for @grpc/proto-loader@https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.8.1.tgz. Extracting by manifest.
+737 silly tarball no local data for gcp-metadata@https://registry.npmjs.org/gcp-metadata/-/gcp-metadata-6.1.1.tgz. Extracting by manifest.
+738 silly tarball no local data for @grpc/grpc-js@https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.14.5.tgz. Extracting by manifest.
+739 warn tarball tarball data for teeny-request@https://registry.npmjs.org/teeny-request/-/teeny-request-10.1.4.tgz (sha512-R1Cg4Vu0UULeDfHL/kjABLaTW++9yD/B6n2g48y5dJ04hsEaxcfmAqbNDzNsbqAYJyIpZafjklLG9YxRu9uzOg==) seems to be corrupted. Trying again.
+740 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 2950ms
+741 silly audit report {
+741 silly audit report   '@fastify/busboy': [
+741 silly audit report     {
+741 silly audit report       id: 1240981,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-xjh9-v7x6-24jw',
+741 silly audit report       title: '@fastify/busboy vulnerable to Denial of Service via oversized multipart boundary',
+741 silly audit report       severity: 'high',
+741 silly audit report       vulnerable_versions: '>=3.1.0 <3.2.1',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1240982,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-x8mw-p69m-v3mx',
+741 silly audit report       title: '@fastify/busboy vulnerable to Denial of Service via prototype-named multipart part header',
+741 silly audit report       severity: 'high',
+741 silly audit report       vulnerable_versions: '>=1.0.0 <3.2.1',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1241276,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-gxm5-99cw-xjw9',
+741 silly audit report       title: '@fastify/busboy vulnerable to CRLF injection via multipart Content-Disposition filename and name',
+741 silly audit report       severity: 'moderate',
+741 silly audit report       vulnerable_versions: '<3.2.2',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     }
+741 silly audit report   ],
+741 silly audit report   '@grpc/grpc-js': [
+741 silly audit report     {
+741 silly audit report       id: 1240623,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-m9gg-hp2v-232j',
+741 silly audit report       title: '@grpc/grpc-js: In certain configurations, getAuthContext can return unauthorized certificates as though they were authorized',
+741 silly audit report       severity: 'high',
+741 silly audit report       vulnerable_versions: '<1.13.6',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1240625,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-f596-whhp-79r4',
+741 silly audit report       title: '@grpc/grpc-js: The server transmits some error messages thrown by method handlers to the client in status messages',
+741 silly audit report       severity: 'low',
+741 silly audit report       vulnerable_versions: '<1.13.6',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     }
+741 silly audit report   ],
+741 silly audit report   minimatch: [
+741 silly audit report     {
+741 silly audit report       id: 1244623,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-g3hv-75wg-m249',
+741 silly audit report       title: 'minimatch has potential denial of service via globparts amplification',
+741 silly audit report       severity: 'moderate',
+741 silly audit report       vulnerable_versions: '>=7.0.0 <11.0.1',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     }
+741 silly audit report   ],
+741 silly audit report   glob: [
+741 silly audit report     {
+741 silly audit report       id: 1244013,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-3g3m-2fjr-6pw4',
+741 silly audit report       title: 'Glob: AbortSignal cancellation bypass allows post-timeout filesystem traversal',
+741 silly audit report       severity: 'moderate',
+741 silly audit report       vulnerable_versions: '>=9.0.0 <=14.0.1',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     }
+741 silly audit report   ],
+741 silly audit report   next: [
+741 silly audit report     {
+741 silly audit report       id: 1241496,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-cjq9-62q9-8jv4',
+741 silly audit report       title: 'Next.js has Server-Side Request Forgery in Image Optimization',
+741 silly audit report       severity: 'high',
+741 silly audit report       vulnerable_versions: '>=16.0.0 <16.3.8',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1241493,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-f87g-xv8r-7p7x',
+741 silly audit report       title: 'Next.js has information disclosure in App Router metadata image routes via dynamicParams bypass',
+741 silly audit report       severity: 'moderate',
+741 silly audit report       vulnerable_versions: '>=16.0.0 <16.3.8',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1241495,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-mcj8-r9mp-w47p',
+741 silly audit report       title: 'Next.js has cache poisoning in SSG/ISR rendering that leads to cross-user content substitution and persistent denial of service',
+741 silly audit report       severity: 'moderate',
+741 silly audit report       vulnerable_versions: '>=16.0.0 <16.3.8',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1241489,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-3w37-wq28-93x7',
+741 silly audit report       title: 'Next.js: Pending `use cache` fill can leak Draft Mode content into regular responses and persisted pages',
+741 silly audit report       severity: 'moderate',
+741 silly audit report       vulnerable_versions: '>=16.3.0 <16.3.8',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1241490,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-4jqv-mc3x-m676',
+741 silly audit report       title: 'Next.js has cache poisoning of SSG and ISR pages in self-hosted applications',
+741 silly audit report       severity: 'moderate',
+741 silly audit report       vulnerable_versions: '>=16.0.0 <16.3.8',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1241492,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-39w2-rjm5-chcv',
+741 silly audit report       title: "Next.js has information disclosure in development server's Model Context Protocol endpoint",
+741 silly audit report       severity: 'low',
+741 silly audit report       vulnerable_versions: '>=16.0.0 <16.3.8',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1242825,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-h694-7cp9-m8p3',
+741 silly audit report       title: "next.js cache leak across root param values in nested 'use cache' functions",
+741 silly audit report       severity: 'moderate',
+741 silly audit report       vulnerable_versions: '>=16.3.0 <16.3.8',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1242818,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-p3m5-59mp-jv5r',
+741 silly audit report       title: 'Next.js: Denial of Service in App Router using Server Actions',
+741 silly audit report       severity: 'high',
+741 silly audit report       vulnerable_versions: '>=16.0.0 <=16.4.0',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1242816,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-2464-fhr4-w9xw',
+741 silly audit report       title: 'Next.js: Unauthenticated Remote Code Execution in Image Optimization API when SVG files are used',
+741 silly audit report       severity: 'critical',
+741 silly audit report       vulnerable_versions: '>=16.0.0 <=16.4.0',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     },
+741 silly audit report     {
+741 silly audit report       id: 1242859,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-673q-mjm6-r5xr',
+741 silly audit report       title: 'Next.js: Unauthenticated Remote Code Execution in `use cache` functions returning typed arrays',
+741 silly audit report       severity: 'critical',
+741 silly audit report       vulnerable_versions: '>=16.0.0 <=16.4.0',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     }
+741 silly audit report   ],
+741 silly audit report   'source-map-js': [
+741 silly audit report     {
+741 silly audit report       id: 1241209,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-68fv-2mgg-jv7q',
+741 silly audit report       title: 'source-map-js allows event-loop denial of service through indexed source-map section offsets',
+741 silly audit report       severity: 'high',
+741 silly audit report       vulnerable_versions: '>=1.0.0 <1.2.2',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     }
+741 silly audit report   ],
+741 silly audit report   zod: [
+741 silly audit report     {
+741 silly audit report       id: 1243066,
+741 silly audit report       url: 'https://github.com/advisories/GHSA-mrhx-c7xc-m3w5',
+741 silly audit report       title: 'Zod can exhaust memory while validating oversized constrained collections',
+741 silly audit report       severity: 'high',
+741 silly audit report       vulnerable_versions: '<4.6.6',
+741 silly audit report       cwe: [Array],
+741 silly audit report       cvss: [Object]
+741 silly audit report     }
+741 silly audit report   ]
+741 silly audit report }
+742 silly packumentCache corgi:https://registry.npmjs.org/@fastify%2fbusboy cache-miss
+743 silly packumentCache corgi:https://registry.npmjs.org/@grpc%2fgrpc-js cache-miss
+744 silly packumentCache corgi:https://registry.npmjs.org/minimatch cache-miss
+745 silly packumentCache corgi:https://registry.npmjs.org/glob cache-miss
+746 silly packumentCache corgi:https://registry.npmjs.org/next cache-miss
+747 silly packumentCache corgi:https://registry.npmjs.org/source-map-js cache-miss
+748 silly packumentCache corgi:https://registry.npmjs.org/zod cache-miss
+749 http fetch GET 200 https://registry.npmjs.org/string.prototype.trimstart/-/string.prototype.trimstart-1.0.8.tgz 3036ms (cache miss)
+750 http fetch GET 200 https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.8.1.tgz 3212ms (cache miss)
+751 http fetch GET 200 https://registry.npmjs.org/next 711ms (cache revalidated)
+752 silly packumentCache corgi:https://registry.npmjs.org/next set size:25722846 disposed:false
+753 http fetch GET 200 https://registry.npmjs.org/@fastify%2fbusboy 1230ms (cache revalidated)
+754 silly packumentCache corgi:https://registry.npmjs.org/@fastify%2fbusboy set size:21282 disposed:false
+755 http fetch GET 200 https://registry.npmjs.org/glob 1230ms (cache revalidated)
+756 silly packumentCache corgi:https://registry.npmjs.org/glob set size:205658 disposed:false
+757 http fetch GET 200 https://registry.npmjs.org/minimatch 1232ms (cache revalidated)
+758 silly packumentCache corgi:https://registry.npmjs.org/minimatch set size:175700 disposed:false
+759 http fetch GET 200 https://registry.npmjs.org/gcp-metadata/-/gcp-metadata-8.1.4.tgz 3884ms (cache miss)
+760 http fetch GET 200 https://registry.npmjs.org/@grpc%2fgrpc-js 1267ms (cache revalidated)
+761 silly packumentCache corgi:https://registry.npmjs.org/@grpc%2fgrpc-js set size:354176 disposed:false
+762 http fetch GET 200 https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 3941ms (cache miss)
+763 http fetch GET 200 https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 3951ms (cache miss)
+764 http fetch GET 200 https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 3952ms (cache miss)
+765 http fetch GET 200 https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 3952ms (cache miss)
+766 http fetch GET 200 https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 3950ms (cache miss)
+767 http fetch GET 200 https://registry.npmjs.org/gcp-metadata/-/gcp-metadata-6.1.1.tgz 3950ms (cache miss)
+768 http fetch GET 200 https://registry.npmjs.org/google-logging-utils/-/google-logging-utils-0.0.2.tgz 4065ms (cache miss)
+769 http fetch GET 200 https://registry.npmjs.org/@grpc/proto-loader/-/proto-loader-0.8.1.tgz 4071ms (cache miss)
+770 http fetch GET 200 https://registry.npmjs.org/google-logging-utils/-/google-logging-utils-1.1.3.tgz 4120ms (cache miss)
+771 http fetch GET 200 https://registry.npmjs.org/node-fetch/-/node-fetch-3.3.2.tgz 4157ms (cache miss)
+772 http fetch GET 200 https://registry.npmjs.org/source-map-js 1539ms (cache revalidated)
+773 silly packumentCache corgi:https://registry.npmjs.org/source-map-js set size:8534 disposed:false
+774 http fetch GET 200 https://registry.npmjs.org/zod 1542ms (cache revalidated)
+775 silly packumentCache corgi:https://registry.npmjs.org/zod set size:1153467 disposed:false
+776 silly packumentCache corgi:https://registry.npmjs.org/firebase-admin cache-miss
+777 http fetch GET 200 https://registry.npmjs.org/teeny-request/-/teeny-request-10.1.4.tgz 2170ms (cache miss)
+778 warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+779 http fetch GET 200 https://registry.npmjs.org/proto3-json-serializer/-/proto3-json-serializer-3.0.4.tgz 4879ms (cache miss)
+780 http fetch GET 200 https://registry.npmjs.org/firebase-admin 734ms (cache revalidated)
+781 silly packumentCache corgi:https://registry.npmjs.org/firebase-admin set size:356548 disposed:false
+782 silly packumentCache corgi:https://registry.npmjs.org/@firebase%2ffirestore cache-miss
+783 warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
+784 http fetch GET 200 https://registry.npmjs.org/@firebase%2ffirestore 978ms (cache revalidated)
+785 silly packumentCache corgi:https://registry.npmjs.org/@firebase%2ffirestore set size:9023341 disposed:false
+786 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2ftypescript-estree cache-miss
+787 http fetch GET 200 https://registry.npmjs.org/google-auth-library/-/google-auth-library-9.15.1.tgz 6034ms (cache miss)
+788 http fetch GET 200 https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz 6051ms (cache miss)
+789 http fetch GET 200 https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz 6054ms (cache miss)
+790 http fetch GET 200 https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz 6070ms (cache miss)
+791 http fetch GET 200 https://registry.npmjs.org/gaxios/-/gaxios-7.1.3.tgz 6135ms (cache miss)
+792 http fetch GET 200 https://registry.npmjs.org/gaxios/-/gaxios-7.3.1.tgz 6147ms (cache miss)
+793 http fetch GET 200 https://registry.npmjs.org/google-auth-library/-/google-auth-library-10.5.0.tgz 6193ms (cache miss)
+794 http fetch GET 200 https://registry.npmjs.org/@typescript-eslint%2ftypescript-estree 397ms (cache revalidated)
+795 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2ftypescript-estree set size:9164336 disposed:false
+796 silly packumentCache corgi:https://registry.npmjs.org/rimraf cache-miss
+797 http fetch GET 200 https://registry.npmjs.org/rimraf 313ms (cache revalidated)
+798 silly packumentCache corgi:https://registry.npmjs.org/rimraf set size:88821 disposed:false
+799 silly packumentCache corgi:https://registry.npmjs.org/postcss cache-miss
+800 http fetch GET 200 https://registry.npmjs.org/postcss 175ms (cache revalidated)
+801 silly packumentCache corgi:https://registry.npmjs.org/postcss set size:361662 disposed:false
+802 silly packumentCache corgi:https://registry.npmjs.org/eslint-plugin-react-hooks cache-miss
+803 silly packumentCache corgi:https://registry.npmjs.org/zod-validation-error cache-miss
+804 http fetch GET 200 https://registry.npmjs.org/zod-validation-error 181ms (cache revalidated)
+805 silly packumentCache corgi:https://registry.npmjs.org/zod-validation-error set size:66658 disposed:false
+806 http fetch GET 200 https://registry.npmjs.org/eslint-plugin-react-hooks 195ms (cache revalidated)
+807 silly packumentCache corgi:https://registry.npmjs.org/eslint-plugin-react-hooks set size:4539061 disposed:false
+808 silly packumentCache corgi:https://registry.npmjs.org/@firebase%2ffirestore-compat cache-miss
+809 silly packumentCache corgi:https://registry.npmjs.org/firebase cache-miss
+810 http fetch GET 200 https://registry.npmjs.org/firebase 305ms (cache revalidated)
+811 silly packumentCache corgi:https://registry.npmjs.org/firebase set size:9892617 disposed:false
+812 http fetch GET 200 https://registry.npmjs.org/@firebase%2ffirestore-compat 388ms (cache revalidated)
+813 silly packumentCache corgi:https://registry.npmjs.org/@firebase%2ffirestore-compat set size:2515515 disposed:false
+814 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2fparser cache-miss
+815 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2ftype-utils cache-miss
+816 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2futils cache-miss
+817 silly packumentCache corgi:https://registry.npmjs.org/typescript-eslint cache-miss
+818 http fetch GET 200 https://registry.npmjs.org/google-gax/-/google-gax-5.0.8.tgz 8267ms (cache miss)
+819 http fetch GET 200 https://registry.npmjs.org/typescript-eslint 870ms (cache revalidated)
+820 silly packumentCache corgi:https://registry.npmjs.org/typescript-eslint set size:2138434 disposed:false
+821 http fetch GET 200 https://registry.npmjs.org/@typescript-eslint%2futils 892ms (cache revalidated)
+822 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2futils set size:5123918 disposed:false
+823 http fetch GET 200 https://registry.npmjs.org/@typescript-eslint%2ftype-utils 937ms (cache revalidated)
+824 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2ftype-utils set size:5158292 disposed:false
+825 http fetch GET 200 https://registry.npmjs.org/@typescript-eslint%2fparser 992ms (cache revalidated)
+826 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2fparser set size:8517568 disposed:false
+827 silly packumentCache corgi:https://registry.npmjs.org/gaxios cache-miss
+828 silly packumentCache corgi:https://registry.npmjs.org/google-gax cache-miss
+829 http fetch GET 200 https://registry.npmjs.org/google-gax 148ms (cache revalidated)
+830 silly packumentCache corgi:https://registry.npmjs.org/google-gax set size:1038709 disposed:false
+831 http fetch GET 200 https://registry.npmjs.org/gaxios 405ms (cache revalidated)
+832 silly packumentCache corgi:https://registry.npmjs.org/gaxios set size:215552 disposed:false
+833 http fetch GET 200 https://registry.npmjs.org/@unrs/resolver-binding-win32-x64-msvc/-/resolver-binding-win32-x64-msvc-1.12.2.tgz 9202ms (cache miss)
+834 silly packumentCache corgi:https://registry.npmjs.org/eslint-config-next cache-miss
+835 http fetch GET 200 https://registry.npmjs.org/eslint-config-next 142ms (cache revalidated)
+836 silly packumentCache corgi:https://registry.npmjs.org/eslint-config-next set size:4249806 disposed:false
+837 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2feslint-plugin cache-miss
+838 http fetch GET 200 https://registry.npmjs.org/@typescript-eslint%2feslint-plugin 260ms (cache revalidated)
+839 silly packumentCache corgi:https://registry.npmjs.org/@typescript-eslint%2feslint-plugin set size:10247771 disposed:false
+840 silly packumentCache corgi:https://registry.npmjs.org/@google-cloud%2ffirestore-api cache-miss
+841 http fetch GET 200 https://registry.npmjs.org/@google-cloud%2ffirestore-api 511ms (cache miss)
+842 silly packumentCache corgi:https://registry.npmjs.org/@google-cloud%2ffirestore-api set size:undefined disposed:false
+843 silly packumentCache corgi:https://registry.npmjs.org/gcp-metadata cache-miss
+844 http fetch GET 200 https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.14.5.tgz 23559ms (cache miss)
+845 http fetch GET 200 https://registry.npmjs.org/@grpc/grpc-js/-/grpc-js-1.14.5.tgz 23570ms (cache miss)
+846 http fetch GET 200 https://registry.npmjs.org/gcp-metadata 503ms (cache miss)
+847 silly packumentCache corgi:https://registry.npmjs.org/gcp-metadata set size:undefined disposed:false
+848 silly packumentCache corgi:https://registry.npmjs.org/google-auth-library cache-miss
+849 http fetch GET 200 https://registry.npmjs.org/google-auth-library 1175ms (cache miss)
+850 silly packumentCache corgi:https://registry.npmjs.org/google-auth-library set size:undefined disposed:false
+851 http fetch GET 200 https://registry.npmjs.org/@next/swc-win32-x64-msvc/-/swc-win32-x64-msvc-16.3.6.tgz 145884ms (cache miss)
+852 warn cleanup Failed to remove some directories [
+852 warn cleanup   [
+852 warn cleanup     '\\\\?\\C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@google-cloud\\firestore-api\\node_modules',
+852 warn cleanup     [Error: EPERM: operation not permitted, rmdir 'C:\laragon\www\Capstone-Banjarsari\node_modules\@google-cloud\firestore-api\node_modules\@grpc\grpc-js\build\src\generated'] {
+852 warn cleanup       errno: -4048,
+852 warn cleanup       code: 'EPERM',
+852 warn cleanup       syscall: 'rmdir',
+852 warn cleanup       path: 'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@google-cloud\\firestore-api\\node_modules\\@grpc\\grpc-js\\build\\src\\generated'
+852 warn cleanup     }
+852 warn cleanup   ],
+852 warn cleanup   [
+852 warn cleanup     '\\\\?\\C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@google-cloud',
+852 warn cleanup     [Error: EPERM: operation not permitted, rmdir 'C:\laragon\www\Capstone-Banjarsari\node_modules\@google-cloud\firestore-api\node_modules\@grpc\grpc-js'] {
+852 warn cleanup       errno: -4048,
+852 warn cleanup       code: 'EPERM',
+852 warn cleanup       syscall: 'rmdir',
+852 warn cleanup       path: 'C:\\laragon\\www\\Capstone-Banjarsari\\node_modules\\@google-cloud\\firestore-api\\node_modules\\@grpc\\grpc-js'
+852 warn cleanup     }
+852 warn cleanup   ]
+852 warn cleanup ]
+853 verbose stack Error: read ECONNRESET
+853 verbose stack     at TLSWrap.onStreamRead (node:internal/stream_base_commons:216:20)
+854 error code ECONNRESET
+855 error syscall read
+856 error errno -4077
+857 error network read ECONNRESET
+858 error network This is a problem related to network connectivity.
+858 error network In most cases you are behind a proxy or have bad network settings.
+858 error network
+858 error network If you are behind a proxy, please make sure that the
+858 error network 'proxy' config is set properly.  See: 'npm help config'
+859 silly unfinished npm timer reify 1794301350674
+860 silly unfinished npm timer reify:unpack 1794301350804
+861 silly unfinished npm timer reifyNode:node_modules/next 1794301350805
+862 verbose cwd C:\laragon\www\Capstone-Banjarsari
+863 verbose os Windows_NT 10.0.26200
+864 verbose node v24.11.0
+865 verbose npm  v11.6.1
+866 verbose exit -4077
+867 verbose code -4077
+868 error A complete log of this run can be found in: C:\laragon\www\Capstone-Banjarsari\.npm-cache\_logs\2026-11-10T09_02_30_210Z-debug-0.log

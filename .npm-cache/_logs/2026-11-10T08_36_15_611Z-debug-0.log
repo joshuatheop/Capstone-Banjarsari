@@ -1,0 +1,27 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.1
+2 info using node@v24.11.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\laragon\www\Capstone-Banjarsari\.npmrc
+5 silly config load:file:C:\Users\ADMIN\.npmrc
+6 silly config load:file:C:\Users\ADMIN\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm ci
+8 verbose argv "ci" "--cache" ".npm-cache"
+9 verbose logfile logs-max:10 dir:C:\laragon\www\Capstone-Banjarsari\.npm-cache\_logs\2026-11-10T08_36_15_611Z-
+10 verbose logfile C:\laragon\www\Capstone-Banjarsari\.npm-cache\_logs\2026-11-10T08_36_15_611Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly idealTree buildDeps
+14 verbose stack Error: ENOTEMPTY: directory not empty, rmdir 'C:\laragon\www\Capstone-Banjarsari\node_modules\@electric-sql\pglite\dist\fs'
+15 error code ENOTEMPTY
+16 error syscall rmdir
+17 error path C:\laragon\www\Capstone-Banjarsari\node_modules\@electric-sql\pglite\dist\fs
+18 error errno -4051
+19 error ENOTEMPTY: directory not empty, rmdir 'C:\laragon\www\Capstone-Banjarsari\node_modules\@electric-sql\pglite\dist\fs'
+20 verbose cwd C:\laragon\www\Capstone-Banjarsari
+21 verbose os Windows_NT 10.0.26200
+22 verbose node v24.11.0
+23 verbose npm  v11.6.1
+24 verbose exit -4051
+25 verbose code -4051
+26 error A complete log of this run can be found in: C:\laragon\www\Capstone-Banjarsari\.npm-cache\_logs\2026-11-10T08_36_15_611Z-debug-0.log

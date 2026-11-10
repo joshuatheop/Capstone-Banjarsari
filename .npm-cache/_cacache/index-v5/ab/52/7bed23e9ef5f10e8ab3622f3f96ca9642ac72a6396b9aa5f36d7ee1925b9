@@ -1,0 +1,2 @@
+
+9dbd4d00487cefb3222e5e2d8a519765f235b740	{"key":"make-fetch-happen:request-cache:https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz","integrity":"sha512-oLDq3jw7AcLqKWH2AhCpVTZl8mf6X2YReP+Neh0SJUzV/BdZYjth94tG5toiMB1PPrYtxOCfaoUCkvtuH+3AJA==","time":1794299705346,"size":2409319,"metadata":{"time":1794299645136,"url":"https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz","reqHeaders":{},"resHeaders":{"content-type":"application/octet-stream","date":"Tue, 10 Nov 2026 08:34:05 GMT","etag":"\"a696f7017234bbe1d44b328d99a22ee2\""},"options":{"compress":true}}}

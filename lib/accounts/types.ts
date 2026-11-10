@@ -7,7 +7,7 @@ export interface AccountAccess {
 }
 export interface SellerApplicationForm {
   businessName: string; ownerName: string; whatsapp: string; address: string;
-  category: 'RETAIL' | 'FOOD' | 'SERVICE'; description: string; logo: string;
+  category: 'RETAIL' | 'FOOD' | 'SERVICE' | 'PRODUK_UMKM'; description: string; logo: string;
 }
 export interface SellerApplication extends SellerApplicationForm {
   id: string; applicantId: string; applicantEmail: string; status: ApplicationStatus;
@@ -21,7 +21,7 @@ export interface OwnedBusiness extends SellerApplicationForm {
   pickupInfo?: string; serviceInfo?: string; latitude?: number | null; longitude?: number | null;
 }
 export interface SellerListing {
-  id: string; businessId: string; kind: 'RETAIL' | 'FOOD' | 'SERVICE'; name: string;
+  id: string; businessId: string; kind: 'RETAIL' | 'FOOD' | 'SERVICE' | 'PRODUK_UMKM'; name: string;
   description: string; price: number; image: string; active: boolean; stock: number;
   updatedAt: string;
   category?: string; shelfLifeDays?: number | null; stockByLocation?: Record<string, number>;

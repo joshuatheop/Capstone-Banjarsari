@@ -2,9 +2,9 @@
 
 **Document Type:** Product Requirements Document  
 **Project:** PALUGADA Banjarsari  
-**Version:** 1.1
+**Version:** 1.2
 **Status:** Baseline for Development  
-**Last Updated:** 1 November 2026
+**Last Updated:** 10 November 2026
 **Primary Scope:** Banjarsari, Garut  
 
 ---
@@ -950,3 +950,16 @@ Instruksi terbaru memperjelas baseline tanpa menghapus kebutuhan historis:
 | Alternatif pengembangan | Database PostgreSQL lokal terisolasi saat hosted belum tersedia, dipilih secara eksplisit dan berlabel uji. Tidak mengubah atau menyinkronkan database production. |
 
 Batas implementasi: saldo per lokasi belum dialokasikan otomatis oleh reservasi/fulfillment; tidak ada perubahan lifecycle order/payment/courier. Forecast dari pesanan terbayar mengukur histori penjualan teramati, bukan seluruh demand. Detail kontrak dan keterbatasan ada pada Design v2.1 dan AUDIT.
+
+## 34. Penyatuan vertical Belanja dan Makanan menjadi Produk UMKM — v1.2, 10 November 2026
+
+Instruksi terbaru merombak pembagian vertical aplikasi:
+
+| Kebutuhan | Acceptance criteria |
+|---|---|
+| Konsolidasi Vertical | Vertical Belanja (Retail) dan Makanan (Food) digabung menjadi satu vertical tunggal: **Produk UMKM**. |
+| Tampilan Utama (Storefront) | Beranda menampilkan tiga kartu vertical utama: Produk UMKM, Jasa, dan Ojek. Navigasi atas menghapus tautan terpisah `/makanan` dan mengganti 'Belanja' menjadi 'Produk UMKM'. Rute `/makanan` dialihkan (redirect) ke katalog Produk UMKM. |
+| Database & Model | Kolom `vertical` pada tabel `produk` dan `orders` diperbarui menjadi `PRODUK_UMKM` (dengan migrasi constraint SQL dan fungsi `catalog_publish`). |
+| Katalog & Filter | Halaman katalog menampilkan tab: Semua, Produk UMKM, Jasa, dan Favorit. Filter toko dan badge kartu menampilkan label Produk UMKM. |
+| Toko & Seller | Form pengajuan kategori usaha dan seller listing menyelaraskan pilihan kategori ke Produk UMKM dan Jasa. |
+

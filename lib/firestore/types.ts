@@ -24,7 +24,7 @@ export type EventType =
 
 // ---- A. Produk ----
 export interface ProdukItem {
-  vertical?: 'RETAIL' | 'FOOD';
+  vertical?: 'PRODUK_UMKM' | 'RETAIL' | 'FOOD';
   product_id: string;           // UUID / Firestore doc ID
   business_id: string;          // FK → businesses
   category_id: string;          // FK → categories

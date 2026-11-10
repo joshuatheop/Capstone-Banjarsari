@@ -5,6 +5,6 @@ interface PageProps { searchParams: Promise<{ type?: string; q?: string; search?
 export default async function CatalogPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const { entries } = await loadCatalog();
-  const kind = params.type === 'product' || params.type === 'service' || params.type === 'food' ? params.type : undefined;
+  const kind = params.type === 'service' ? 'service' : params.type === 'product' || params.type === 'food' ? 'product' : undefined;
   return <CatalogExplorer key={JSON.stringify(params)} entries={entries} kind={kind} initialQuery={params.q || params.search || params.keyword || ''} initialCategory={params.category} />;
 }

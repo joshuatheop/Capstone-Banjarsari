@@ -10,7 +10,7 @@ const numOrNull = (v: unknown) => (v === null || v === undefined ? null : Number
 
 const toProduk = (r: Row): ProdukItem => ({
   product_id: r.product_id as string,
-  vertical: r.vertical === 'FOOD' ? 'FOOD' : r.vertical === 'RETAIL' ? 'RETAIL' : undefined,
+  vertical: r.vertical === 'PRODUK_UMKM' ? 'PRODUK_UMKM' : r.vertical === 'FOOD' ? 'FOOD' : r.vertical === 'RETAIL' ? 'RETAIL' : 'PRODUK_UMKM',
   business_id: (r.business_id as string) || '',
   category_id: (r.category_id as string) || '',
   product_name: (r.product_name as string) || '',

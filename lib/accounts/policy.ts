@@ -16,11 +16,10 @@ export function imageValue(value: unknown, allowData = false) {
   throw new AccountError('Gunakan URL HTTPS atau foto PNG/JPG/WebP maksimal 100 KB.');
 }
 export function applicationForm(input: Record<string, unknown>, submitted: boolean): SellerApplicationForm {
-  if (!['RETAIL','FOOD','SERVICE'].includes(String(input.category))) throw new AccountError('Pilih kategori usaha.');
   const whatsapp = text(input.whatsapp, 'WhatsApp', 24).replace(/[\s()+-]/g, '').replace(/^0/, '62');
   if (whatsapp && !/^62\d{8,13}$/.test(whatsapp) || submitted && !whatsapp) throw new AccountError('Nomor WhatsApp Indonesia tidak valid.');
   const result = { businessName: text(input.businessName, 'Nama usaha', 120, submitted ? 2 : 0), ownerName: text(input.ownerName, 'Nama pemilik', 100, submitted ? 2 : 0), whatsapp,
-    address: text(input.address, 'Alamat usaha', 500, submitted ? 10 : 0), category: input.category as SellerApplicationForm['category'], description: text(input.description, 'Deskripsi', 2000, submitted ? 10 : 0), logo: imageValue(input.logo, true) };
+    address: text(input.address, 'Alamat usaha', 500, submitted ? 10 : 0), category: ['RETAIL', 'FOOD', 'SERVICE', 'PRODUK_UMKM'].includes(String(input.category)) ? input.category as SellerApplicationForm['category'] : 'PRODUK_UMKM', description: text(input.description, 'Deskripsi', 2000, submitted ? 10 : 0), logo: imageValue(input.logo, true) };
   if (submitted && !result.logo) throw new AccountError('Tambahkan logo atau foto usaha.');
   return result;
 }
@@ -64,7 +63,7 @@ export function changeSellerStatus(workspace: AccountWorkspace, actor: AccountId
 }
 export function saveListing(workspace: AccountWorkspace, actor: AccountIdentity, input: Record<string, unknown>, id: string, now: string) {
   assertOwner(workspace, actor, typeof input.businessId === 'string' ? input.businessId : undefined);
-  if (!['RETAIL','FOOD','SERVICE'].includes(String(input.kind)) || typeof input.active !== 'boolean' || !Number.isSafeInteger(input.price) || Number(input.price) < 0 || Number(input.price) > 1e9 || !Number.isSafeInteger(input.stock) || Number(input.stock) < 0 || Number(input.stock) > 1e6) throw new AccountError('Jenis, harga, stok, atau status produk tidak valid.');
+  if (!['RETAIL','FOOD','SERVICE','PRODUK_UMKM'].includes(String(input.kind)) || typeof input.active !== 'boolean' || !Number.isSafeInteger(input.price) || Number(input.price) < 0 || Number(input.price) > 1e9 || !Number.isSafeInteger(input.stock) || Number(input.stock) < 0 || Number(input.stock) > 1e6) throw new AccountError('Jenis, harga, stok, atau status produk tidak valid.');
   const index = workspace.listings.findIndex(item => item.id === id);
   if (index >= 0 && workspace.listings[index].kind !== input.kind) throw new AccountError('Jenis item existing tidak dapat diubah. Buat item baru untuk jenis berbeda.');
   if (input.id && index < 0) throw new AccountError('Produk bukan milik toko Anda.', 403);

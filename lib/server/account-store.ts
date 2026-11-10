@@ -58,7 +58,7 @@ export async function mutateWorkspace(identity: AccountIdentity, action: (worksp
           owner_name: business.ownerName, owner_user_id: business.ownerId, seller_status: business.status, slug: business.id, area_name: business.address, latitude: null, longitude: null, marketplace: null,
           is_active: business.status === 'ACTIVE', createdAt: new Date(business.createdAt), updatedAt: new Date() }, { merge: true });
         workspace.listings.forEach((item, index) => transaction.set(listingRefs[index], {
-          business_id: business.id, category_id: item.kind === 'SERVICE' ? 'seller-service' : item.kind === 'FOOD' ? 'seller-food' : 'seller-retail', vertical: item.kind,
+          business_id: business.id, category_id: item.kind === 'SERVICE' ? 'seller-service' : 'seller-product', vertical: item.kind === 'SERVICE' ? undefined : 'PRODUK_UMKM',
           ...(item.kind === 'SERVICE' ? { service_name: item.name, service_description: item.description, minimum_price: item.price, maximum_price: null, price_type: 'FIXED', availability_type: 'ALWAYS_AVAILABLE', is_negotiable: false } : { product_name: item.name, product_description: item.description, product_price: item.price, stock_on_hand: listings[index].exists ? Number(listings[index].get('stock_on_hand') ?? 0) + item.stock - (previousStocks.get(item.id) ?? 0) : item.stock }),
           thumbnail_url: item.image || null, whatsapp_number: business.whatsapp, slug: item.id, is_active: item.active && business.status === 'ACTIVE', updatedAt: new Date(item.updatedAt),
           ...(!listings[index].exists ? { createdAt: new Date(item.updatedAt), deletedAt: null } : {}),

@@ -2,8 +2,8 @@
 
 **Document Type:** Product Design + System Design
 **Project:** PALUGADA Banjarsari
-**Version:** 2.1
-**Last Updated:** 1 November 2026
+**Version:** 2.2
+**Last Updated:** 10 November 2026
 
 ---
 
@@ -2639,3 +2639,25 @@ Kontak jasa menggunakan `wa.me` dengan nomor penyedia dari data, dapat diakses t
 Aplikasi diberi banner database lokal. Seed berlabel uji, tanpa data penjualan atau rating yang diklaim nyata. API menjaga cookie bertanda tangan, role/ownership, same-origin, secret RPC dan idempotensi. Mode offline ditolak ketika NODE_ENV=production. Ini alat pengembangan, bukan pengganti Supabase hosted, RLS deployment audit, atau layanan pembayaran. Belum ada sinkronisasi offline-ke-hosted; jangan membuka bridge database ke LAN.
 
 Kontak WhatsApp per sub-order menggunakan businessId agar rename atau nama toko yang sama tidak salah mengarahkan pesan. Order lama tanpa ID hanya memakai kecocokan nama tunggal; kontak ambigu/tidak valid tidak diaktifkan.
+
+## 44. Penyatuan vertical Belanja dan Makanan menjadi Produk UMKM — v2.2
+
+Keputusan 10 November 2026: Merombak vertical dengan menggabungkan Belanja (retail) dan Makanan (food) menjadi satu vertical: **Produk UMKM**.
+
+### 44.1 Perubahan Vertical & Storefront
+- Vertical pada beranda disederhanakan dari empat vertical menjadi tiga vertical:
+  1. **Produk UMKM** (`/katalog?type=product`) — mencakup barang kebutuhan, kerajinan, kuliner, dan makanan lokal.
+  2. **Jasa** (`/jasa`) — penyedia layanan dan booking jasa.
+  3. **Ojek** (`/ojek`) — direktori kontak pengemudi lokal.
+- Navigasi utama (`CommerceNav`) menghapus menu terpisah `Makanan` dan mengubah `Belanja` menjadi `Produk UMKM`.
+- Rute `/makanan` dialihkan (*redirect*) ke `/katalog?type=product`.
+- Halaman katalog (`CatalogExplorer`) menampilkan tab: `Semua`, `Produk UMKM`, `Jasa`, dan `Favorit`.
+- Tampilan detail toko (`BusinessDetailClient`) menggabungkan tab produk dan makanan menjadi satu tab `Produk UMKM`.
+- Badge pada kartu katalog (`CatalogCard`) menampilkan label `Produk UMKM` untuk semua produk fisik dan makanan.
+
+### 44.2 Database & Transaksi
+- Migrasi `20261110000000_merge_product_umkm_vertical.sql` memperbarui check constraint `produk.vertical` dan `orders.vertical` menjadi `PRODUK_UMKM` (dengan fallback backward-compatible `RETAIL`/`FOOD`).
+- Menambahkan kategori `seller-product` ('Produk UMKM Toko') pada tabel `kategori`.
+- Fungsi SQL `catalog_publish` diperbarui agar menyimpan item seller non-jasa dengan vertical `PRODUK_UMKM` dan category `seller-product`.
+- Checkout store (`commerce-store.ts`) membuat sub-order dengan vertical `PRODUK_UMKM` tanpa membedakan grup food/retail.
+

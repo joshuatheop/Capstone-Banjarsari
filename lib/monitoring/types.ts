@@ -5,7 +5,7 @@ export interface MonitorOrder {
   customerId: string;
   customer: string;
   seller: string;
-  vertical: 'RETAIL' | 'FOOD';
+  vertical: 'PRODUK_UMKM' | 'RETAIL' | 'FOOD';
   total: number;
   item: string;
   quantity: number;

@@ -9,6 +9,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const actor = await accountIdentity(request), input = await accountInput(request);
+    input.ownerName = actor.name;
     if (!['draft','submit'].includes(String(input.action))) throw new AccountError('Aksi pengajuan tidak valid.');
     const workspace = await mutateWorkspace(actor, workspace => saveApplication(workspace, actor, input, input.action === 'submit', new Date().toISOString()));
     return accountReply({ application: workspace.application });

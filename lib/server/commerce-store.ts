@@ -12,7 +12,7 @@ import { DbError, rpc } from './nonprod-db';
 // Validasi input dilakukan di sini; stok, harga, dan idempotensi diverifikasi ulang atomik di dalam fungsi SQL.
 interface OrderRow {
   order_id: string; checkout_id: string; business_id: string | null; customer_id: string; customer: string; seller: string;
-  vertical: 'RETAIL' | 'FOOD'; subtotal: number; discount: number; voucher_code: string | null; total: number; recipient_name: string | null;
+  vertical: 'PRODUK_UMKM' | 'RETAIL' | 'FOOD'; subtotal: number; discount: number; voucher_code: string | null; total: number; recipient_name: string | null;
   item: string; quantity: number; items: ItemSnapshot[]; status: OrderStatus; payment: MonitorOrder['payment']; method: MonitorOrder['method'];
   delivery: MonitorOrder['delivery']; courier: string | null; address: string | null; phone: string | null; note: string | null; created_at: string;
 }
@@ -62,13 +62,12 @@ export const createCheckout = async (user: SessionUser, input: CheckoutInput) =>
   if (input.voucherCode !== undefined && typeof input.voucherCode !== 'string') throw new Error('Voucher tidak valid.');
 
   const [products, stock] = await Promise.all([Promise.all([...quantities.keys()].map((id) => getProduct(id))), getStock()]);
-  const groups = new Map<string, { items: ItemSnapshot[]; food: boolean }>();
+  const groups = new Map<string, { items: ItemSnapshot[] }>();
   [...quantities].forEach(([id, quantity], index) => {
     const product = products[index];
     if (!product || quantity > (stock[id] ?? 0)) throw new Error(`Stok ${product?.product_name ?? 'produk'} tidak mencukupi. Kurangi jumlah lalu coba lagi.`);
-    const group = groups.get(product.business_id) ?? { items: [], food: false };
+    const group = groups.get(product.business_id) ?? { items: [] };
     group.items.push({ productId: id, name: product.product_name, price: product.product_price, quantity });
-    group.food ||= product.vertical === 'FOOD';
     groups.set(product.business_id, group);
   });
 
@@ -78,9 +77,9 @@ export const createCheckout = async (user: SessionUser, input: CheckoutInput) =>
   const discount = voucherDiscount(input.voucherCode, subtotals.reduce((sum, value) => sum + value, 0));
   if (input.voucherCode && !discount) throw new Error('Voucher tidak tersedia atau minimum belanja belum terpenuhi.');
   const discounts = allocateDiscount(subtotals, discount);
-  const orders = [...groups].map(([businessId, { items, food }], index) => ({
+  const orders = [...groups].map(([businessId, { items }], index) => ({
     order_id: `${checkoutId}-${index + 1}`, checkout_id: checkoutId, business_id: businessId, customer_id: user.uid,
-    customer: input.customerName?.trim() || user.displayName, seller: sellers[index], vertical: food ? 'FOOD' : 'RETAIL',
+    customer: input.customerName?.trim() || user.displayName, seller: sellers[index], vertical: 'PRODUK_UMKM',
     subtotal: subtotals[index], discount: discounts[index], voucher_code: discount ? input.voucherCode : null, total: subtotals[index] - discounts[index],
     recipient_name: input.recipientName?.trim() || user.displayName, item: items.map((i) => i.name).join(', '), quantity: items.reduce((sum, i) => sum + i.quantity, 0), items,
     status: 'AWAITING_SELLER', payment: 'PENDING', method: 'COD', delivery: 'PICKUP', courier: null,

@@ -36,7 +36,7 @@ const CatalogCard = ({ item }: CatalogCardProps) => {
       <Link href={item.href} aria-label={`Lihat ${item.name}`}>
         {item.image ? <Image src={item.image} alt={item.name} fill unoptimized sizes="(max-width: 800px) 50vw, 25vw" /> : <ProductVisual id={item.id} name={item.name} />}
       </Link>
-      <span className={styles.artBadge}>{item.kind === 'food' ? 'Makanan' : item.kind === 'service' ? 'Jasa warga' : 'Produk lokal'}</span>
+      <span className={styles.artBadge}>{item.kind === 'service' ? 'Jasa warga' : 'Produk UMKM'}</span>
       <button className={styles.favorite} aria-label={`${saved ? 'Hapus' : 'Simpan'} ${item.name} ${saved ? 'dari' : 'ke'} favorit`} aria-pressed={saved} onClick={() => item.kind === 'service' ? favorites.toggleServiceFav(item.id) : favorites.toggleProductFav(item.id)}><Heart size={18} fill={saved ? 'currentColor' : 'none'} /></button>
     </div>
     <div className={styles.cardBody}><Link href={`/bisnis/${item.businessId}`} className={styles.sellerName}>{item.business}</Link><h3><Link href={item.href}>{item.name}</Link></h3><p><MapPin size={12}/>{item.area || 'Banjarsari'}</p><div className={styles.cardBottom}><strong>{item.priceLabel}</strong>{NONPROD && item.kind !== 'service' ? <button className={styles.quickAdd} disabled={pending || !item.available || !cart.ready} onClick={quickAdd} aria-label={`Tambah ${item.name} ke keranjang`}>{message === 'Ditambahkan ke keranjang.' ? <Check size={20}/> : <Plus size={22}/>}</button> : <Link href={item.href} aria-label={`Detail ${item.name}`}><ArrowUpRight size={20}/></Link>}</div>{!item.available && <p>Tidak tersedia</p>}{message && <p className={styles.cardFeedback} role="status">{message}</p>}</div>

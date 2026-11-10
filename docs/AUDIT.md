@@ -162,3 +162,21 @@ Acuan PRD v1.1 dan Design v2.1. Branch kerja/tujuan `lukas`; developer Asricky. 
 5. Histori forecast berasal dari order terbayar yang teramati; hari kosong tidak diasumsikan nol. CSV sesi tidak dipersist; kategori confidence bukan peluang pasti. Kategori produk deskriptif berada dalam workspace, belum menjadi taxonomy baru katalog.
 6. Foto/banner menerima URL HTTPS; tidak menambah upload/storage provider. Rating, saldo, ETA, demand maupun penjualan nyata tidak direkayasa. Akun/toko/booking uji tetap tersimpan lokal; percobaan browser yang berhenti di tengah dapat menyisakan pesanan berlabel uji.
 7. Existing profile non-prod tetap per browser. Uji hosted, Firebase, beban, pemulihan backup, dan keamanan production tetap pekerjaan terpisah; hasil lokal tidak diklaim sebagai sertifikasi production.
+
+## Penyatuan vertical Belanja dan Makanan menjadi Produk UMKM — v2.2, 10 November 2026
+
+Acuan PRD v1.2 dan Design v2.2. Branch kerja `theo`. Perubahan menggabungkan vertical Belanja dan Makanan menjadi satu vertical: **Produk UMKM**.
+
+### Hasil
+- Vertical beranda menjadi 3 vertical: Produk UMKM (`/katalog?type=product`), Jasa (`/jasa`), dan Ojek (`/ojek`). Layout desktop memakai 3 kolom seimbang, mobile memakai kartu Produk UMKM lebar penuh di baris atas serta Jasa dan Ojek berdampingan di bawahnya.
+- Header dan navigasi utama: Tautan 'Belanja' dan 'Makanan' digabungkan menjadi 'Produk UMKM'. Kolom pencarian disesuaikan menjadi "Cari produk UMKM atau jasa". Rute `/makanan` dialihkan (redirect) ke `/katalog?type=product`.
+- Katalog dan toko: `CatalogExplorer` menampilkan tab Semua, Produk UMKM, Jasa, dan Favorit. Tampilan detail toko `BusinessDetailClient` menyatukan tab produk dan makanan menjadi tab Produk UMKM. Kartu katalog `CatalogCard` menampilkan badge 'Produk UMKM'.
+- Database dan server: Migrasi `20261110000000_merge_product_umkm_vertical.sql` memperbarui constraint `produk.vertical` dan `orders.vertical` menjadi `PRODUK_UMKM` (dengan backward-compatibility RETAIL/FOOD), mendaftarkan kategori `seller-product`, dan memperbarui RPC `catalog_publish`.
+- Transaksi checkout: `commerce-store.ts` menetapkan order vertical sebagai `PRODUK_UMKM` secara terpadu.
+
+### Validasi yang dijalankan
+- `npm test`: 30/30 unit & domain tests lulus.
+- `npx tsc --noEmit`: Lulus tanpa error tipe.
+- `npm run lint`: Lulus 0 error, 0 warning.
+- `npm run build`: Lulus; 44 halaman statis dan rute dinamis dikompilasi dengan sukses.
+
