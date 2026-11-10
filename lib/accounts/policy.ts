@@ -68,8 +68,17 @@ export function saveListing(workspace: AccountWorkspace, actor: AccountIdentity,
   const index = workspace.listings.findIndex(item => item.id === id);
   if (index >= 0 && workspace.listings[index].kind !== input.kind) throw new AccountError('Jenis item existing tidak dapat diubah. Buat item baru untuk jenis berbeda.');
   if (input.id && index < 0) throw new AccountError('Produk bukan milik toko Anda.', 403);
+  const existing = workspace.listings[index];
+  if (existing && input.expectedUpdatedAt !== existing.updatedAt) throw new AccountError('Produk berubah. Muat ulang sebelum menyimpan.', 409);
+  if (existing && existing.stock !== Number(input.stock)) throw new AccountError('Gunakan penyesuaian Inventory untuk mengubah stok.');
   if (index < 0 && workspace.listings.length >= 100) throw new AccountError('Maksimal 100 item per toko pada fase ini.');
-  const listing: SellerListing = { id, businessId: workspace.business!.id, kind: input.kind as SellerListing['kind'], name: text(input.name, 'Nama produk/jasa', 120, 2), description: text(input.description, 'Deskripsi', 2000), price: Number(input.price), stock: Number(input.stock), image: imageValue(input.image), active: input.active, updatedAt: now };
+  const shelfLifeDays = input.shelfLifeDays ?? null;
+  if (shelfLifeDays !== null && (!Number.isSafeInteger(shelfLifeDays) || Number(shelfLifeDays) < 1 || Number(shelfLifeDays) > 365)) throw new AccountError('Umur simpan harus 1–365 hari.');
+  const listing: SellerListing = { ...existing, id, businessId: workspace.business!.id, kind: input.kind as SellerListing['kind'], name: text(input.name, 'Nama produk/jasa', 120, 2), description: text(input.description, 'Deskripsi', 2000), price: Number(input.price), stock: Number(input.stock), image: imageValue(input.image), active: input.active, updatedAt: now, category: text(input.category ?? '', 'Kategori', 80), shelfLifeDays: input.kind === 'FOOD' ? shelfLifeDays as number | null : null };
+  if (!existing && listing.kind !== 'SERVICE') {
+    listing.stockByLocation = { store: listing.stock };
+    workspace.inventoryAdjustments = [...(workspace.inventoryAdjustments ?? []), { id: `opening-${id}`, listingId: id, locationId: 'store', delta: listing.stock, reason: 'Saldo awal saat produk dibuat', actorId: actor.uid, at: now, before: 0, after: listing.stock }];
+  }
   if (index < 0) workspace.listings.push(listing); else workspace.listings[index] = listing;
   return listing;
 }

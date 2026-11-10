@@ -4,10 +4,10 @@ Sumber acuan aktif berada di folder ini. Dokumen root hanya pengarah; jangan mem
 
 | Dokumen | Versi/status terbaru | Fungsi |
 |---|---|---|
-| [PRD.md](PRD.md) | 1.0, 28 September 2026 | Baseline kebutuhan produk; tidak dinaikkan hanya karena perubahan dokumentasi |
-| [Design.md](Design.md) | 2.0, 23 Oktober 2026 | UI, arsitektur akun, dokumentasi, database non-prod Supabase, dan transaksi non-prod |
-| [AUDIT.md](AUDIT.md) | Catatan sampai 23 Oktober 2026 | Hasil verifikasi dan keterbatasan implementasi |
-| [Lukas Update.md](<Lukas Update.md>) | Catatan v1.8 | Update Lukas / Asricky |
+| [PRD.md](PRD.md) | 1.1, 1 November 2026 | Baseline dan scope seller, inventory, kontak jasa, serta alternatif database lokal |
+| [Design.md](Design.md) | 2.1, 1 November 2026 | Seller/inventory, transaksi workspace atomic, kontak jasa, dan database lokal eksplisit |
+| [AUDIT.md](AUDIT.md) | Catatan sampai 1 November 2026 | Hasil verifikasi dan keterbatasan implementasi |
+| [Lukas Update.md](<Lukas Update.md>) | Catatan Design v2.1 | Update Lukas / Asricky |
 | [Zik Update.md](<Zik Update.md>) | Catatan v2.0 | Update Zik / Zikri |
 | [Theo Update.md](<Theo Update.md>) | Belum ada entri terverifikasi | Update Theo |
 
@@ -41,6 +41,7 @@ Aturan ini dijalankan oleh developer/agent sebelum commit dan push, bukan hook G
 
 ## Arsip
 
+- [Baseline sebelum seller/inventory dan alternatif offline - 1 November 2026, Design v2.0](history/2026-11-01-v2.0/README.md): PRD v1.0, Design v2.0 dan AUDIT utuh.
 - [Baseline sebelum penghapusan mode demo Firebase — 23 Oktober 2026, Design v1.9](history/2026-10-23-v1.9/README.md): salinan utuh PRD v1.0, Design v1.9, dan AUDIT sebelum perubahan v2.0. Bersifat historis dan tidak menjadi sumber aktif.
 - [Baseline sebelum database non-prod Supabase — 5 Oktober 2026, Design v1.8](history/2026-10-05-v1.8/README.md): salinan utuh PRD v1.0, Design v1.8, dan AUDIT sebelum perubahan v1.9. Bersifat historis dan tidak menjadi sumber aktif.
 - [Baseline sebelum penataan docs — 4 Oktober 2026, Design v1.7](history/2026-10-04-v1.7/README.md): salinan utuh dari commit `8753b4b`, mencakup PRD v1.0 dan seluruh audit sebelumnya. Arsip bersifat historis dan tidak menjadi sumber aktif.

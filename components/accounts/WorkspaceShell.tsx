@@ -7,8 +7,8 @@ import { Home, Menu, X, Leaf, LogOut, ChevronRight } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import AccountMenu from './AccountMenu';
 import styles from './accounts.module.css';
-const sellerLinks = [['','Ringkasan'],['products','Produk'],['food','Makanan / menu'],['services','Jasa'],['orders','Pesanan'],['bookings','Booking'],['stock','Stok'],['payments','Pembayaran'],['analytics','Analytics'],['forecast','Forecasting stok'],['financial-projection','Financial Projection'],['settings','Pengaturan toko']];
-const adminLinks = [['','Ringkasan platform'],['seller-applications','Pengajuan seller'],['sellers','Monitoring seller'],['users','Pengguna'],['orders','Pesanan'],['payments','Pembayaran'],['deliveries','Pengantaran'],['bookings','Booking'],['analytics','Analytics'],['ecosystem-health','Ecosystem health'],['forecast','Forecasting platform'],['financial-projection','Financial Projection']];
+const sellerLinks = [['','Dashboard Toko'],['products','Produk Saya'],['services','Jasa Saya'],['orders','Pesanan'],['stock','Inventory'],['analytics','Analytics Toko'],['settings','Pengaturan Toko']];
+const adminLinks = [['','Monitoring & Analytics'],['orders','Pesanan'],['payments','Pembayaran'],['deliveries','Pengantaran'],['bookings','Booking Jasa'],['ecosystem-health','Ecosystem Health'],['forecast','Inventory Platform'],['financial-projection','Financial Projection']];
 export default function WorkspaceShell({ scope, children }: { scope: 'seller' | 'super-admin'; children: React.ReactNode }) {
   const router = useRouter();
   const [logoutError, setLogoutError] = useState(''), [loggingOut, setLoggingOut] = useState(false);

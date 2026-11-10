@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id" data-scroll-behavior="smooth">
       <body className="workspace-theme">
-        <AuthProvider><AccountAccessProvider><CartProvider>{NONPROD && <div className="nonprod-banner">Lingkungan non-prod · Pesanan uji tersimpan di database non-prod · Tidak ada pembayaran nyata</div>}{children}</CartProvider></AccountAccessProvider></AuthProvider>
+        <AuthProvider><AccountAccessProvider><CartProvider>{NONPROD && <div className="nonprod-banner">{process.env.NEXT_PUBLIC_OFFLINE_DATABASE === 'true' ? 'Database lokal offline · Data uji di perangkat ini' : 'Lingkungan non-prod · Pesanan uji tersimpan di database non-prod'} · Tidak ada pembayaran nyata</div>}{children}</CartProvider></AccountAccessProvider></AuthProvider>
       </body>
     </html>
   );

@@ -2,8 +2,8 @@
 
 **Document Type:** Product Design + System Design
 **Project:** PALUGADA Banjarsari
-**Version:** 2.0
-**Last Updated:** 23 Oktober 2026
+**Version:** 2.1
+**Last Updated:** 1 November 2026
 
 ---
 
@@ -2597,3 +2597,45 @@ Keputusan 23 Oktober 2026: semua yang tidak berhubungan dengan production memaka
 - Halaman admin katalog lama dan analytics klien masih Firebase dan tidak tersedia di non-prod. Sesi non-prod tidak tersedia pada build production. `login_user` belum membatasi percobaan.
 - Angka stok di dashboard seller adalah nilai workspace dan tidak ikut berkurang oleh pesanan.
 - Hasil verifikasi lengkap dan yang belum diuji ada di [AUDIT](AUDIT.md#transaksi-non-prod-supabase--v20-23-oktober-2026).
+
+## 43. Seller, inventory, dan kontak jasa — v2.1
+
+Keputusan 1 November 2026, berdasarkan instruksi terbaru Asricky. Bagian ini menggantikan bagian lama yang menyatakan edit item dapat mengatur ulang stok checkout. Arsitektur akun pada bagian 39 dan transaksi pada bagian 42 tetap digunakan.
+
+### 43.1 Navigasi dan ownership
+
+| Area | Keputusan terbaru |
+|---|---|
+| Seller | Tujuh menu: Dashboard Toko, Produk Saya, Jasa Saya, Pesanan, Inventory, Analytics Toko, Pengaturan Toko. Barang dan FOOD ada di Produk Saya. |
+| Route lama | `/seller/food` mengarah ke `/seller/products`; `/seller/forecast` ke `/seller/stock`. Booking, payment, financial projection tetap dapat diakses lewat tautan kontekstual. |
+| Super Admin | Monitoring dan analytics digabung pada dashboard, termasuk chart di panel expandable. `/super-admin/analytics` diarahkan ke dashboard. |
+| Governance | Panel Pengajuan Menunggu Persetujuan muncul pada dashboard. Review seller, performa/status seller, dan direktori user tetap tersedia melalui tautan; hanya menu sidebar terpisah yang dihilangkan. |
+| Akses | Identitas/sesi, role dan business ownership diperiksa server. CUSTOMER tetap dapat berbelanja setelah akun yang sama menjadi SELLER. Suspend menutup workspace tanpa menghapus peran pembeli. |
+
+### 43.2 Persediaan dan persistensi
+
+- Produk mendukung kategori deskriptif, harga, URL foto HTTPS, deskripsi, aktif/nonaktif; FOOD memiliki umur simpan opsional. Kategori deskriptif disimpan dalam workspace; taksonomi katalog tetap menggunakan kategori `seller-*` existing.
+- Saldo awal produk masuk ke lokasi Toko utama. Lokasi tambahan maksimal 20; penyesuaian wajib unit bulat, lokasi valid, alasan, actor, waktu, saldo sebelum/sesudah, dan idempotency key. Saldo negatif ditolak. Jurnal maksimal 1.000 entri; batas ini menghentikan perubahan, bukan membuang audit lama.
+- Edit item memakai `expectedUpdatedAt`; perubahan stale ditolak. Stok existing tidak dapat diubah melalui form metadata. Inventory menjadi jalur penyesuaian tercatat.
+- `workspace_commit` merupakan RPC additive non-prod. Workspace, approval/role, business dan publikasi listing berada dalam satu transaksi dengan revision check. SKU dikunci sebelum delta stok; stok katalog yang sudah dikurangi checkout tidak dipulihkan oleh edit harga/nama. Retry identik tidak menambah stok lagi. Firestore mempertahankan transaksi existing dengan penerapan delta yang sama; belum diuji terhadap project production.
+- **Saldo lokasi bukan stok tersedia checkout.** UI menampilkan keduanya. Reservasi/fulfillment transaksi belum dialokasikan ke lokasi. Jangan mengurangi lagi stok pesanan yang sudah dikurangi checkout. Tidak ada rewrite lifecycle pesanan, pembayaran, courier, atau booking.
+
+### 43.3 Forecast dan analytics
+
+Inventory memiliki selector produk, riwayat penyesuaian/pesanan, forecast dan chart per produk. Demand besok, persiapan tambahan, target stok periode, stok layak jual, incoming, risiko, alasan dan confidence tetap mengikuti algoritma existing. Confidence adalah kategori berdasarkan histori/error, bukan probabilitas hasil pasti.
+
+API seller mengambil histori pesanan terbayar milik toko; hari tanpa catatan tidak otomatis dianggap penjualan nol. Minimal 28 hari lengkap diperlukan. Tanpa histori memadai, tampilkan alasan dan jangan mengarang angka persiapan. CSV harus menggunakan ID produk milik seller dan dianalisis pada sesi tersebut; impor tidak menyimpan histori ke database. Incoming default 0 berarti belum ada catatan, bukan bukti bahwa tidak ada pengiriman. Forecast selalu berlabel estimasi, bukan jaminan permintaan.
+
+### 43.4 Profil toko dan jasa
+
+Pengaturan menyimpan nama/deskripsi, logo, foto/banner HTTPS, kategori, alamat, koordinat, WhatsApp, jam buka, status buka/tutup, informasi pickup dan layanan. Endpoint `/api/storefront/business` hanya mengembalikan proyeksi publik business yang aktif; tidak mengeluarkan email akun, application, role, atau jurnal stok. Informasi terbaru tampil pada profil toko dan detail katalog. Status buka/tutup bersifat informasi, tidak menggantikan status approval atau mengubah aturan transaksi.
+
+Kontak jasa menggunakan `wa.me` dengan nomor penyedia dari data, dapat diakses tanpa login/booking. User boleh menambahkan usulan waktu dan kebutuhan lalu menyiapkan pesan WhatsApp. Waktu input mengikuti perangkat dan ditampilkan sebagai WIB dalam pesan; validasi 1–90 hari ke depan. Tidak ada pesan terkirim otomatis atau booking internal yang dibuat oleh CTA tersebut. Booking existing tetap tersedia sebagai pilihan terpisah bagi customer login. Ojek tetap direktori kontak tersendiri.
+
+### 43.5 Alternatif database offline eksplisit
+
+`npm run dev:offline` menjalankan PGlite 0.5.14 (dev dependency) dan bridge PostgREST terbatas pada loopback, lalu Next dev pada port 3011. Seluruh migrasi SQL non-prod dijalankan terhadap database persisten di `.local/offline-postgres`. Kredensial lokal dibuat terpisah; `.env.local` hosted tidak diubah. Tidak ada fallback otomatis saat hosted error: user memilih mode lokal secara eksplisit.
+
+Aplikasi diberi banner database lokal. Seed berlabel uji, tanpa data penjualan atau rating yang diklaim nyata. API menjaga cookie bertanda tangan, role/ownership, same-origin, secret RPC dan idempotensi. Mode offline ditolak ketika NODE_ENV=production. Ini alat pengembangan, bukan pengganti Supabase hosted, RLS deployment audit, atau layanan pembayaran. Belum ada sinkronisasi offline-ke-hosted; jangan membuka bridge database ke LAN.
+
+Kontak WhatsApp per sub-order menggunakan businessId agar rename atau nama toko yang sama tidak salah mengarahkan pesan. Order lama tanpa ID hanya memakai kecocokan nama tunggal; kontak ambigu/tidak valid tidak diaktifkan.

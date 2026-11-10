@@ -10,6 +10,7 @@ import { Icons } from '@/components/shared/Icons';
 import BusinessLocationMap from '@/components/shared/BusinessLocationMap';
 import ReviewSection from '@/components/shared/ReviewSection';
 import Link from 'next/link';
+import ServiceContact from '@/components/commerce/ServiceContact';
 
 interface ServiceDetailClientProps {
   service: ServiceItem;
@@ -35,24 +36,8 @@ export default function ServiceDetailClient({ service, business }: ServiceDetail
 
   const priceDisplay = getServicePriceDisplay(service);
 
-  const handleWhatsAppRedirect = async () => {
-    const waNumber = service.whatsapp_number || business?.business_phone;
-    if (!waNumber) return;
-
-    await trackClickEvent('click_wa', {
-      itemName: service.service_name,
-      businessName: business?.business_name || 'UMKM Banjarsari',
-      waNumber,
-      serviceId: service.service_id,
-      businessId: service.business_id,
-    });
-    await incrementServiceClicks(service.service_id);
-
-    const cleanNum = waNumber.replace(/[^0-9]/g, '');
-    const text = encodeURIComponent(
-      `Halo Ibu/Bapak dari *${business?.business_name || 'UMKM Banjarsari'}*, saya tertarik dengan layanan jasa *${service.service_name}* (${priceDisplay}) yang terdaftar di Katalog Banjarsari. Apakah tersedia untuk dipesan?`
-    );
-    window.open(`https://wa.me/${cleanNum}?text=${text}`, '_blank');
+  const handleContact = () => {
+    void Promise.all([trackClickEvent('click_wa', { itemName: service.service_name, businessName: business?.business_name || 'UMKM Banjarsari', waNumber: service.whatsapp_number || business?.business_phone || '', serviceId: service.service_id, businessId: service.business_id }), incrementServiceClicks(service.service_id)]).catch(() => undefined);
   };
 
   const handleMarketplaceRedirect = async () => {
@@ -292,17 +277,7 @@ export default function ServiceDetailClient({ service, business }: ServiceDetail
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 'auto' }}>
                 <div className="detail-cta-row" style={{ display: 'grid', gridTemplateColumns: marketplaceUrl ? '1fr 1fr' : '1fr', gap: 12 }}>
 
-                  {/* WA button */}
-                  {waNumber && (
-                    <button
-                      onClick={handleWhatsAppRedirect}
-                      className="btn btn-wa btn-lg"
-                      style={{ width: '100%', height: 48 }}
-                    >
-                      <Icons.Whatsapp /> Hubungi Jasa / Nego
-                    </button>
-                  )}
-
+                  <ServiceContact onContact={handleContact} phone={waNumber} name={service.service_name} provider={business?.business_name ?? 'Penyedia jasa'}/>
                   {/* Marketplace button */}
                   {marketplaceUrl && (
                     <button

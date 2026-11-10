@@ -4,6 +4,23 @@ Marketplace warga: Belanja, Makanan, Jasa, dan direktori kontak Ojek; monitoring
 
 ## Menjalankan lingkungan non-prod
 
+Jika Supabase belum dapat tersambung, tersedia **database lokal terisolasi**:
+
+```powershell
+npm ci
+npm run dev:offline
+```
+
+Buka [PALUGADA lokal](http://127.0.0.1:3011). Login admin: `admin` / `localAdmin123!`; customer: `user` / `localUser123!`. Keduanya akun uji lokal. Untuk seller, daftar customer, ajukan toko lewat profil, lalu setujui dari `/super-admin/seller-applications`. Akun yang sama mendapat akses `/seller`.
+
+Mode ini menjalankan PostgreSQL melalui PGlite (dependency development), menerapkan migrasi SQL repository ke `.local/offline-postgres`, dan memakai API/session/otorisasi aplikasi yang sama. Data bertahan setelah restart. `.env.local` milik Anda tidak ditimpa; override hanya berlaku pada proses lokal. Konfigurasi, database, dan akun uji berada di `.local/` yang diabaikan Git. Ini bukan Supabase hosted, bukan deployment production, dan tidak menyinkronkan data ke hosted.
+
+Server aplikasi terikat ke `127.0.0.1:3011`; bridge database ke `127.0.0.1:54329`. Jangan membuka port database ke jaringan. Mode ini sengaja hanya untuk perangkat lokal. `OFFLINE_APP_PORT` dan `OFFLINE_DB_PORT` dapat diubah sebelum menjalankan jika port terpakai. Hentikan dengan Ctrl+C.
+
+Dengan server offline masih berjalan, terminal kedua dapat menjalankan `npm run test:offline-api`. Pengujian membuat akun/toko berlabel uji, membatalkan pesanan uji, dan mempertahankan satu booking uji. `npm run test:workspace-sql` memeriksa transaksi PostgreSQL terisolasi tanpa server. Bridge mendukung subset PostgREST yang dipakai aplikasi; keberhasilan lokal tidak membuktikan konfigurasi RLS/network/deployment Supabase hosted.
+
+Migrasi baru `20261101000000_atomic_workspace_inventory.sql` diperlukan sebelum memakai pembaruan seller pada Supabase **non-prod**. Migrasi tersebut belum diterapkan ke hosted dalam pekerjaan ini. Jalur setup Supabase di bawah tetap tersedia ketika koneksi sudah pulih.
+
 Gunakan Node.js 22 dan npm. Dari folder repository:
 
 ```powershell

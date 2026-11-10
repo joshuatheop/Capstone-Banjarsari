@@ -5,6 +5,7 @@ export interface CatalogEntry {
   id: string; name: string; description: string; price: number | null; priceLabel: string;
   kind: 'product' | 'food' | 'service'; category: string; categoryId: string; area: string; popularity: number; business: string; businessId: string;
   image: string | null; href: string; available: boolean;
+  whatsapp?: string | null;
 }
 
 export const loadCatalog = async () => {
@@ -26,7 +27,7 @@ export const loadCatalog = async () => {
       price: item.minimum_price, priceLabel: getServicePriceDisplay(item), kind: 'service', category: categoryMap.get(item.category_id)?.category_name ?? 'Jasa lokal',
       business: businessMap.get(item.business_id)?.business_name ?? 'Penyedia lokal', businessId: item.business_id,
       categoryId: item.category_id, area: businessMap.get(item.business_id)?.area_name ?? '', popularity: item.clickCount ?? 0,
-      image: item.thumbnail_url, href: `/layanan/${item.service_id}`, available: item.is_active && item.availability_type !== 'TEMPORARILY_UNAVAILABLE' })),
+      image: item.thumbnail_url, href: `/layanan/${item.service_id}`, whatsapp: item.whatsapp_number || businessMap.get(item.business_id)?.business_phone, available: item.is_active && item.availability_type !== 'TEMPORARILY_UNAVAILABLE' })),
   ];
   return { entries, businesses };
 };
